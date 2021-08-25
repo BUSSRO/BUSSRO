@@ -2,24 +2,29 @@ package com.example.bussro.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bussro.adapter.BusListAdapter
 import com.example.bussro.data.BusListRvData
 import com.example.bussro.util.CustomItemDecoration
 import com.example.bussro.R
+import com.example.bussro.databinding.ActivityBusListBinding
+import com.example.bussro.databinding.ActivityMainBinding
 
 class BusListActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityBusListBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_bus_list)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_bus_list)
 
         initBusListRv()
     }
 
     private fun initBusListRv() {
         val rvAdapter = BusListAdapter(applicationContext, getTempBusList())
-        findViewById<RecyclerView>(R.id.rv_bus_list).apply {
+        binding.rvBusList.apply {
             adapter = rvAdapter
             layoutManager = LinearLayoutManager(applicationContext)
             addItemDecoration(

@@ -1,50 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.MainActivity"
-    android:background="@color/black">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- 1. 내 주변 정류장 -->
-    <TextView
-        android:id="@+id/txt_main_first"
-        android:text="@string/main_first_txt"
-        style="@style/MainTextViewStyle"
-        android:background="@drawable/main_text_first_background"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/txt_main_second"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"/>
+    <data>
+        <variable
+            name="activity"
+            type="com.example.bussro.view.MainActivity" />
+    </data>
 
-    <!-- 2. 버스 탑승 도우미 -->
-    <TextView
-        android:id="@+id/txt_main_second"
-        style="@style/MainTextViewStyle"
-        android:layout_marginTop="25dp"
-        android:layout_marginBottom="25dp"
-        android:background="@drawable/main_text_second_background"
-        android:text="@string/main_second_txt"
-        app:layout_constraintBottom_toTopOf="@id/txt_main_third"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txt_main_first" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".view.MainActivity"
+        android:background="@color/black">
 
-    <!-- 3. 하차벨 위치 -->
-    <TextView
-        android:id="@+id/txt_main_third"
-        android:text="@string/main_third_txt"
-        style="@style/MainTextViewStyle"
-        android:background="@drawable/main_text_third_background"
-        app:layout_constraintTop_toBottomOf="@id/txt_main_second"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        <!-- 1. 내 주변 정류장 -->
+        <TextView
+            android:id="@+id/txt_main_first"
+            android:text="@string/main_first_txt"
+            style="@style/MainTextViewStyle"
+            android:background="@drawable/main_text_first_background"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/txt_main_second"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <!-- 2. 버스 탑승 도우미 -->
+        <TextView
+            android:id="@+id/txt_main_second"
+            style="@style/MainTextViewStyle"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="25dp"
+            android:background="@drawable/main_text_second_background"
+            android:text="@string/main_second_txt"
+            app:layout_constraintBottom_toTopOf="@id/txt_main_third"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_main_first" />
+
+        <!-- 3. 하차벨 위치 -->
+        <TextView
+            android:id="@+id/txt_main_third"
+            android:text="@string/main_third_txt"
+            style="@style/MainTextViewStyle"
+            android:background="@drawable/main_text_third_background"
+            app:layout_constraintTop_toBottomOf="@id/txt_main_second"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
 
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
