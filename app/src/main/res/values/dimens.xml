@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="marker_corner_radius">4dp</dimen>
+    <dimen name="marker_height">40dp</dimen>
+    <dimen name="marker_width">32dp</dimen>
+
+    <!-- activity_main background dimen spec -->
+    <dimen name="main_point_color_width">8dp</dimen>
+    <dimen name="main_background_radius">8dp</dimen>
+    <dimen name="main_background_height">112dp</dimen>
+</resources>
