@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".BusListActivity">
+    tools:context=".view.BusListActivity">
 
     <!-- 버스 정류장 위치 정보 -->
     <ImageView

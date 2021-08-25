@@ -1,9 +1,13 @@
-package com.example.bussro
+package com.example.bussro.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bussro.adapter.BusListAdapter
+import com.example.bussro.data.BusListRvData
+import com.example.bussro.util.CustomItemDecoration
+import com.example.bussro.R
 
 class BusListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

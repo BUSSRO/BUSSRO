@@ -1,4 +1,4 @@
-package com.example.bussro
+package com.example.bussro.util
 
 import android.graphics.Rect
 import android.view.View

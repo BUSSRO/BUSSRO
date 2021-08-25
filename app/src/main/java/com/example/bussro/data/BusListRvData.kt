@@ -1,4 +1,4 @@
-package com.example.bussro
+package com.example.bussro.data
 
 // TODO 기본값 제거
 data class BusListRvData (
