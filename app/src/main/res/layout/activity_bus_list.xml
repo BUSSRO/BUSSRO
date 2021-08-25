@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".BusListActivity">
+
+    <!-- 버스 정류장 위치 정보 -->
+    <ImageView
+        android:id="@+id/img_bus_list_location"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/ic_bus_list_location"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/rv_bus_list"
+        app:layout_constraintEnd_toStartOf="@id/txt_bus_list_location"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginBottom="12dp"/>
+
+    <TextView
+        android:id="@+id/txt_bus_list_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="제기동역 정류장"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        app:layout_constraintTop_toTopOf="@id/img_bus_list_location"
+        app:layout_constraintBottom_toBottomOf="@id/img_bus_list_location"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="16dp"/>
+
+
+    <!-- 버스 정류장을 거치는 버스 노선 리스트 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_bus_list"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:overScrollMode="never"
+        tools:listitem="@layout/rv_bus_list_item"
+        app:layout_constraintTop_toBottomOf="@id/img_bus_list_location"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
