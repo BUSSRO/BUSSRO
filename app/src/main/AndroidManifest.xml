@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BUSSRO">
-        <activity android:name=".view.BusInfoActivity"></activity>
+        <activity android:name=".view.BusInfoActivity" />
         <activity android:name=".view.FindStationActivity" />
         <activity android:name=".view.BusListActivity" />
         <activity android:name=".view.MainActivity">
