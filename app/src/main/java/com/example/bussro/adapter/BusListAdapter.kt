@@ -16,10 +16,21 @@ import com.example.bussro.R
 import com.example.bussro.view.BusListActivity
 import com.example.bussro.view.MainActivity
 
+/**
+ * [BusListAdapter]
+ * BusListActivity 의 RecyclerView 에 연결될 Adapter
+ * @param context
+ * @param data 사용자가 위치한 버스 정류장을 지나는 버스들의 정보
+ * @param busList 사용자가 안내받기로 선택한 버스
+ * @param activity BusListActivity
+ *
+ * @author 윤주연(otu165)
+ */
+
 class BusListAdapter(
     private val context: Context,
     private val data: MutableList<BusListRvData>,
-    private val busList: MutableList<String>,  // 선택된 버스 리스트
+    private val busList: MutableList<String>,
     private val activity: BusListActivity
 ) : RecyclerView.Adapter<BusListAdapter.BusListViewHolder>() {
 

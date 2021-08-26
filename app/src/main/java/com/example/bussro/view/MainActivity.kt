@@ -7,6 +7,14 @@ import androidx.databinding.DataBindingUtil
 import com.example.bussro.R
 import com.example.bussro.databinding.ActivityMainBinding
 
+/**
+ * [MainActivity]
+ * SplashActivity 후 보여짐
+ * 사용자는 원하는 버튼을 선택해서 원하는 기능으로 이동할 수 있다.
+ *
+ * @author 윤주연(otu165)
+ */
+
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
@@ -14,10 +22,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        setOnClickListener()
+        initSetOnClickListener()
     }
 
-    private fun setOnClickListener() {
+    private fun initSetOnClickListener() {
         // 1. 내 주변 정류장
         binding.txtMainFirst.setOnClickListener {
             val intent = Intent(this, FindStationActivity::class.java)
@@ -32,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         // 3. 하차벨 위치
         binding.txtMainThird.setOnClickListener {
-            // TODO
+            // TODO? 카메라 연동
         }
     }
 }

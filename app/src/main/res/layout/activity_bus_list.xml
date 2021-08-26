@@ -59,7 +59,7 @@
             android:id="@+id/txt_bus_list_start"
             android:layout_width="0dp"
             android:layout_height="60dp"
-            android:text="이 버스로 도착을 안내하겠습니다."
+            android:text="@string/bus_list_info_txt"
             android:singleLine="true"
             android:textColor="@color/black"
             android:textSize="23sp"

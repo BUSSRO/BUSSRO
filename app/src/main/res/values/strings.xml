@@ -5,4 +5,8 @@
     <string name="main_first_txt">내 주변 정류장</string>
     <string name="main_second_txt">버스 탑승 도우미</string>
     <string name="main_third_txt">하차벨 위치</string>
+    <string name="bus_list_info_txt">이 버스로 도착을 안내하겠습니다.</string>
+
+    <!-- activity_bus_list -->
+
 </resources>

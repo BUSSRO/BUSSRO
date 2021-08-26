@@ -32,6 +32,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="16dp" />
 
+    <!-- 버스 번호 안내 -->
     <TextView
         android:id="@+id/txt_bus_info"
         android:layout_width="250dp"
@@ -49,6 +50,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias=".4"/>
 
+    <!-- 버스 위치 정보 안내 -->
     <TextView
         android:id="@+id/txt_bus_info_btm"
         android:layout_width="wrap_content"

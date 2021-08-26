@@ -15,6 +15,7 @@
         tools:context=".view.FindStationActivity"
         android:background="@color/black">
 
+        <!-- TTS 상징 이미지 -->
         <ImageView
             android:layout_width="265dp"
             android:layout_height="265dp"
@@ -24,6 +25,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
+        <!-- TTS & STT 인식 텍스트 -->
         <TextView
             android:text="\'찾는 정류장을 말해주세요.\'"
             android:textSize="22sp"

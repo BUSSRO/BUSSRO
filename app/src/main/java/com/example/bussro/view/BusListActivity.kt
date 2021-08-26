@@ -3,18 +3,23 @@ package com.example.bussro.view
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.bussro.adapter.BusListAdapter
 import com.example.bussro.data.BusListRvData
 import com.example.bussro.util.CustomItemDecoration
 import com.example.bussro.R
 import com.example.bussro.databinding.ActivityBusListBinding
-import com.example.bussro.databinding.ActivityMainBinding
+
+/**
+ * [BusListActivity]
+ * MainActivity 의 "버스 탑승 도우미" 버튼을 클릭했을시 보여짐
+ * 사용자가 현재 위치한 버스 정류장을 거치는 버스 리스트를 제공한다.
+ *
+ * @author 윤주연(otu165)
+ */
 
 class BusListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityBusListBinding
@@ -24,9 +29,14 @@ class BusListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_bus_list)
 
-        // TODO TTS 안내
         initBusListRv()
-        setOnClickListener()
+        initSetOnClickListener()
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        // TODO? TTS 안내
     }
 
     private fun initBusListRv() {
@@ -42,7 +52,7 @@ class BusListActivity : AppCompatActivity() {
         rvAdapter.notifyDataSetChanged()
     }
 
-    private fun setOnClickListener() {
+    private fun initSetOnClickListener() {
         binding.txtBusListStart.setOnClickListener {
             val intent = Intent(this, BusInfoActivity::class.java)
                 .putExtras(bundleOf("busList" to busList))
@@ -50,7 +60,7 @@ class BusListActivity : AppCompatActivity() {
         }
     }
 
-    // TODO 임시 데이터 제거
+    // TODO? 임시 데이터 제거
     private fun getTempBusList() : MutableList<BusListRvData> {
         val tempData = mutableListOf<BusListRvData>()
 
@@ -65,7 +75,7 @@ class BusListActivity : AppCompatActivity() {
         if (busList.size > 0) {
             binding.txtBusListStart.visibility = View.VISIBLE
         } else {
-            binding.txtBusListStart.visibility = View.INVISIBLE
+            binding.txtBusListStart.visibility = View.GONE
         }
     }
 }
