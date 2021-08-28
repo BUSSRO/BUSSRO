@@ -11,6 +11,7 @@ import android.speech.RecognizerIntent
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import android.util.Log
+import android.view.Gravity
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -36,7 +37,6 @@ class FindStationActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private lateinit var binding: ActivityFindStationBinding
     private lateinit var tts: TextToSpeech  // TTS 객체
     private lateinit var startActivityForResult: ActivityResultLauncher<Intent>
-    private lateinit var destination: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,26 +59,34 @@ class FindStationActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
                     if (!data.isNullOrEmpty()) {
                         // 음성인식 결과 확인
-                        destination = data[0]
+                        val destination = data[0]
                         binding.txtFindStation.text = "$destination 정류장을 검색합니다."
 
-                        tts.speak("$destination 정류장을 검색합니다.", TextToSpeech.QUEUE_FLUSH, null, TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED)
                         tts.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
                             override fun onStart(utteranceId: String?) {
+                                binding.imgFindStation.isClickable = false
                             }
 
                             override fun onDone(utteranceId: String?) {
                                 val intent = Intent(this@FindStationActivity, BusStationActivity::class.java)
                                     .putExtra("station", destination)
                                 startActivity(intent)
+
+                                finish()
                             }
 
                             override fun onError(utteranceId: String?) {
                             }
                         })
+
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            tts.speak("$destination 정류장을 검색합니다.", TextToSpeech.QUEUE_FLUSH, null, TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED)
+                        }, 500)
                     }
                 } else {
-                    Toast.makeText(this@FindStationActivity, "이미지를 눌러 음성인식을 재실행할 수 있습니다.", Toast.LENGTH_SHORT).show()
+                    val toast = Toast.makeText(this@FindStationActivity, "이미지를 눌러 음성인식을 재실행할 수 있습니다.", Toast.LENGTH_SHORT)
+                    toast.setGravity(Gravity.CENTER, 0, 0)
+                    toast.show()
                 }
             }
     }
@@ -101,10 +109,12 @@ class FindStationActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 // TTS 사용 가능
                 tts.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
                     override fun onStart(utteranceId: String?) {
+                        binding.imgFindStation.isClickable = false
                     }
 
                     override fun onDone(utteranceId: String?) {
                         requestSTT()
+                        binding.imgFindStation.isClickable = true
                     }
 
                     override fun onError(utteranceId: String?) {
@@ -119,20 +129,18 @@ class FindStationActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     }
 
     private fun requestSTT() {
-        CoroutineScope(Dispatchers.Main).launch {
-            try {
-                val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-                    putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-                    putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
-                    putExtra(RecognizerIntent.EXTRA_PROMPT, "찾는 정류장을 말해주세요.")  // 예시로 보여지는 텍스트
-                }
-
-                startActivityForResult.launch(intent)
-
-            } catch (e: ActivityNotFoundException) {
-                e.printStackTrace()
-                Toast.makeText(this@FindStationActivity, "STT를 사용할 수 없습니다.", Toast.LENGTH_SHORT).show()
+        try {
+            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+                putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+                putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+                putExtra(RecognizerIntent.EXTRA_PROMPT, "찾는 정류장을 말해주세요.")  // 예시로 보여지는 텍스트
             }
+
+            startActivityForResult.launch(intent)
+
+        } catch (e: ActivityNotFoundException) {
+            e.printStackTrace()
+            Toast.makeText(this@FindStationActivity, "STT를 사용할 수 없습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 

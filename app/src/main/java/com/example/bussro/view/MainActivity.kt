@@ -3,6 +3,7 @@ package com.example.bussro.view
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Gravity
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.example.bussro.R
@@ -41,8 +42,9 @@ class MainActivity : AppCompatActivity() {
 
         // 3. 하차벨 위치
         binding.txtMainThird.setOnClickListener {
-            // TODO
-            Toast.makeText(this@MainActivity, "아직 구현되지 않은 기능입니다.", Toast.LENGTH_SHORT).show()
+            val toast = Toast.makeText(this@MainActivity, "아직 구현되지 않은 기능입니다.", Toast.LENGTH_SHORT)
+            toast.setGravity(Gravity.CENTER, 0, 0)
+            toast.show()
         }
     }
 }
