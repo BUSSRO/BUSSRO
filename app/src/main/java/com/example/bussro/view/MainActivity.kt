@@ -43,7 +43,6 @@ class MainActivity : AppCompatActivity() {
         // 3. 하차벨 위치
         binding.txtMainThird.setOnClickListener {
             val toast = Toast.makeText(this@MainActivity, "아직 구현되지 않은 기능입니다.", Toast.LENGTH_SHORT)
-            toast.setGravity(Gravity.CENTER, 0, 0)
             toast.show()
         }
     }

@@ -85,7 +85,7 @@ class FindStationActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                     }
                 } else {
                     val toast = Toast.makeText(this@FindStationActivity, "이미지를 눌러 음성인식을 재실행할 수 있습니다.", Toast.LENGTH_SHORT)
-                    toast.setGravity(Gravity.CENTER, 0, 0)
+                    toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0)
                     toast.show()
                 }
             }
@@ -118,6 +118,11 @@ class FindStationActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                     }
 
                     override fun onError(utteranceId: String?) {
+                        binding.imgFindStation.isClickable = true
+
+                        val toast = Toast.makeText(this@FindStationActivity, "이미지를 눌러 음성인식을 재실행할 수 있습니다.", Toast.LENGTH_SHORT)
+//                        toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0)
+                        toast.show()
                     }
                 })
 
@@ -152,5 +157,13 @@ class FindStationActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     override fun onDestroy() {
         tts.shutdown()
         super.onDestroy()
+    }
+
+    override fun onBackPressed() {
+        if (tts.isSpeaking) {
+            tts.stop()
+        }
+
+        super.onBackPressed()
     }
 }
