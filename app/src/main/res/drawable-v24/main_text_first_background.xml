@@ -3,8 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- 바탕 -->
-    <item
-        android:height="@dimen/main_background_height">
+    <item>
         <shape android:shape="rectangle">
 
             <solid android:color="#FFEDDA" />
@@ -19,7 +18,6 @@
     <!-- 포인트 컬러 -->
     <item
         android:width="@dimen/main_point_color_width"
-        android:height="@dimen/main_background_height"
         android:gravity="left">
 
         <shape android:shape="rectangle">

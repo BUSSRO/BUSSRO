@@ -74,6 +74,7 @@ class BusListActivity : AppCompatActivity() {
     fun setVisible() {
         if (busList.size > 0) {
             binding.txtBusListStart.visibility = View.VISIBLE
+
         } else {
             binding.txtBusListStart.visibility = View.GONE
         }
