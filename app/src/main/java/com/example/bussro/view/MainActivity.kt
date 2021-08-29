@@ -45,5 +45,7 @@ class MainActivity : AppCompatActivity() {
             val toast = Toast.makeText(this@MainActivity, "아직 구현되지 않은 기능입니다.", Toast.LENGTH_SHORT)
             toast.show()
         }
+        
+        // test push for jira smart commit
     }
 }
