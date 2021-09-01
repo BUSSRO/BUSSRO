@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
                 ) {
                     super.onInitializeAccessibilityNodeInfo(host, info)
                     info?.removeAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_CLICK)
-                    host?.isClickable = false
+                    info?.isClickable = false
                 }
             }
         }

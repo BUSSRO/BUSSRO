@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import com.example.bussro.view.BusListActivity
 import com.example.bussro.view.FindStationActivity
+import com.example.bussro.view.settings.SettingsActivity
 
 /**
  * [MainViewModel]
@@ -23,7 +24,7 @@ class MainViewModel : ViewModel() {
 
         when (case) {
             0 -> {
-                toast = Toast.makeText(v.context, "[설정]\n아직 구현되지 않은 기능입니다.", Toast.LENGTH_SHORT)
+                intent = Intent(v.context, SettingsActivity::class.java)
             }
             1 -> {
                 intent = Intent(v.context, FindStationActivity::class.java)

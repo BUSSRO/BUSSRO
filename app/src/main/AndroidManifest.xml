@@ -12,15 +12,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BUSSRO">
-        <activity android:name=".view.BusStationActivity"
-            android:label=""/>
-        <activity android:name=".view.BusInfoActivity"
-            android:label=""/>
-        <activity android:name=".view.FindStationActivity"
-            android:label=""/>
-        <activity android:name=".view.BusListActivity"
-            android:label=""/>
-        <activity android:name=".view.main.MainActivity"
+        <activity
+            android:name=".view.settings.SettingsActivity"
+            android:label="@string/settings_activity_label"></activity>
+        <activity
+            android:name=".view.BusStationActivity"
+            android:label="" />
+        <activity
+            android:name=".view.BusInfoActivity"
+            android:label="" />
+        <activity
+            android:name=".view.FindStationActivity"
+            android:label="" />
+        <activity
+            android:name=".view.BusListActivity"
+            android:label="" />
+        <activity
+            android:name=".view.main.MainActivity"
             android:label="@string/main_activity_label">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
