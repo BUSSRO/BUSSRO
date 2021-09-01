@@ -9,5 +9,5 @@
     <color name="white">#FFFFFFFF</color>
 
     <!-- Custom Color -->
-    <color name="gray_for_summary">#787878</color>
+    <color name="gray">#787878</color>
 </resources>

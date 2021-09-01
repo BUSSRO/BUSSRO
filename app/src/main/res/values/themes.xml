@@ -8,7 +8,7 @@
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/yellow</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorOnSecondary">@color/gray</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/black</item>
         <!-- Customize your theme here. -->
@@ -16,6 +16,9 @@
 
     <style name="PreferenceScreen" parent="Theme.BUSSRO">
         <item name="android:textColor">@color/white</item>
-        <item name="android:textColorSecondary">@color/gray_for_summary</item>
+        <item name="android:textColorSecondary">@color/gray</item>
+        <!-- for SwitchPreference -->
+        <item name="android:track">@drawable/switch_selector</item>
+        <item name="android:thumb">@drawable/switch_thumb</item>
     </style>
 </resources>

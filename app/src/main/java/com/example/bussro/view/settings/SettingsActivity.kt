@@ -1,18 +1,16 @@
 package com.example.bussro.view.settings
 
-import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.example.bussro.R
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.settings_activity)
+        setContentView(R.layout.activity_settings)
 
         if (savedInstanceState == null) {
             supportFragmentManager
@@ -21,7 +19,6 @@ class SettingsActivity : AppCompatActivity() {
                 .commit()
         }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
     }
 
     class SettingsFragment : PreferenceFragmentCompat() {

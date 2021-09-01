@@ -1,4 +1,5 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory app:title="@string/list_header">
 
@@ -13,7 +14,13 @@
         <Preference
             app:key="license"
             app:title="@string/license_title"
-            app:summary="@string/license_summary" />
+            app:summary="@string/license_summary">
+
+            <intent
+                android:targetPackage="com.example.bussro"
+                android:targetClass="com.example.bussro.view.settings.LicenseActivity"/>
+
+        </Preference>
 
     </PreferenceCategory>
 

@@ -12,10 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BUSSRO">
+        <activity android:name=".view.settings.LicenseActivity" />
         <activity
             android:name=".view.settings.SettingsActivity"
             android:label="@string/settings_activity_label"
-            android:theme="@style/PreferenceScreen"/>
+            android:theme="@style/PreferenceScreen" />
         <activity
             android:name=".view.BusStationActivity"
             android:label="" />
