@@ -1,6 +1,5 @@
 package com.example.bussro.view.main
 
-import android.app.Activity
 import android.content.Intent
 import android.view.View
 import android.widget.Toast
@@ -12,17 +11,28 @@ class MainViewModel : ViewModel() {
 
     /* onClick */
     fun onClick(v: View, case: Int) {
-        if (case == 1) {
-            val intent = Intent(v.context, FindStationActivity::class.java)
-            v.context.startActivity(intent)
+        var intent: Intent? = null
+        var toast: Toast? = null
+
+        when (case) {
+            0 -> {
+                toast = Toast.makeText(v.context, "[설정]\n아직 구현되지 않은 기능입니다.", Toast.LENGTH_SHORT)
+            }
+            1 -> {
+                intent = Intent(v.context, FindStationActivity::class.java)
+            }
+            2 -> {
+                intent = Intent(v.context, BusListActivity::class.java)
+            }
+            3 -> {
+                toast = Toast.makeText(v.context, "[히스토리]\n아직 구현되지 않은 기능입니다.", Toast.LENGTH_SHORT)
+            }
         }
-        else if (case == 2) {
-            val intent = Intent(v.context, BusListActivity::class.java)
-            v.context.startActivity(intent)
+
+        intent?.apply {
+            v.context.startActivity(this)
         }
-        else if (case == 3) {
-            val toast = Toast.makeText(v.context, "아직 구현되지 않은 기능입니다.", Toast.LENGTH_SHORT)
-            toast.show()
-        }
+
+        toast?.show()
     }
 }

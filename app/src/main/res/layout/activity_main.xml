@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="activity"
             type="com.example.bussro.view.main.MainActivity" />
@@ -13,51 +14,74 @@
             type="com.example.bussro.view.main.MainViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.main.MainActivity"
-        android:background="@color/black">
+        android:background="@color/black"
+        android:overScrollMode="never"
+        android:fillViewport="true"
+        tools:context=".view.main.MainActivity">
 
-        <!-- 1. 내 주변 정류장 -->
-        <TextView
-            android:id="@+id/txt_main_first"
-            android:text="@string/main_first_txt"
-            style="@style/MainTextViewStyle"
-            android:background="@drawable/main_text_first_background"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/txt_main_second"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintVertical_chainStyle="packed"
-            android:onClick="@{(v) -> model.onClick(v, 1)}"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <!-- 2. 버스 탑승 도우미 -->
-        <TextView
-            android:id="@+id/txt_main_second"
-            style="@style/MainTextViewStyle"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="25dp"
-            android:background="@drawable/main_text_second_background"
-            android:text="@string/main_second_txt"
-            app:layout_constraintBottom_toTopOf="@id/txt_main_third"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txt_main_first"
-            android:onClick="@{(v) -> model.onClick(v, 2)}"/>
+            <!-- 설정 -->
+            <ImageView
+                android:id="@+id/img_main_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_settings_24"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/txt_main_first"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="16dp"
+                android:contentDescription="@string/main_setting_txt"
+                android:onClick="@{(v) -> model.onClick(v, 0)}"/>
 
-        <!-- 3. 하차벨 위치 -->
-        <TextView
-            android:id="@+id/txt_main_third"
-            android:text="@string/main_third_txt"
-            style="@style/MainTextViewStyle"
-            android:background="@drawable/main_text_third_background"
-            app:layout_constraintTop_toBottomOf="@id/txt_main_second"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:onClick="@{(v) -> model.onClick(v, 3)}"/>
+            <!-- 1. 내 주변 정류장 -->
+            <TextView
+                android:id="@+id/txt_main_first"
+                style="@style/MainTextViewStyle"
+                android:background="@drawable/main_text_first_background"
+                android:text="@string/main_first_txt"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/txt_main_second"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintVertical_chainStyle="packed"
+                android:onClick="@{(v) -> model.onClick(v, 1)}"/>
+
+            <!-- 2. 하차벨 위치 -->
+
+            <!-- 3. 히스토리 -->
+            <TextView
+                android:id="@+id/txt_main_second"
+                style="@style/MainTextViewStyle"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="25dp"
+                android:background="@drawable/main_text_second_background"
+                android:onClick="@{(v) -> model.onClick(v, 2)}"
+                android:text="@string/main_second_txt"
+                app:layout_constraintBottom_toTopOf="@id/txt_main_third"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txt_main_first" />
+
+            <TextView
+                android:id="@+id/txt_main_third"
+                style="@style/MainTextViewStyle"
+                android:background="@drawable/main_text_third_background"
+                android:text="@string/main_third_txt"
+                app:layout_constraintTop_toBottomOf="@id/txt_main_second"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:onClick="@{(v) -> model.onClick(v, 3)}"/>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
 </layout>
