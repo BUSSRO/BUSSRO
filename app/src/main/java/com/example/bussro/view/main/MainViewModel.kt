@@ -11,8 +11,6 @@ import com.example.bussro.view.settings.SettingsActivity
 /**
  * [MainViewModel]
  * MainActivity 의 ViewModel
- *
- * @author 윤주연(otu165)
  */
 
 class MainViewModel : ViewModel() {

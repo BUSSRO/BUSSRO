@@ -24,8 +24,6 @@ import java.util.*
  * [BusListActivity]
  * MainActivity 의 "버스 탑승 도우미" 버튼을 클릭했을시 보여짐
  * 사용자가 현재 위치한 버스 정류장을 거치는 버스 리스트를 제공한다.
- *
- * @author 윤주연(otu165)
  */
 
 class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {

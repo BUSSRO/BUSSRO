@@ -8,8 +8,6 @@ import com.example.bussro.R
 /**
  * [BusStationActivity]
  * FindStationActivity 의 STT 기능 완료 후 보여짐
- *
- * @author 윤주연(otu165)
  */
 
 class BusStationActivity : AppCompatActivity() {

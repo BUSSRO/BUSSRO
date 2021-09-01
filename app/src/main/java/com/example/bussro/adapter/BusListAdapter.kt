@@ -15,12 +15,11 @@ import com.example.bussro.view.BusListActivity
 /**
  * [BusListAdapter]
  * BusListActivity 의 RecyclerView 에 연결될 Adapter
+ *
  * @param context
  * @param data 사용자가 위치한 버스 정류장을 지나는 버스들의 정보
  * @param busList 사용자가 안내받기로 선택한 버스
  * @param activity BusListActivity
- *
- * @author 윤주연(otu165)
  */
 
 class BusListAdapter(

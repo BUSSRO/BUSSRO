@@ -13,8 +13,6 @@ import com.example.bussro.databinding.ActivityMainBinding
  * [MainActivity]
  * SplashActivity 후 보여짐
  * 사용자는 원하는 버튼을 선택해서 원하는 기능으로 이동할 수 있다.
- *
- * @author 윤주연(otu165)
  */
 
 class MainActivity : AppCompatActivity() {

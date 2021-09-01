@@ -6,6 +6,12 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.example.bussro.R
 
+/**
+ * [SettingsActivity]
+ * MainActivity 의 설정 아이콘 클릭시 보여짐
+ * ON/OFF 기능이 주로 제공된다.
+ */
+
 class SettingsActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {

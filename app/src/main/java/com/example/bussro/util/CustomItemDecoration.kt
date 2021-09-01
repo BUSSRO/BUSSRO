@@ -7,9 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 /**
  * [CustomItemDecoration]
  * RecyclerView 아이템 간 Custom 설정을 주기 위함
- * @param padding 띄우고 싶은 값
  *
- * @author 윤주연(otu165)
+ * @param padding 띄우고 싶은 값
  */
 
 class CustomItemDecoration(private val padding: Int) : RecyclerView.ItemDecoration() {
