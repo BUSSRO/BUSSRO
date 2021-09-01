@@ -2,12 +2,15 @@ package com.example.bussro.view.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.accessibility.AccessibilityNodeInfo
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import androidx.preference.PreferenceManager
 import com.example.bussro.R
 import com.example.bussro.databinding.ActivityMainBinding
+import com.example.bussro.util.SettingManager
 
 /**
  * [MainActivity]
