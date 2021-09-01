@@ -16,7 +16,7 @@
         <activity android:name=".view.BusInfoActivity" />
         <activity android:name=".view.FindStationActivity" />
         <activity android:name=".view.BusListActivity" />
-        <activity android:name=".view.MainActivity">
+        <activity android:name=".view.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

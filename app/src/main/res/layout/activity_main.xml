@@ -6,13 +6,17 @@
     <data>
         <variable
             name="activity"
-            type="com.example.bussro.view.MainActivity" />
+            type="com.example.bussro.view.main.MainActivity" />
+
+        <variable
+            name="model"
+            type="com.example.bussro.view.main.MainViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.MainActivity"
+        tools:context=".view.main.MainActivity"
         android:background="@color/black">
 
         <!-- 1. 내 주변 정류장 -->
@@ -25,7 +29,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@id/txt_main_second"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintVertical_chainStyle="packed" />
+            app:layout_constraintVertical_chainStyle="packed"
+            android:onClick="@{(v) -> model.onClick(v, 1)}"/>
 
         <!-- 2. 버스 탑승 도우미 -->
         <TextView
@@ -38,7 +43,8 @@
             app:layout_constraintBottom_toTopOf="@id/txt_main_third"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txt_main_first" />
+            app:layout_constraintTop_toBottomOf="@id/txt_main_first"
+            android:onClick="@{(v) -> model.onClick(v, 2)}"/>
 
         <!-- 3. 하차벨 위치 -->
         <TextView
@@ -49,7 +55,8 @@
             app:layout_constraintTop_toBottomOf="@id/txt_main_second"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:onClick="@{(v) -> model.onClick(v, 3)}"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
