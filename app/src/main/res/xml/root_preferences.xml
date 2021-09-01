@@ -12,7 +12,8 @@
 
         <Preference
             app:key="license"
-            app:title="@string/license_title"/>
+            app:title="@string/license_title"
+            app:summary="@string/license_summary" />
 
     </PreferenceCategory>
 
