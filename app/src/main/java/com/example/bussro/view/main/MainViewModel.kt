@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import com.example.bussro.view.BusListActivity
 import com.example.bussro.view.FindStationActivity
+import com.example.bussro.view.busstop.NearbyBusStopActivity
 import com.example.bussro.view.settings.SettingsActivity
 
 /**
@@ -25,7 +26,7 @@ class MainViewModel : ViewModel() {
                 intent = Intent(v.context, SettingsActivity::class.java)
             }
             1 -> {
-                intent = Intent(v.context, FindStationActivity::class.java)
+                intent = Intent(v.context, NearbyBusStopActivity::class.java)
             }
             2 -> {
                 intent = Intent(v.context, BusListActivity::class.java)
