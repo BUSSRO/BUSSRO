@@ -32,6 +32,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_baseline_settings_24"
+                android:focusable="true"
+                android:nextFocusDown="@id/txt_main_first"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/txt_main_first"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -42,9 +44,12 @@
             <!-- 1. 내 주변 정류장 -->
             <TextView
                 android:id="@+id/txt_main_first"
+                android:text="@string/main_first_txt"
                 style="@style/MainTextViewStyle"
                 android:background="@drawable/main_text_first_background"
-                android:text="@string/main_first_txt"
+                android:focusable="true"
+                android:nextFocusUp="@id/img_main_setting"
+                android:nextFocusDown="@id/txt_main_second"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/txt_main_second"
                 app:layout_constraintStart_toStartOf="parent"
@@ -53,26 +58,30 @@
                 android:onClick="@{(v) -> model.onClick(v, 1)}"/>
 
             <!-- 2. 하차벨 위치 -->
-
-            <!-- 3. 히스토리 -->
             <TextView
                 android:id="@+id/txt_main_second"
+                android:text="@string/main_second_txt"
                 style="@style/MainTextViewStyle"
                 android:layout_marginTop="25dp"
                 android:layout_marginBottom="25dp"
                 android:background="@drawable/main_text_second_background"
-                android:onClick="@{(v) -> model.onClick(v, 2)}"
-                android:text="@string/main_second_txt"
+                android:focusable="true"
+                android:nextFocusUp="@id/txt_main_first"
+                android:nextFocusDown="@id/txt_main_third"
                 app:layout_constraintBottom_toTopOf="@id/txt_main_third"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txt_main_first" />
+                app:layout_constraintTop_toBottomOf="@id/txt_main_first"
+                android:onClick="@{(v) -> model.onClick(v, 2)}"/>
 
+            <!-- 3. 히스토리 -->
             <TextView
                 android:id="@+id/txt_main_third"
-                style="@style/MainTextViewStyle"
-                android:background="@drawable/main_text_third_background"
                 android:text="@string/main_third_txt"
+                style="@style/MainTextViewStyle"
+                android:focusable="true"
+                android:nextFocusUp="@id/txt_main_second"
+                android:background="@drawable/main_text_third_background"
                 app:layout_constraintTop_toBottomOf="@id/txt_main_second"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

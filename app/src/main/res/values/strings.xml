@@ -1,14 +1,17 @@
 <resources>
     <string name="app_name">BUSSRO</string>
 
+    <!-- manifests (label for screen reader feature) -->
+    <string name="main_activity_label">홈 화면입니다.</string>
+
     <!-- activity_main -->
     <string name="main_first_txt">내 주변 정류장</string>
     <string name="main_second_txt">하차벨 위치</string>
     <string name="main_third_txt">히스토리</string>
     <string name="main_setting_txt">설정</string>
 
+
     <string name="bus_list_info_txt">선택한 버스 도착 안내</string>
 
-    <!-- activity_bus_list -->
 
 </resources>

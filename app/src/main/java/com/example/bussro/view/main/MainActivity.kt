@@ -1,15 +1,13 @@
 package com.example.bussro.view.main
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
+import android.view.View
+import android.view.accessibility.AccessibilityNodeInfo
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import com.example.bussro.R
 import com.example.bussro.databinding.ActivityMainBinding
-import com.example.bussro.view.BusListActivity
-import com.example.bussro.view.FindStationActivity
 
 /**
  * [MainActivity]
@@ -28,5 +26,27 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this@MainActivity
         binding.model = model
+
+        removeAction()
+    }
+
+    /* disable message "실행하려면 두 번 누르세요" */
+    private fun removeAction() {
+        val views = listOf(
+            binding.imgMainSetting, binding.txtMainFirst, binding.txtMainSecond, binding.txtMainThird
+        )
+
+        for (view in views) {
+            view.accessibilityDelegate = object: View.AccessibilityDelegate() {
+                override fun onInitializeAccessibilityNodeInfo(
+                    host: View?,
+                    info: AccessibilityNodeInfo?
+                ) {
+                    super.onInitializeAccessibilityNodeInfo(host, info)
+                    info?.removeAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_CLICK)
+                    host?.isClickable = false
+                }
+            }
+        }
     }
 }

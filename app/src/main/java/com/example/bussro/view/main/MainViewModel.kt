@@ -7,6 +7,13 @@ import androidx.lifecycle.ViewModel
 import com.example.bussro.view.BusListActivity
 import com.example.bussro.view.FindStationActivity
 
+/**
+ * [MainViewModel]
+ * MainActivity 의 ViewModel
+ *
+ * @author 윤주연(otu165)
+ */
+
 class MainViewModel : ViewModel() {
 
     /* onClick */
