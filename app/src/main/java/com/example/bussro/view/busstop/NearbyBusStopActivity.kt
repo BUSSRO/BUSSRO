@@ -6,9 +6,12 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import com.example.bussro.R
 import com.example.bussro.databinding.ActivityNearbyBusStopBinding
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -24,19 +27,10 @@ import kotlinx.coroutines.launch
  */
 
 class NearbyBusStopActivity : AppCompatActivity() {
-//    private val viewModel by viewModels<NearbyBusStopViewModel>()
+    private lateinit var viewModel : NearbyBusStopViewModel
     private lateinit var binding: ActivityNearbyBusStopBinding
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private val requestLocation =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
-            it[Manifest.permission.ACCESS_FINE_LOCATION]?.let { granted ->
-                if (granted) {
-                    Log.d("test", "위치 권한 설정 완료")
-                }
-                // TODO: 위치 정보 요청하기
-                requestNearbyBusStop()
-            }
-        }
+    private lateinit var requestLocation: ActivityResultLauncher<Array<String>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,11 +38,35 @@ class NearbyBusStopActivity : AppCompatActivity() {
             this@NearbyBusStopActivity,
             R.layout.activity_nearby_bus_stop
         )
+        initVar()
         binding.lifecycleOwner = this
-//        binding.viewModel = viewModel
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(applicationContext)
+        binding.viewModel = viewModel
+        requestPermission()
 
-        // request permission for location
+        // 화면 전환 대응
+        if (savedInstanceState == null) {
+            viewModel.requestNearbyBusStop()
+        }
+    }
+
+    /* 변수 초기화 */
+    private fun initVar() {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(applicationContext)
+        requestLocation =
+            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+                it[Manifest.permission.ACCESS_FINE_LOCATION]?.let { granted ->
+                    if (granted) {
+                        Log.d("test", "위치 권한 설정 완료")
+                    }
+                    viewModel.requestNearbyBusStop()
+                }
+            }
+        viewModel = ViewModelProvider(this, ViewModelFactory(fusedLocationClient))
+            .get(NearbyBusStopViewModel::class.java)
+    }
+
+    /* Location 권한 요청 */
+    private fun requestPermission() {
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -58,35 +76,14 @@ class NearbyBusStopActivity : AppCompatActivity() {
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             // FINE + COARSE 둘 다 권한이 없는경우 권한 요청
-            requestLocation.launch(arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ))
+            requestLocation.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
 
             return
         }
-
-        if (savedInstanceState == null) {
-            requestNearbyBusStop()
-        }
-    }
-
-    /* 사용자 주변 버스 정류장 요청 메서드 */
-    @SuppressLint("MissingPermission")
-    fun requestNearbyBusStop() {
-
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location ->
-                if (location != null) {
-                    Log.d("test", "위도 : ${location.latitude}, 경도 : ${location.longitude}")
-
-                    CoroutineScope(Dispatchers.IO).launch {
-                        // TODO: 서버 데이터 받아오기
-                    }
-                }
-            }
-            .addOnFailureListener {  // 위치 정보 받아올 수 없음
-                Log.d("test", "requestNearbyBusStop: 위치 정보 받아올 수 없음")
-            }
     }
 }
