@@ -42,5 +42,16 @@
             app:layout_constraintBottom_toBottomOf="parent"
             tools:listitem="@layout/rv_bus_list_item"/>
 
+        <!-- 로딩바 -->
+        <ProgressBar
+            android:id="@+id/progress_nearby_bus_stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -7,15 +7,21 @@ import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bussro.R
+import com.example.bussro.adapter.BusListAdapter
+import com.example.bussro.adapter.NearbyBusStopAdapter
 import com.example.bussro.api.NearbyBusStopAPI
 import com.example.bussro.databinding.ActivityNearbyBusStopBinding
+import com.example.bussro.util.CustomItemDecoration
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.CoroutineScope
@@ -34,6 +40,7 @@ class NearbyBusStopActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNearbyBusStopBinding
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var requestLocation: ActivityResultLauncher<Array<String>>
+    private lateinit var rvAdapter: NearbyBusStopAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +53,17 @@ class NearbyBusStopActivity : AppCompatActivity() {
         binding.viewModel = viewModel
         requestPermission()
 
-//        DownLoad().execute()
+        // LiveData 관찰
+        viewModel.apply {
+            // loading 데이터 변경 감지
+            loadingLiveData.observe(this@NearbyBusStopActivity, Observer { flag ->
+                binding.progressNearbyBusStop.visibility = if (flag) View.VISIBLE else View.GONE
+            })
+            // busStop 데이터 변경 감지
+            busStopsLiveData.observe(this@NearbyBusStopActivity, Observer { data ->
+                rvAdapter.updateData(data)
+            })
+        }
 
         // 화면 전환 대응
         if (savedInstanceState == null) {
@@ -68,6 +85,14 @@ class NearbyBusStopActivity : AppCompatActivity() {
             }
         viewModel = ViewModelProvider(this, ViewModelFactory(fusedLocationClient))
             .get(NearbyBusStopViewModel::class.java)
+
+        // RecyclerView 세팅
+        rvAdapter = NearbyBusStopAdapter(this@NearbyBusStopActivity)
+        binding.rvNearbyBusStop.apply {
+            adapter = rvAdapter
+            layoutManager = LinearLayoutManager(this@NearbyBusStopActivity)
+            addItemDecoration(CustomItemDecoration(60))
+        }
     }
 
     /* Location 권한 요청 */
@@ -91,12 +116,4 @@ class NearbyBusStopActivity : AppCompatActivity() {
             return
         }
     }
-
-//    private inner class DownLoad : AsyncTask<String, Void, String>() {
-//        override fun doInBackground(vararg params: String?): String {
-//            val urlString = "http://ws.bus.go.kr/api/rest/stationinfo/getStationByPos?tmX=127.0115203&tmY=37.5915668&radius=1000&serviceKey=rrJun7pjU%2FM7Z96bkp784LkI5gvQlPmZfnG%2Bva5Yw0L9ur2e%2FAgvhggKnMotouPPMDC7LGm33dV%2BNCJsvjctjA%3D%3D"
-//            Log.d("test", "doInBackground: ${NearbyBusStopAPI().loadXmlFromNetwork(urlString)}")
-//            return ""
-//        }
-//    }
 }
