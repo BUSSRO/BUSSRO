@@ -6,8 +6,11 @@ import android.content.pm.PackageManager
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
+import android.speech.tts.UtteranceProgressListener
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -28,6 +31,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import java.util.*
 
 /**
  * [NearbyBusStopActivity]
@@ -35,12 +39,13 @@ import kotlinx.coroutines.launch
  * 사용자의 위치를 기준으로 1km 이내의 버스 정류장을 가까운 순으로 정렬해 제공한다.
  */
 
-class NearbyBusStopActivity : AppCompatActivity() {
+class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private lateinit var viewModel : NearbyBusStopViewModel
     private lateinit var binding: ActivityNearbyBusStopBinding
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var requestLocation: ActivityResultLauncher<Array<String>>
     private lateinit var rvAdapter: NearbyBusStopAdapter
+    private lateinit var tts: TextToSpeech
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +67,7 @@ class NearbyBusStopActivity : AppCompatActivity() {
             // busStop 데이터 변경 감지
             busStopsLiveData.observe(this@NearbyBusStopActivity, Observer { data ->
                 rvAdapter.updateData(data)
+                tts.speak("불러오기 완료", TextToSpeech.QUEUE_FLUSH, null, TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED)
             })
         }
 
@@ -93,6 +99,8 @@ class NearbyBusStopActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@NearbyBusStopActivity)
             addItemDecoration(CustomItemDecoration(60))
         }
+        // TTS 객체
+        tts = TextToSpeech(this, this)
     }
 
     /* Location 권한 요청 */
@@ -115,5 +123,32 @@ class NearbyBusStopActivity : AppCompatActivity() {
 
             return
         }
+    }
+
+    override fun onInit(status: Int) {
+        if (status == TextToSpeech.SUCCESS) {
+            // 언어 설정
+            val locale = Locale("ko", "KR")
+            val result = tts.setLanguage(locale)
+
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Toast.makeText(this, "지원하지 않는 언어입니다.", Toast.LENGTH_SHORT).show()
+            } else {
+                // TTS 사용 가능
+//                tts.speak("불러오기 완료", TextToSpeech.QUEUE_FLUSH, null, TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED)
+            }
+        } else {
+            Toast.makeText(this, "TTS를 사용할 수 없습니다.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onStop() {
+        tts.stop()
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        tts.shutdown()
+        super.onDestroy()
     }
 }
