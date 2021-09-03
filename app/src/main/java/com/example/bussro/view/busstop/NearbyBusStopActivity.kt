@@ -3,6 +3,7 @@ package com.example.bussro.view.busstop
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -13,11 +14,13 @@ import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.bussro.R
+import com.example.bussro.api.NearbyBusStopAPI
 import com.example.bussro.databinding.ActivityNearbyBusStopBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 /**
@@ -42,6 +45,8 @@ class NearbyBusStopActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         requestPermission()
+
+//        DownLoad().execute()
 
         // 화면 전환 대응
         if (savedInstanceState == null) {
@@ -86,4 +91,12 @@ class NearbyBusStopActivity : AppCompatActivity() {
             return
         }
     }
+
+//    private inner class DownLoad : AsyncTask<String, Void, String>() {
+//        override fun doInBackground(vararg params: String?): String {
+//            val urlString = "http://ws.bus.go.kr/api/rest/stationinfo/getStationByPos?tmX=127.0115203&tmY=37.5915668&radius=1000&serviceKey=rrJun7pjU%2FM7Z96bkp784LkI5gvQlPmZfnG%2Bva5Yw0L9ur2e%2FAgvhggKnMotouPPMDC7LGm33dV%2BNCJsvjctjA%3D%3D"
+//            Log.d("test", "doInBackground: ${NearbyBusStopAPI().loadXmlFromNetwork(urlString)}")
+//            return ""
+//        }
+//    }
 }
