@@ -9,14 +9,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bussro.R
-import com.example.bussro.data.NearbyBusStops
-import com.example.bussro.data.TestData
+import com.example.bussro.data.NearbyBusStopData
 import com.example.bussro.view.BusListActivity
 
 class NearbyBusStopAdapter(
     private val context: Context
 ) :RecyclerView.Adapter<NearbyBusStopAdapter.NearbyBusStopViewHolder>() {
-    private var data = listOf<NearbyBusStops>()
+    private var data = listOf<NearbyBusStopData>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NearbyBusStopViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.rv_bus_list_item, parent, false)
@@ -31,7 +30,7 @@ class NearbyBusStopAdapter(
     override fun getItemCount(): Int = data.size
 
     /* 데이터 갱신 */
-    fun updateData(apiData: List<NearbyBusStops>) {
+    fun updateData(apiData: List<NearbyBusStopData>) {
         data = apiData
         notifyDataSetChanged()
     }
@@ -42,7 +41,7 @@ class NearbyBusStopAdapter(
         private var dist = view.findViewById<TextView>(R.id.txt_bus_list_item_info)
 
         @SuppressLint("SetTextI18n")
-        fun bind(data: NearbyBusStops) {
+        fun bind(data: NearbyBusStopData) {
             stationNm.text = data.stationNm
             dist.text = data.dist.toString() + "km"
 

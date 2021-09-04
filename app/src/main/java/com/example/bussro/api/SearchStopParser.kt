@@ -1,82 +1,22 @@
 package com.example.bussro.api
 
-import android.util.Xml
-import com.example.bussro.data.TestData
+import com.example.bussro.data.SearchStopData
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import java.io.IOException
-import java.io.InputStream
 import java.lang.IllegalStateException
 
 /**
- * 서울특별시_정류소정보조회 서비스 中 getStationByNameList(정류소 명칭 검색) 응답 파서
+ * [SearchStopParser]
+ * 서울특별시_정류소정보조회서비스 中 정류소 명칭 검색 response message parser
  */
 
-class TestParser {
+class SearchStopParser {
     private val ns: String? = null
-
-    /* API 의 Response Message 를 파싱한 결과를 리턴함 */
-    @Throws(XmlPullParserException::class, IOException::class)
-    fun parse(inputStream: InputStream): List<TestData> {
-        inputStream.use {
-            val parser: XmlPullParser = Xml.newPullParser().apply {
-                setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false)
-                setInput(it, null)
-                nextTag()
-            }
-            return parseServiceResult(parser)
-        }
-    }
-
-    /* API 의 Response Message 중 ServiceResult 태그를 파싱 */
-    @Throws(XmlPullParserException::class, IOException::class)
-    private fun parseServiceResult(parser: XmlPullParser) : List<TestData> {
-        val testData = mutableListOf<TestData>()
-        parser.require(XmlPullParser.START_TAG, ns, "ServiceResult")
-
-        while (parser.next() != XmlPullParser.END_TAG) {
-            if (parser.eventType != XmlPullParser.START_TAG) {
-                continue
-            }
-
-            if (parser.name == "msgBody") {
-                parseMsgBody(parser).let { data ->
-                    testData.addAll(data)
-                }
-            }
-            else {  // 원하지 않는 태그(comMsgHeader, msgHeader) 스킵
-                skip(parser)
-            }
-        }
-        return testData
-    }
-
-    /* API 의 Response Message 중 msgBody 태그를 파싱 */
-    @Throws(XmlPullParserException::class, IOException::class)
-    private fun parseMsgBody(parser: XmlPullParser) : List<TestData> {
-        val result = mutableListOf<TestData>()
-        parser.require(XmlPullParser.START_TAG, ns, "msgBody")
-
-        while (parser.next() != XmlPullParser.END_TAG) {
-            if (parser.eventType != XmlPullParser.START_TAG) {
-                continue
-            }
-
-            if (parser.name == "itemList") {
-                parseItemList(parser).let { data ->
-                    result.add(data)
-                }
-            }
-            else {  // 원하지 않는 태그 스킵
-                skip(parser)
-            }
-        }
-        return result
-    }
 
     /* API 의 Response Message 중 itemList 태그를 파싱 */
     @Throws(XmlPullParserException::class, IOException::class)
-    private fun parseItemList(parser: XmlPullParser) : TestData {
+    fun parseItemList(parser: XmlPullParser) : SearchStopData {
         var stNm: String? = null
         var tmX: Double? = null
         var tmY: Double? = null
@@ -96,7 +36,7 @@ class TestParser {
             }
         }
 
-        return TestData(stNm, tmX, tmY)
+        return SearchStopData(stNm, tmX, tmY)
     }
 
     /* stNm 태그의 값 리턴 */

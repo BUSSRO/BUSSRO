@@ -7,10 +7,9 @@ import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.*
 import com.example.bussro.BuildConfig
-import com.example.bussro.api.NearbyBusStopAPI
-import com.example.bussro.api.TestAPI
-import com.example.bussro.data.NearbyBusStops
-import com.example.bussro.data.TestData
+import com.example.bussro.api.API
+import com.example.bussro.data.NearbyBusStopData
+import com.example.bussro.data.SearchStopData
 import com.example.bussro.util.LocationToDistance
 import com.example.bussro.view.findstation.FindStationActivity
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -26,7 +25,7 @@ class NearbyBusStopViewModel(
     private val fusedLocationClient: FusedLocationProviderClient,
     private val startForResult: ActivityResultLauncher<Intent>
 ) : ViewModel() {
-    var busStopsLiveData = MutableLiveData<List<NearbyBusStops>>()
+    var busStopsLiveData = MutableLiveData<List<NearbyBusStopData>>()
     var loadingLiveData = MutableLiveData<Boolean>()  // 로딩
 
     /* handle click event */
@@ -69,12 +68,12 @@ class NearbyBusStopViewModel(
     }
 
     /* 공공데이터 응답 가져오기, parameter : 인증키(serviceKey), 경도(tmX), 위도(tmY), 거리(radius) */
-    private suspend fun getApiData(tmX: String, tmY: String, radius: String): List<NearbyBusStops> {
+    private suspend fun getApiData(tmX: String, tmY: String, radius: String): List<NearbyBusStopData> {
         val urlString =
             BASE_URL + "serviceKey=" + SERVICE_KEY + "&tmX=" + tmX + "&tmY=" + tmY + "&radius=" + radius
 
         return withContext(Dispatchers.IO) {
-            NearbyBusStopAPI().loadXmlFromNetwork(urlString)
+            API("NearbyBusStops").loadXmlFromNetwork(urlString)
         }
     }
 
@@ -93,11 +92,11 @@ class NearbyBusStopViewModel(
 
                         // TestData 의 위도, 경도를 현재 사용자의 위도, 경도와 비교해 거리 얻어낸 후
                         // List<NearbyBusStops> 타입으로 변경하기
-                        val theData = mutableListOf<NearbyBusStops>()
+                        val theData = mutableListOf<NearbyBusStopData>()
 
                         for (d in data) {
                             theData.add(
-                                NearbyBusStops(
+                                NearbyBusStopData(
                                     d.stNm,
                                     round(LocationToDistance().distance(  // 반올림
                                         location.longitude, location.latitude,
@@ -121,11 +120,11 @@ class NearbyBusStopViewModel(
     }
 
     /* 공공데이터 응답 가져오기, parameter : 인증키(serviceKey), 검색어(stSrch) */
-    private suspend fun getTestData(stSrch: String): List<TestData> {
+    private suspend fun getTestData(stSrch: String): List<SearchStopData> {
         val urlString = TEST_BASE_URL + "serviceKey=" + SERVICE_KEY + "&stSrch=" + stSrch
 
         return withContext(Dispatchers.IO) {
-            TestAPI().loadXmlFromNetwork(urlString)
+            API("Test").loadXmlFromNetwork(urlString)
         }
     }
 
