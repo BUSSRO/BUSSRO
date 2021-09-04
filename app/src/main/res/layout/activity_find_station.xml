@@ -6,13 +6,13 @@
     <data>
         <variable
             name="activity"
-            type="com.example.bussro.view.FindStationActivity" />
+            type="com.example.bussro.view.findstation.FindStationActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.FindStationActivity"
+        tools:context=".view.findstation.FindStationActivity"
         android:background="@color/black">
 
         <!-- TTS 상징 이미지 -->

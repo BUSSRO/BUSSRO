@@ -1,4 +1,4 @@
-package com.example.bussro.view
+package com.example.bussro.view.findstation
 
 import android.app.Activity
 import android.content.ActivityNotFoundException
@@ -10,7 +10,6 @@ import android.os.Looper
 import android.speech.RecognizerIntent
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
-import android.util.Log
 import android.view.Gravity
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
@@ -19,15 +18,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import com.example.bussro.R
 import com.example.bussro.databinding.ActivityFindStationBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import com.example.bussro.view.BusListActivity
 import java.util.*
 
 /**
  * [FindStationActivity]
- * MainActivity 의 "내 주변 정류장" 버튼을 클릭했을시 보여짐
+ * NearbyBusStopActivity 의 "다른 정류장 찾기" 버튼 클릭시 보여짐
  * TTS & STT 를 이용해서 사용자가 찾는 정류장을 입력받는다.
  */
 
@@ -57,7 +53,7 @@ class FindStationActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
                     if (!data.isNullOrEmpty()) {
                         // 음성인식 결과 확인
-                        val destination = data[0]
+                        val destination = data[0].toString()
                         binding.txtFindStation.text = "$destination 정류장을 검색합니다."
 
                         tts.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
@@ -66,10 +62,13 @@ class FindStationActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                             }
 
                             override fun onDone(utteranceId: String?) {
-                                val intent = Intent(this@FindStationActivity, BusStationActivity::class.java)
-                                    .putExtra("station", destination)
-                                startActivity(intent)
+                                // 버스 도착정보 안내 액티비티로 이동
+//                                val intent = Intent(this@FindStationActivity, BusListActivity::class.java)
+//                                    .putExtra("station", destination)
+//                                startActivity(intent)
 
+                                // CHECK: NearbyBusStopActivity 로 데이터 전달
+                                setResult(Activity.RESULT_OK, Intent().putExtra("stationNm", destination))
                                 finish()
                             }
 

@@ -76,6 +76,7 @@
 
         <!-- Information when user come in for the first time -->
         <!-- dimmed -->
+        <!-- ERROR: TTS 중첩 오류 발생으로 visibility = gone 처리 -->
         <View
             android:id="@+id/view_bus_list_dimmed"
             android:layout_width="0dp"
@@ -84,6 +85,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone"
             android:background="#D9333333"/>
 
         <!-- TTS 상징 이미지 -->
@@ -95,7 +97,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone"/>
 
         <!-- TTS 안내 텍스트 -->
         <TextView
@@ -111,7 +114,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="38dp" />
+            android:layout_marginBottom="38dp"
+            android:visibility="gone"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,36 +1,28 @@
 package com.example.bussro.view.busstop
 
 import android.Manifest
-import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
-import android.speech.tts.UtteranceProgressListener
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bussro.R
-import com.example.bussro.adapter.BusListAdapter
 import com.example.bussro.adapter.NearbyBusStopAdapter
-import com.example.bussro.api.NearbyBusStopAPI
 import com.example.bussro.databinding.ActivityNearbyBusStopBinding
 import com.example.bussro.util.CustomItemDecoration
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import java.util.*
 
 /**
@@ -40,12 +32,13 @@ import java.util.*
  */
 
 class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
-    private lateinit var viewModel : NearbyBusStopViewModel
+    private lateinit var viewModel: NearbyBusStopViewModel
     private lateinit var binding: ActivityNearbyBusStopBinding
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var requestLocation: ActivityResultLauncher<Array<String>>
     private lateinit var rvAdapter: NearbyBusStopAdapter
     private lateinit var tts: TextToSpeech
+    private lateinit var startActivityForResult: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +60,12 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             // busStop 데이터 변경 감지
             busStopsLiveData.observe(this@NearbyBusStopActivity, Observer { data ->
                 rvAdapter.updateData(data)
-                tts.speak("불러오기 완료", TextToSpeech.QUEUE_FLUSH, null, TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED)
+                tts.speak(
+                    "불러오기 완료",
+                    TextToSpeech.QUEUE_FLUSH,
+                    null,
+                    TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
+                )
             })
         }
 
@@ -79,6 +77,7 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     /* 변수 초기화 */
     private fun initVar() {
+        // Location 객체
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(applicationContext)
         requestLocation =
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
@@ -89,8 +88,23 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                     viewModel.requestNearbyBusStop()
                 }
             }
-        viewModel = ViewModelProvider(this, ViewModelFactory(fusedLocationClient))
-            .get(NearbyBusStopViewModel::class.java)
+
+        // startResultForActivity 객체
+        startActivityForResult =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val stationNm = result.data?.getStringExtra("stationNm")
+
+                    if (!stationNm.isNullOrEmpty()) {
+                        viewModel.requestSearchedBusStop(stationNm)
+                    }
+                }
+            }
+
+        // ViewModel 객체
+        viewModel =
+            ViewModelProvider(this, ViewModelFactory(fusedLocationClient, startActivityForResult))
+                .get(NearbyBusStopViewModel::class.java)
 
         // RecyclerView 세팅
         rvAdapter = NearbyBusStopAdapter(this@NearbyBusStopActivity)
@@ -99,6 +113,7 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             layoutManager = LinearLayoutManager(this@NearbyBusStopActivity)
             addItemDecoration(CustomItemDecoration(60))
         }
+
         // TTS 객체
         tts = TextToSpeech(this, this)
     }

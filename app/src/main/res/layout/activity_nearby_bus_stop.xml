@@ -19,24 +19,40 @@
 
         <TextView
             android:id="@+id/txt_nearby_bus_stop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:text="주변 정류장"
             android:textColor="@color/white"
             style="@style/TextAppearance.MaterialComponents.Headline3"
             android:gravity="center"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/rv_nearby_bus_stop"
+            app:layout_constraintBottom_toTopOf="@id/txt_nearby_bus_stop_find"
             android:layout_margin="16dp"/>
+
+        <TextView
+            android:id="@+id/txt_nearby_bus_stop_find"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="다른 정류장 찾기"
+            android:textColor="@color/black"
+            style="@style/TextAppearance.MaterialComponents.Headline3"
+            android:gravity="center"
+            android:background="@color/yellow"
+            app:layout_constraintTop_toBottomOf="@id/txt_nearby_bus_stop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/rv_nearby_bus_stop"
+            android:onClick="@{(v) -> viewModel.onclick(v)}"
+            android:layout_margin="16dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_nearby_bus_stop"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:overScrollMode="never"
-            app:layout_constraintTop_toBottomOf="@id/txt_nearby_bus_stop"
+            app:layout_constraintTop_toBottomOf="@id/txt_nearby_bus_stop_find"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

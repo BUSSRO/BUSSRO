@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
+import android.util.Log
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
@@ -35,6 +37,11 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_bus_list)
 
+        if (intent.hasExtra("station")) {
+            Log.d("test","사용자가 선택한 버스 정류장 : ${intent.getStringExtra("station")}")
+            binding.txtBusListLocation.text = intent.getStringExtra("station")
+        }
+
         initBusListRv()
         initSetOnClickListener()
         initTTS()
@@ -54,23 +61,24 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 Toast.makeText(this@BusListActivity, "지원하지 않는 언어입니다.", Toast.LENGTH_SHORT).show()
             } else {
                 // TTS 사용 가능
-                tts.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
-                    override fun onStart(utteranceId: String?) {
-                    }
-
-                    override fun onDone(utteranceId: String?) {
-                        CoroutineScope(Dispatchers.Main).launch {
-                            whenTTSdone()
-                        }
-                    }
-
-                    override fun onError(utteranceId: String?) {
-                        CoroutineScope(Dispatchers.Main).launch {
-                            whenTTSdone()
-                        }
-                    }
-                })
-                tts.speak("원하는 버스 정보를 선택하면 도착 정보를 드릴게요.", TextToSpeech.QUEUE_FLUSH, null, TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED)
+                // ERROR: 21-09-04 TTS 중첩 오류 발생으로 주석처리
+//                tts.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
+//                    override fun onStart(utteranceId: String?) {
+//                    }
+//
+//                    override fun onDone(utteranceId: String?) {
+//                        CoroutineScope(Dispatchers.Main).launch {
+//                            whenTTSdone()
+//                        }
+//                    }
+//
+//                    override fun onError(utteranceId: String?) {
+//                        CoroutineScope(Dispatchers.Main).launch {
+//                            whenTTSdone()
+//                        }
+//                    }
+//                })
+//                tts.speak("원하는 버스 정보를 선택하면 도착 정보를 드릴게요.", TextToSpeech.QUEUE_FLUSH, null, TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED)
             }
         } else {
             Toast.makeText(this@BusListActivity, "TTS를 사용할 수 없습니다.", Toast.LENGTH_SHORT).show()

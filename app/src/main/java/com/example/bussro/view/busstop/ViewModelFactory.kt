@@ -1,5 +1,7 @@
 package com.example.bussro.view.busstop
 
+import android.content.Intent
+import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -10,12 +12,13 @@ import com.google.android.gms.location.FusedLocationProviderClient
  */
 
 class ViewModelFactory(
-    private val fusedLocationClient: FusedLocationProviderClient
+    private val fusedLocationClient: FusedLocationProviderClient,
+    private val startForResult: ActivityResultLauncher<Intent>
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return if (modelClass.isAssignableFrom(NearbyBusStopViewModel::class.java)) {
-            NearbyBusStopViewModel(fusedLocationClient) as T
+            NearbyBusStopViewModel(fusedLocationClient, startForResult) as T
         } else {
             throw IllegalArgumentException()
         }

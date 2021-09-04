@@ -29,6 +29,10 @@ class MainActivity : AppCompatActivity() {
         binding.model = model
 
         removeAction()
+
+        if (savedInstanceState == null) {
+            removeAction()
+        }
     }
 
     /* disable message "실행하려면 두 번 누르세요" */

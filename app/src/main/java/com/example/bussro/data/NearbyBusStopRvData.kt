@@ -26,5 +26,5 @@ data class NearbyBusStopHeader (
 
 data class NearbyBusStops (
     var stationNm: String?,
-    var dist: Int?
+    var dist: Double?
 )

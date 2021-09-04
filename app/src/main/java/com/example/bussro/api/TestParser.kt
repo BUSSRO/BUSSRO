@@ -1,7 +1,7 @@
 package com.example.bussro.api
 
 import android.util.Xml
-import com.example.bussro.data.NearbyBusStops
+import com.example.bussro.data.TestData
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import java.io.IOException
@@ -9,16 +9,15 @@ import java.io.InputStream
 import java.lang.IllegalStateException
 
 /**
- * [NearbyBusStopAPI]
- * 공공데이터 OpenAPI (서울특별시_정류소정보조회 서비스) XML parser
+ * 서울특별시_정류소정보조회 서비스 中 getStationByNameList(정류소 명칭 검색) 응답 파서
  */
 
-class NearbyBusStopParser {
+class TestParser {
     private val ns: String? = null
 
     /* API 의 Response Message 를 파싱한 결과를 리턴함 */
     @Throws(XmlPullParserException::class, IOException::class)
-    fun parse(inputStream: InputStream): List<NearbyBusStops> {
+    fun parse(inputStream: InputStream): List<TestData> {
         inputStream.use {
             val parser: XmlPullParser = Xml.newPullParser().apply {
                 setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false)
@@ -31,8 +30,8 @@ class NearbyBusStopParser {
 
     /* API 의 Response Message 중 ServiceResult 태그를 파싱 */
     @Throws(XmlPullParserException::class, IOException::class)
-    private fun parseServiceResult(parser: XmlPullParser) : List<NearbyBusStops> {
-        val nearbyBusStops = mutableListOf<NearbyBusStops>()
+    private fun parseServiceResult(parser: XmlPullParser) : List<TestData> {
+        val testData = mutableListOf<TestData>()
         parser.require(XmlPullParser.START_TAG, ns, "ServiceResult")
 
         while (parser.next() != XmlPullParser.END_TAG) {
@@ -42,20 +41,20 @@ class NearbyBusStopParser {
 
             if (parser.name == "msgBody") {
                 parseMsgBody(parser).let { data ->
-                    nearbyBusStops.addAll(data)
+                    testData.addAll(data)
                 }
             }
             else {  // 원하지 않는 태그(comMsgHeader, msgHeader) 스킵
                 skip(parser)
             }
         }
-        return nearbyBusStops
+        return testData
     }
 
     /* API 의 Response Message 중 msgBody 태그를 파싱 */
     @Throws(XmlPullParserException::class, IOException::class)
-    private fun parseMsgBody(parser: XmlPullParser) : List<NearbyBusStops> {
-        val result = mutableListOf<NearbyBusStops>()
+    private fun parseMsgBody(parser: XmlPullParser) : List<TestData> {
+        val result = mutableListOf<TestData>()
         parser.require(XmlPullParser.START_TAG, ns, "msgBody")
 
         while (parser.next() != XmlPullParser.END_TAG) {
@@ -77,9 +76,11 @@ class NearbyBusStopParser {
 
     /* API 의 Response Message 중 itemList 태그를 파싱 */
     @Throws(XmlPullParserException::class, IOException::class)
-    private fun parseItemList(parser: XmlPullParser) : NearbyBusStops {
-        var stationNm: String? = null
-        var dist: Double? = null
+    private fun parseItemList(parser: XmlPullParser) : TestData {
+        var stNm: String? = null
+        var tmX: Double? = null
+        var tmY: Double? = null
+
 
         parser.require(XmlPullParser.START_TAG, ns, "itemList")
         while (parser.next() != XmlPullParser.END_TAG) {
@@ -88,31 +89,41 @@ class NearbyBusStopParser {
             }
 
             when (parser.name) {
-                "stationNm" -> stationNm = readStationNm(parser)
-                "dist" -> dist = readDist(parser)
+                "stNm" -> stNm = readStationNm(parser)
+                "tmX" -> tmX = readTmX(parser)
+                "tmY" -> tmY = readTmY(parser)
                 else -> skip(parser)
             }
         }
 
-        return NearbyBusStops(stationNm, dist)
+        return TestData(stNm, tmX, tmY)
     }
 
-    /* stationNm 태그의 값 리턴 */
+    /* stNm 태그의 값 리턴 */
     @Throws(XmlPullParserException::class, IOException::class)
     private fun readStationNm(parser: XmlPullParser): String {
-        parser.require(XmlPullParser.START_TAG, ns, "stationNm")
-        val stationNm = readText(parser)
-        parser.require(XmlPullParser.END_TAG, ns, "stationNm")
-        return stationNm
+        parser.require(XmlPullParser.START_TAG, ns, "stNm")
+        val stNm = readText(parser)
+        parser.require(XmlPullParser.END_TAG, ns, "stNm")
+        return stNm
     }
 
-    /* dist 태그의 값 리턴 */
+    /* tmX 태그의 값 리턴 */
     @Throws(XmlPullParserException::class, IOException::class)
-    private fun readDist(parser: XmlPullParser): Double {
-        parser.require(XmlPullParser.START_TAG, ns, "dist")
-        val dist = readText(parser).toDouble()
-        parser.require(XmlPullParser.END_TAG, ns, "dist")
-        return dist
+    private fun readTmX(parser: XmlPullParser): Double {
+        parser.require(XmlPullParser.START_TAG, ns, "tmX")
+        val tmX = readText(parser).toDouble()
+        parser.require(XmlPullParser.END_TAG, ns, "tmX")
+        return tmX
+    }
+
+    /* tmY 태그의 값 리턴 */
+    @Throws(XmlPullParserException::class, IOException::class)
+    private fun readTmY(parser: XmlPullParser): Double {
+        parser.require(XmlPullParser.START_TAG, ns, "tmY")
+        val tmY = readText(parser).toDouble()
+        parser.require(XmlPullParser.END_TAG, ns, "tmY")
+        return tmY
     }
 
     /* 태그에서 value 를 추출함 */
