@@ -30,13 +30,13 @@
             android:label="@string/settings_activity_label"
             android:theme="@style/PreferenceScreen" />
         <activity
-            android:name=".view.BusInfoActivity"
+            android:name=".view.businfo.BusInfoActivity"
             android:label="" />
         <activity
             android:name=".view.findstation.FindStationActivity"
             android:label="" />
         <activity
-            android:name=".view.BusListActivity"
+            android:name=".view.buslist.BusListActivity"
             android:label="" />
         <activity
             android:name=".view.main.MainActivity"

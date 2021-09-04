@@ -5,15 +5,15 @@
 
     <data>
         <variable
-            name="activity"
-            type="com.example.bussro.view.BusListActivity" />
+            name="viewModel"
+            type="com.example.bussro.view.buslist.BusListViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black"
-        tools:context=".view.BusListActivity">
+        tools:context=".view.buslist.BusListActivity">
 
         <!-- 버스 정류장 위치 정보 -->
         <ImageView
@@ -72,7 +72,8 @@
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:onClick="@{(v) -> viewModel.onClick(v)}"/>
 
         <!-- Information when user come in for the first time -->
         <!-- dimmed -->
@@ -116,6 +117,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginBottom="38dp"
             android:visibility="gone"/>
+
+        <!-- 로딩바 -->
+        <ProgressBar
+            android:id="@+id/progress_bus_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

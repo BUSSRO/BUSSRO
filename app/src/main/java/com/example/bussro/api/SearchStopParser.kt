@@ -20,6 +20,7 @@ class SearchStopParser {
         var stNm: String? = null
         var tmX: Double? = null
         var tmY: Double? = null
+        var arsId: String? = null
 
 
         parser.require(XmlPullParser.START_TAG, ns, "itemList")
@@ -32,11 +33,12 @@ class SearchStopParser {
                 "stNm" -> stNm = readStationNm(parser)
                 "tmX" -> tmX = readTmX(parser)
                 "tmY" -> tmY = readTmY(parser)
+                "arsId" -> arsId = readArsId(parser)
                 else -> skip(parser)
             }
         }
 
-        return SearchStopData(stNm, tmX, tmY)
+        return SearchStopData(stNm, tmX, tmY, arsId)
     }
 
     /* stNm 태그의 값 리턴 */
@@ -64,6 +66,15 @@ class SearchStopParser {
         val tmY = readText(parser).toDouble()
         parser.require(XmlPullParser.END_TAG, ns, "tmY")
         return tmY
+    }
+
+    /* arsId 태그의 값 리턴 */
+    @Throws(XmlPullParserException::class, IOException::class)
+    private fun readArsId(parser: XmlPullParser): String {
+        parser.require(XmlPullParser.START_TAG, ns, "arsId")
+        val arsId = readText(parser)
+        parser.require(XmlPullParser.END_TAG, ns, "arsId")
+        return arsId
     }
 
     /* 태그에서 value 를 추출함 */

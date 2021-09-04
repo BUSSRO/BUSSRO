@@ -18,7 +18,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import com.example.bussro.R
 import com.example.bussro.databinding.ActivityFindStationBinding
-import com.example.bussro.view.BusListActivity
 import java.util.*
 
 /**

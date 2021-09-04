@@ -73,7 +73,7 @@ class NearbyBusStopViewModel(
             BASE_URL + "serviceKey=" + SERVICE_KEY + "&tmX=" + tmX + "&tmY=" + tmY + "&radius=" + radius
 
         return withContext(Dispatchers.IO) {
-            API("NearbyBusStops").loadXmlFromNetwork(urlString)
+            API("NearbyBusStopData").loadXmlFromNetwork(urlString)
         }
     }
 
@@ -97,6 +97,7 @@ class NearbyBusStopViewModel(
                         for (d in data) {
                             theData.add(
                                 NearbyBusStopData(
+                                    d.arsId,
                                     d.stNm,
                                     round(LocationToDistance().distance(  // 반올림
                                         location.longitude, location.latitude,
@@ -124,7 +125,7 @@ class NearbyBusStopViewModel(
         val urlString = TEST_BASE_URL + "serviceKey=" + SERVICE_KEY + "&stSrch=" + stSrch
 
         return withContext(Dispatchers.IO) {
-            API("Test").loadXmlFromNetwork(urlString)
+            API("SearchStopData").loadXmlFromNetwork(urlString)
         }
     }
 

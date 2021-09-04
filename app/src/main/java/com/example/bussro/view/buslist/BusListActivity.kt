@@ -1,25 +1,21 @@
-package com.example.bussro.view
+package com.example.bussro.view.buslist
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
-import android.speech.tts.UtteranceProgressListener
 import android.util.Log
 import android.view.View
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bussro.adapter.BusListAdapter
-import com.example.bussro.data.BusListRvData
 import com.example.bussro.util.CustomItemDecoration
 import com.example.bussro.R
 import com.example.bussro.databinding.ActivityBusListBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.example.bussro.view.businfo.BusInfoActivity
 import java.util.*
 
 /**
@@ -29,22 +25,55 @@ import java.util.*
  */
 
 class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
+    private lateinit var viewModel: BusListViewModel
     private lateinit var binding: ActivityBusListBinding
     private lateinit var tts: TextToSpeech
+    private lateinit var rvAdapter: BusListAdapter
     private val busList = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_bus_list)
-
-        if (intent.hasExtra("station")) {
-            Log.d("test","사용자가 선택한 버스 정류장 : ${intent.getStringExtra("station")}")
-            binding.txtBusListLocation.text = intent.getStringExtra("station")
-        }
+        initVar()
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
 
         initBusListRv()
-        initSetOnClickListener()
+//        initSetOnClickListener()
         initTTS()
+
+        // LiveData 관찰
+        viewModel.apply {
+            busListLiveData.observe(this@BusListActivity, { data ->
+                rvAdapter.updateData(data)
+                tts.speak(
+                    "불러오기 완료",
+                    TextToSpeech.QUEUE_FLUSH,
+                    null,
+                    TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
+                )
+            })
+            loadingLiveData.observe(this@BusListActivity, { flag ->
+                binding.progressBusList.visibility = if (flag) View.VISIBLE else View.GONE
+            })
+        }
+
+        if (savedInstanceState == null) {
+            viewModel.requestBusList()
+        }
+    }
+
+    private fun initVar() {
+        // TextView 초기화
+        val stationNm = intent.getStringExtra("station")!!
+        binding.txtBusListLocation.text = stationNm
+
+        // ViewModel 객체 초기화
+        intent.getStringExtra("arsId")?.apply {
+            viewModel = ViewModelProvider(this@BusListActivity, ViewModelFactory(this, stationNm))
+                .get(BusListViewModel::class.java)
+            Log.d("test", "정류장고유번호 : arsId: ${intent.getStringExtra("arsId")}")
+        }
     }
 
     private fun initTTS() {
@@ -60,6 +89,7 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                 Toast.makeText(this@BusListActivity, "지원하지 않는 언어입니다.", Toast.LENGTH_SHORT).show()
             } else {
+//                viewModel.requestBusList()
                 // TTS 사용 가능
                 // ERROR: 21-09-04 TTS 중첩 오류 발생으로 주석처리
 //                tts.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
@@ -94,11 +124,10 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
             // background view 선택 가능하도록
         }
-
     }
 
     private fun initBusListRv() {
-        val rvAdapter = BusListAdapter(applicationContext, getTempBusList(), busList, this)
+        rvAdapter = BusListAdapter(applicationContext, busList, this)
         binding.rvBusList.apply {
             adapter = rvAdapter
             layoutManager = LinearLayoutManager(applicationContext)
@@ -106,8 +135,6 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 CustomItemDecoration(60)
             )
         }
-
-        rvAdapter.notifyDataSetChanged()
     }
 
     private fun initSetOnClickListener() {
@@ -116,17 +143,6 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 .putExtras(bundleOf("busList" to busList))
             startActivity(intent)
         }
-    }
-
-    // TODO? 임시 데이터 제거
-    private fun getTempBusList() : MutableList<BusListRvData> {
-        val tempData = mutableListOf<BusListRvData>()
-
-        for (i in 1..10) {
-            tempData.add(BusListRvData(i.toString()))
-        }
-
-        return tempData
     }
 
     fun setVisible() {

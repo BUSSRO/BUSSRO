@@ -1,10 +1,11 @@
-package com.example.bussro.view
+package com.example.bussro.view.businfo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.databinding.DataBindingUtil
 import com.example.bussro.R
-import kotlin.math.log
+import com.example.bussro.databinding.ActivityBusInfoBinding
 
 /**
  * [BusInfoActivity]
@@ -13,11 +14,16 @@ import kotlin.math.log
  */
 
 class BusInfoActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityBusInfoBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_bus_info)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_bus_info)
 
-        val busList = intent.extras?.get("busList")
-        Log.d("TEST", "${busList.toString()}")
+        // set Location
+        intent.getStringExtra("stationNm")?.apply {
+            Log.d("test", "onCreate: $this")
+            binding.txtBusListLocation.text = this
+        }
     }
 }

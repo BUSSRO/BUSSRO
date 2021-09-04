@@ -7,10 +7,12 @@ package com.example.bussro.data
  * @param stNm 정류소명
  * @param tmX 경도
  * @param tmY 위도
+ * @param arsId 정류소고유번호
  */
 
 data class SearchStopData (
     var stNm: String?,
     var tmX: Double?,
-    var tmY: Double?
+    var tmY: Double?,
+    var arsId: String?
 )

@@ -89,11 +89,14 @@ class API(private val type: String) {
 
             if (parser.name == "itemList") {
                 when (type) {
-                    "NearbyBusStops" -> {
+                    "NearbyBusStopData" -> {
                         result.add(NearbyBusStopParser().parseItemList(parser) as T)
                     }
-                    "Test" -> {
+                    "SearchStopData" -> {
                         result.add(SearchStopParser().parseItemList(parser) as T)
+                    }
+                    "BusListData" -> {
+                        result.add(BusListParser().parseItemList(parser) as T)
                     }
                 }
             } else {  // 원하지 않는 태그 스킵

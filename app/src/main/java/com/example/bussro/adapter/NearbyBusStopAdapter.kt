@@ -10,7 +10,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bussro.R
 import com.example.bussro.data.NearbyBusStopData
-import com.example.bussro.view.BusListActivity
+import com.example.bussro.view.buslist.BusListActivity
+
+/**
+ * [NearbyBusStopAdapter]
+ * NearbyBusStopActivity 의 RecyclerView Adapter
+ * 주변 정류장 및 다른 정류장 찾기의 결과를 반영한다.
+ */
 
 class NearbyBusStopAdapter(
     private val context: Context
@@ -48,6 +54,7 @@ class NearbyBusStopAdapter(
             view.setOnClickListener {
                 val intent = Intent(view.context, BusListActivity::class.java)
                     .putExtra("station", data.stationNm)
+                    .putExtra("arsId", data.arsId)
                 view.context.startActivity(intent)
             }
         }

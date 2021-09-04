@@ -1,5 +1,9 @@
 package com.example.bussro.util
 
+import kotlin.math.acos
+import kotlin.math.cos
+import kotlin.math.sin
+
 /**
  * [LocationToDistance]
  * 두 좌표(위도, 경도) 사이 거리를 구하는 코드
@@ -16,11 +20,11 @@ class LocationToDistance {
     ): Double {
         val theta = lon1 - lon2
         var dist =
-            Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(
+            sin(deg2rad(lat1)) * sin(deg2rad(lat2)) + cos(deg2rad(lat1)) * cos(
                 deg2rad(lat2)
-            ) * Math.cos(deg2rad(theta))
+            ) * cos(deg2rad(theta))
 
-        dist = Math.acos(dist)
+        dist = acos(dist)
         dist = rad2deg(dist)
         dist *= 60 * 1.1515
 
@@ -32,7 +36,6 @@ class LocationToDistance {
 
         return dist
     }
-
 
     // This function converts decimal degrees to radians
     private fun deg2rad(deg: Double): Double {
