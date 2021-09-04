@@ -28,9 +28,9 @@ class NearbyBusStopParser {
             }
 
             when (parser.name) {
-                "arsId" -> arsId = readArsId(parser)
-                "stationNm" -> stationNm = readStationNm(parser)
-                "dist" -> dist = readDist(parser)
+                "arsId" -> arsId = readText(parser, "arsId")
+                "stationNm" -> stationNm = readText(parser, "stationNm")
+                "dist" -> dist = readText(parser, "dist").toDouble()
                 else -> skip(parser)
             }
         }
@@ -38,41 +38,19 @@ class NearbyBusStopParser {
         return NearbyBusStopData(arsId, stationNm, dist)
     }
 
-    /* arsId 태그의 값 리턴 */
-    private fun readArsId(parser: XmlPullParser): String {
-        parser.require(XmlPullParser.START_TAG, ns, "arsId")
-        val arsId = readText(parser)
-        parser.require(XmlPullParser.END_TAG, ns, "arsId")
-        return arsId
-    }
-
-    /* stationNm 태그의 값 리턴 */
-    @Throws(XmlPullParserException::class, IOException::class)
-    private fun readStationNm(parser: XmlPullParser): String {
-        parser.require(XmlPullParser.START_TAG, ns, "stationNm")
-        val stationNm = readText(parser)
-        parser.require(XmlPullParser.END_TAG, ns, "stationNm")
-        return stationNm
-    }
-
-    /* dist 태그의 값 리턴 */
-    @Throws(XmlPullParserException::class, IOException::class)
-    private fun readDist(parser: XmlPullParser): Double {
-        parser.require(XmlPullParser.START_TAG, ns, "dist")
-        val dist = readText(parser).toDouble()
-        parser.require(XmlPullParser.END_TAG, ns, "dist")
-        return dist
-    }
-
     /* 태그에서 value 를 추출함 */
     @Throws(XmlPullParserException::class, IOException::class)
-    private fun readText(parser: XmlPullParser): String {
-        var result = ""
+    private fun readText(parser: XmlPullParser, tag: String): String {
+        parser.require(XmlPullParser.START_TAG, ns, tag)
+
+        var text = ""
         if (parser.next() == XmlPullParser.TEXT) {
-            result = parser.text
+            text = parser.text
             parser.nextTag()
         }
-        return result
+
+        parser.require(XmlPullParser.END_TAG, ns, tag)
+        return text
     }
 
     /* 원하지 않는 태그 스킵 */

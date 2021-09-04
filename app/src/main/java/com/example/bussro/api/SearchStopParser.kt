@@ -30,10 +30,10 @@ class SearchStopParser {
             }
 
             when (parser.name) {
-                "stNm" -> stNm = readStationNm(parser)
-                "tmX" -> tmX = readTmX(parser)
-                "tmY" -> tmY = readTmY(parser)
-                "arsId" -> arsId = readArsId(parser)
+                "stNm" -> stNm = readText(parser, "stNm")
+                "tmX" -> tmX = readText(parser, "tmX").toDouble()
+                "tmY" -> tmY = readText(parser, "tmY").toDouble()
+                "arsId" -> arsId = readText(parser, "arsId")
                 else -> skip(parser)
             }
         }
@@ -41,51 +41,19 @@ class SearchStopParser {
         return SearchStopData(stNm, tmX, tmY, arsId)
     }
 
-    /* stNm 태그의 값 리턴 */
-    @Throws(XmlPullParserException::class, IOException::class)
-    private fun readStationNm(parser: XmlPullParser): String {
-        parser.require(XmlPullParser.START_TAG, ns, "stNm")
-        val stNm = readText(parser)
-        parser.require(XmlPullParser.END_TAG, ns, "stNm")
-        return stNm
-    }
-
-    /* tmX 태그의 값 리턴 */
-    @Throws(XmlPullParserException::class, IOException::class)
-    private fun readTmX(parser: XmlPullParser): Double {
-        parser.require(XmlPullParser.START_TAG, ns, "tmX")
-        val tmX = readText(parser).toDouble()
-        parser.require(XmlPullParser.END_TAG, ns, "tmX")
-        return tmX
-    }
-
-    /* tmY 태그의 값 리턴 */
-    @Throws(XmlPullParserException::class, IOException::class)
-    private fun readTmY(parser: XmlPullParser): Double {
-        parser.require(XmlPullParser.START_TAG, ns, "tmY")
-        val tmY = readText(parser).toDouble()
-        parser.require(XmlPullParser.END_TAG, ns, "tmY")
-        return tmY
-    }
-
-    /* arsId 태그의 값 리턴 */
-    @Throws(XmlPullParserException::class, IOException::class)
-    private fun readArsId(parser: XmlPullParser): String {
-        parser.require(XmlPullParser.START_TAG, ns, "arsId")
-        val arsId = readText(parser)
-        parser.require(XmlPullParser.END_TAG, ns, "arsId")
-        return arsId
-    }
-
     /* 태그에서 value 를 추출함 */
     @Throws(XmlPullParserException::class, IOException::class)
-    private fun readText(parser: XmlPullParser): String {
-        var result = ""
+    private fun readText(parser: XmlPullParser, tag: String): String {
+        parser.require(XmlPullParser.START_TAG, ns, tag)
+
+        var text = ""
         if (parser.next() == XmlPullParser.TEXT) {
-            result = parser.text
+            text = parser.text
             parser.nextTag()
         }
-        return result
+
+        parser.require(XmlPullParser.END_TAG, ns, tag)
+        return text
     }
 
     /* 원하지 않는 태그 스킵 */
