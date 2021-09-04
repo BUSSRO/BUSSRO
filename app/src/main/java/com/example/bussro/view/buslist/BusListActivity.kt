@@ -16,6 +16,7 @@ import com.example.bussro.util.CustomItemDecoration
 import com.example.bussro.R
 import com.example.bussro.databinding.ActivityBusListBinding
 import com.example.bussro.view.businfo.BusInfoActivity
+import com.example.bussro.view.sign.SignActivity
 import java.util.*
 
 /**
@@ -39,7 +40,7 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         binding.viewModel = viewModel
 
         initBusListRv()
-//        initSetOnClickListener()
+        initSetOnClickListener()
         initTTS()
 
         // LiveData 관찰
@@ -139,8 +140,9 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     private fun initSetOnClickListener() {
         binding.txtBusListStart.setOnClickListener {
-            val intent = Intent(this, BusInfoActivity::class.java)
+            val intent = Intent(this, SignActivity::class.java)
                 .putExtras(bundleOf("busList" to busList))
+                .putExtra("rtNm", busList[0])
             startActivity(intent)
         }
     }

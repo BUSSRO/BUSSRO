@@ -10,6 +10,7 @@ import com.example.bussro.BuildConfig
 import com.example.bussro.api.API
 import com.example.bussro.data.BusListData
 import com.example.bussro.view.businfo.BusInfoActivity
+import com.example.bussro.view.sign.SignActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
