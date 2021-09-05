@@ -12,7 +12,7 @@ import com.example.bussro.model.db.entity.History
  * History 데이터베이스 객체
  */
 
-@Database(entities = [History::class], version = 1, exportSchema = false)
+@Database(entities = [History::class], version = 2, exportSchema = false)
 abstract class HistoryDatabase : RoomDatabase() {
     abstract fun historyDao(): HistoryDao
 

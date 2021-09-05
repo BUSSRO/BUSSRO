@@ -7,9 +7,11 @@ import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bussro.R
 import com.example.bussro.databinding.ActivityHistoryBinding
 import com.example.bussro.model.db.entity.History
+import com.example.bussro.util.CustomItemDecoration
 
 /**
  * [HistoryActivity]
@@ -26,9 +28,20 @@ class HistoryActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_history)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+        initVar()
+    }
+
+    private fun initVar() {
+        val rvAdapter = HistoryAdapter()
+        binding.rvHistory.apply {
+            adapter = rvAdapter
+            layoutManager = LinearLayoutManager(this@HistoryActivity)
+            addItemDecoration(CustomItemDecoration(60))
+        }
 
         viewModel.getAll().observe(this, Observer {
             Log.d("test", "onCreate: ${it}")
+            rvAdapter.updateData(it)
         })
     }
 }

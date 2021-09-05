@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="history"
+            type="com.example.bussro.model.db.entity.History" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="76dp"
+        android:background="#ECEBFF">
+
+    <!-- 버스정류장 -->
+    <TextView
+        android:id="@+id/txt_history_stationNm"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        stationNm="@{history.stationNm}"
+        tools:text="돈암초등학교"
+        android:textSize="25sp"
+        android:textColor="@color/black"
+        android:layout_marginStart="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/txt_history_date"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <!-- 검색일자 -->
+    <TextView
+        android:id="@+id/txt_history_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        date="@{history.date}"
+        tools:text="2021-09-06\n오전 01:54"
+        android:textSize="25sp"
+        android:textColor="#726D6D"
+        android:gravity="center"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintStart_toEndOf="@id/txt_history_stationNm"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
