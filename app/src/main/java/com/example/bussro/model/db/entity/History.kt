@@ -15,8 +15,8 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "history")
 data class History(
     @PrimaryKey
-    var arsId: String?,
+    var arsId: String,
 
     @ColumnInfo(name = "stationNm")
-    var stationNm: String?
+    var stationNm: String
 )
