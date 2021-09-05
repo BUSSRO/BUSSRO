@@ -1,4 +1,4 @@
-package com.example.bussro.view.busstop
+package com.example.bussro.view.nearbybusstop
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -31,7 +31,6 @@ class NearbyBusStopViewModel(
     /* handle click event */
     fun onclick(view: View) {
         val intent = Intent(view.context, FindStationActivity::class.java)
-//        view.context.startActivity(intent)
         startForResult.launch(intent)
     }
 
@@ -52,11 +51,6 @@ class NearbyBusStopViewModel(
                             "300"
                         )
 
-                        // convert meter to kilometer
-                        for (d in data) {
-                            d.dist = d.dist?.div(1000)
-                        }
-
                         busStopsLiveData.postValue(data)
                         loadingLiveData.postValue(false)  // 로딩 끝
                     }
@@ -70,7 +64,7 @@ class NearbyBusStopViewModel(
     /* 공공데이터 응답 가져오기, parameter : 인증키(serviceKey), 경도(tmX), 위도(tmY), 거리(radius) */
     private suspend fun getApiData(tmX: String, tmY: String, radius: String): List<NearbyBusStopData> {
         val urlString =
-            BASE_URL + "serviceKey=" + SERVICE_KEY + "&tmX=" + tmX + "&tmY=" + tmY + "&radius=" + radius
+            BASE_URL + "getStationByPos?serviceKey=" + SERVICE_KEY + "&tmX=" + tmX + "&tmY=" + tmY + "&radius=" + radius
 
         return withContext(Dispatchers.IO) {
             BusAPI("NearbyBusStopData").loadXmlFromNetwork(urlString)
@@ -99,11 +93,11 @@ class NearbyBusStopViewModel(
                                 NearbyBusStopData(
                                     d.arsId,
                                     d.stNm,
-                                    round(LocationToDistance().distance(  // 반올림
+                                    LocationToDistance().distance(
                                         location.longitude, location.latitude,
                                         d.tmX!!, d.tmY!!,
-                                        "kilo"
-                                    ) * 1000) / 1000
+                                        "meter"
+                                    )
                                 )
                             )
                         }
@@ -122,7 +116,8 @@ class NearbyBusStopViewModel(
 
     /* 공공데이터 응답 가져오기, parameter : 인증키(serviceKey), 검색어(stSrch) */
     private suspend fun getTestData(stSrch: String): List<SearchStopData> {
-        val urlString = TEST_BASE_URL + "serviceKey=" + SERVICE_KEY + "&stSrch=" + stSrch
+        val urlString =
+            BASE_URL + "getStationByName?serviceKey=" + SERVICE_KEY + "&stSrch=" + stSrch
 
         return withContext(Dispatchers.IO) {
             BusAPI("SearchStopData").loadXmlFromNetwork(urlString)
@@ -130,8 +125,7 @@ class NearbyBusStopViewModel(
     }
 
     companion object {
-        private const val BASE_URL = "http://ws.bus.go.kr/api/rest/stationinfo/getStationByPos?"
-        private const val TEST_BASE_URL = "http://ws.bus.go.kr/api/rest/stationinfo/getStationByName?"
+        private const val BASE_URL = "http://ws.bus.go.kr/api/rest/stationinfo/"
         private const val SERVICE_KEY = BuildConfig.NEARBY_BUS_STOP_API_KEY
     }
 }

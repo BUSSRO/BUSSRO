@@ -1,4 +1,4 @@
-package com.example.bussro.view.busstop
+package com.example.bussro.view.nearbybusstop
 
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher

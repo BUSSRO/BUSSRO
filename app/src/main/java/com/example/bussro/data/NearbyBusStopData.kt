@@ -1,5 +1,9 @@
 package com.example.bussro.data
 
+import android.annotation.SuppressLint
+import android.widget.TextView
+import androidx.databinding.BindingAdapter
+
 /**
  * [NearbyBusStopData]
  * 공공데이터 OpenAPI (좌표기반 근접 정류소 조회) 의 Response Message 를 받을 data class
@@ -14,3 +18,16 @@ data class NearbyBusStopData(
     var stationNm: String?,
     var dist: Double?
 )
+
+/* DataBinding_정류소명 */
+@BindingAdapter("stationNm")
+fun setStationNm(txt: TextView, stationNm: String) {
+    txt.text = stationNm
+}
+
+/* DataBinding_거리(기준 : km) */
+@BindingAdapter("dist")
+fun setDist(txt: TextView, dist: Double) {
+    txt.text = String.format("%.3f km", dist.div(1000))
+}
+

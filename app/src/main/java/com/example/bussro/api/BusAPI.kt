@@ -93,15 +93,12 @@ class BusAPI(private val type: String) {
             if (parser.name == "itemList") {
                 when (type) {
                     "NearbyBusStopData" -> {
-//                        result.add(NearbyBusStopParser().parseItemList(parser) as T)
                         result.add(parseNearbyBusStopItemList(parser) as T)
                     }
                     "SearchStopData" -> {
-//                        result.add(SearchStopParser().parseItemList(parser) as T)
                         result.add(parseSearchStopItemList(parser) as T)
                     }
                     "BusListData" -> {
-//                        result.add(BusListParser().parseItemList(parser) as T)
                         result.add(parseBusListItemList(parser) as T)
                     }
                 }
@@ -168,7 +165,6 @@ class BusAPI(private val type: String) {
         var tmY: Double? = null
         var arsId: String? = null
 
-
         parser.require(XmlPullParser.START_TAG, ns, "itemList")
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.eventType != XmlPullParser.START_TAG) {
@@ -216,5 +212,4 @@ class BusAPI(private val type: String) {
             }
         }
     }
-
 }

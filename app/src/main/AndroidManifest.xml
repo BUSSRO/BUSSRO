@@ -20,7 +20,7 @@
             android:label="전광판 화면입니다. 버스기사에게 보여주세요."
             android:screenOrientation="landscape" />
         <activity
-            android:name=".view.busstop.NearbyBusStopActivity"
+            android:name=".view.nearbybusstop.NearbyBusStopActivity"
             android:label="@string/empty_label" />
         <activity
             android:name=".view.settings.LicenseActivity"

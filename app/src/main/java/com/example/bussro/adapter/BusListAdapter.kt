@@ -1,41 +1,66 @@
 package com.example.bussro.adapter
 
-import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.annotation.NonNull
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bussro.data.BusListData
 import com.example.bussro.R
-import com.example.bussro.data.NearbyBusStopData
+import com.example.bussro.databinding.RvBusListItemBinding
 import com.example.bussro.view.buslist.BusListActivity
 
 /**
  * [BusListAdapter]
  * BusListActivity 의 RecyclerView 에 연결될 Adapter
  *
- * @param context
- * @param busList 사용자가 안내받기로 선택한 버스
+ * @param buses 사용자가 안내받기로 선택한 버스
  * @param activity BusListActivity
  */
 
 class BusListAdapter(
-    private val context: Context,
-    private val busList: MutableList<String>,
+    private val buses: MutableList<String>,
     private val activity: BusListActivity
 ) : RecyclerView.Adapter<BusListAdapter.BusListViewHolder>() {
     private var data = listOf<BusListData>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BusListViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.rv_bus_list_item, parent, false)
-        return BusListViewHolder(view)
+        val binding: RvBusListItemBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(parent.context),
+            R.layout.rv_bus_list_item,
+            parent,
+            false
+        )
+        return BusListViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: BusListViewHolder, position: Int) {
-        holder.bind(data[position])
+        holder.binding.busList = data[position]
+
+        holder.binding.apply {
+            // 데이터 input
+            busList = data[position]
+            // click listener
+            root.setOnClickListener {
+                if (buses.contains(busList?.rtNm)) {  // 선택 취소
+                    buses.remove(busList?.rtNm)
+
+                    root.setBackgroundColor(Color.parseColor("#ECEBFF"))
+                    txtBusListItemNumber.typeface = Typeface.DEFAULT
+                    txtBusListItemInfo.typeface = Typeface.DEFAULT
+                } else {  // 선택
+                    buses.add(busList?.rtNm!!)
+
+                    root.setBackgroundColor(Color.parseColor("#FFCC00"))
+                    txtBusListItemNumber.typeface = Typeface.DEFAULT_BOLD
+                    txtBusListItemInfo.typeface = Typeface.DEFAULT_BOLD
+                }
+
+                activity.setVisible()
+            }
+        }
     }
 
     override fun getItemCount(): Int = data.size
@@ -47,33 +72,9 @@ class BusListAdapter(
     }
 
     /* ViewHolder */
-    inner class BusListViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
-        private val busNumber: TextView = view.findViewById(R.id.txt_bus_list_item_number)
-        private val busInfo: TextView = view.findViewById(R.id.txt_bus_list_item_info)
-
-        fun bind(data: BusListData) {
-            busNumber.text = data.rtNm
-            busInfo.text = data.arrmsg1
-
-            view.setOnClickListener {
-                if (busList.contains(busNumber.text)) {  // 선택 취소
-                    busList.remove(busNumber.text)
-
-                    view.setBackgroundColor(Color.parseColor("#ECEBFF"))
-                    busNumber.typeface = Typeface.DEFAULT
-                    busInfo.typeface = Typeface.DEFAULT
-                }
-                else {  // 선택
-                    busList.add(busNumber.text.toString())
-
-                    view.setBackgroundColor(Color.parseColor("#FFCC00"))
-                    busNumber.typeface = Typeface.DEFAULT_BOLD
-                    busInfo.typeface = Typeface.DEFAULT_BOLD
-                }
-
-                activity.setVisible()
-
-            }
-        }
+    inner class BusListViewHolder(@NonNull val binding: RvBusListItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
     }
 }
+
+

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.bussro.view.busstop.NearbyBusStopViewModel" />
+            type="com.example.bussro.view.nearbybusstop.NearbyBusStopViewModel" />
 
     </data>
 
@@ -14,7 +14,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.busstop.NearbyBusStopActivity"
+        tools:context=".view.nearbybusstop.NearbyBusStopActivity"
         android:background="@color/black">
 
         <TextView

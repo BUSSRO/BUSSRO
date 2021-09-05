@@ -1,8 +1,7 @@
-package com.example.bussro.view.busstop
+package com.example.bussro.view.nearbybusstop
 
 import android.Manifest
 import android.app.Activity
-import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -21,7 +20,6 @@ import com.example.bussro.R
 import com.example.bussro.adapter.NearbyBusStopAdapter
 import com.example.bussro.databinding.ActivityNearbyBusStopBinding
 import com.example.bussro.util.CustomItemDecoration
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import java.util.*
 
@@ -93,7 +91,7 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 .get(NearbyBusStopViewModel::class.java)
 
         // RecyclerView 세팅
-        val rvAdapter = NearbyBusStopAdapter(this@NearbyBusStopActivity)
+        val rvAdapter = NearbyBusStopAdapter()
         binding.rvNearbyBusStop.apply {
             adapter = rvAdapter
             layoutManager = LinearLayoutManager(this@NearbyBusStopActivity)

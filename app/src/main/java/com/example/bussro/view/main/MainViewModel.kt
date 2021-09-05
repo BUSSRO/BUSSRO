@@ -4,7 +4,7 @@ import android.content.Intent
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
-import com.example.bussro.view.busstop.NearbyBusStopActivity
+import com.example.bussro.view.nearbybusstop.NearbyBusStopActivity
 import com.example.bussro.view.settings.SettingsActivity
 
 /**

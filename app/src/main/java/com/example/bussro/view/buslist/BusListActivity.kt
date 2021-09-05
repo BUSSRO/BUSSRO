@@ -47,7 +47,7 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     private fun initVar() {
         // TextView 초기화
-        val stationNm = intent.getStringExtra("station")!!
+        val stationNm = intent.getStringExtra("stationNm")!!
         binding.txtBusListLocation.text = stationNm
 
         // ViewModel 객체 초기화
@@ -57,7 +57,7 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             Log.d("test", "정류장고유번호 : arsId: ${intent.getStringExtra("arsId")}")
         }
 
-        val rvAdapter = BusListAdapter(applicationContext, busList, this)
+        val rvAdapter = BusListAdapter(busList, this)
         binding.rvBusList.apply {
             adapter = rvAdapter
             layoutManager = LinearLayoutManager(applicationContext)
