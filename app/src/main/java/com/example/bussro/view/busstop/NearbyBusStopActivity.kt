@@ -30,17 +30,14 @@ import java.util.*
  * MainActivity 의 "내 주변 정류장" 버튼을 클릭했을시 보여짐
  * 사용자의 위치를 기준으로 1km 이내의 버스 정류장을 가까운 순으로 정렬해 제공한다.
  *
- * TODO: 무선인터넷 연결 여부 확인
+ * TODO: 무선인터넷 연결 여부 확인 후 예외 처리하기
  */
 
 class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private lateinit var viewModel: NearbyBusStopViewModel
     private lateinit var binding: ActivityNearbyBusStopBinding
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var requestLocation: ActivityResultLauncher<Array<String>>
-    private lateinit var rvAdapter: NearbyBusStopAdapter
     private lateinit var tts: TextToSpeech
-    private lateinit var startActivityForResult: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +49,59 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         requestPermission()
+
+        // 화면 전환 대응
+        if (savedInstanceState == null) {
+            viewModel.requestNearbyBusStop()
+        }
+    }
+
+    /* 변수 초기화 */
+    private fun initVar() {
+        // Location 객체
+        requestLocation =
+            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+                it[Manifest.permission.ACCESS_FINE_LOCATION]?.let { granted ->
+                    if (granted) {
+                        Log.d("test", "위치 권한 설정 완료")
+                    }
+                    viewModel.requestNearbyBusStop()
+                }
+            }
+
+        // startResultForActivity 객체
+        val startActivityForResult =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val stationNm = result.data?.getStringExtra("stationNm")
+
+                    if (!stationNm.isNullOrEmpty()) {
+                        viewModel.requestSearchedBusStop(stationNm)
+                    }
+                }
+            }
+
+        // ViewModel 객체
+        viewModel =
+            ViewModelProvider(
+                this,
+                ViewModelFactory(
+                    LocationServices.getFusedLocationProviderClient(applicationContext),
+                    startActivityForResult
+                )
+            )
+                .get(NearbyBusStopViewModel::class.java)
+
+        // RecyclerView 세팅
+        val rvAdapter = NearbyBusStopAdapter(this@NearbyBusStopActivity)
+        binding.rvNearbyBusStop.apply {
+            adapter = rvAdapter
+            layoutManager = LinearLayoutManager(this@NearbyBusStopActivity)
+            addItemDecoration(CustomItemDecoration(60))
+        }
+
+        // TTS 객체
+        tts = TextToSpeech(this, this)
 
         // LiveData 관찰
         viewModel.apply {
@@ -70,54 +120,6 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 )
             })
         }
-
-        // 화면 전환 대응
-        if (savedInstanceState == null) {
-            viewModel.requestNearbyBusStop()
-        }
-    }
-
-    /* 변수 초기화 */
-    private fun initVar() {
-        // Location 객체
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(applicationContext)
-        requestLocation =
-            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
-                it[Manifest.permission.ACCESS_FINE_LOCATION]?.let { granted ->
-                    if (granted) {
-                        Log.d("test", "위치 권한 설정 완료")
-                    }
-                    viewModel.requestNearbyBusStop()
-                }
-            }
-
-        // startResultForActivity 객체
-        startActivityForResult =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == Activity.RESULT_OK) {
-                    val stationNm = result.data?.getStringExtra("stationNm")
-
-                    if (!stationNm.isNullOrEmpty()) {
-                        viewModel.requestSearchedBusStop(stationNm)
-                    }
-                }
-            }
-
-        // ViewModel 객체
-        viewModel =
-            ViewModelProvider(this, ViewModelFactory(fusedLocationClient, startActivityForResult))
-                .get(NearbyBusStopViewModel::class.java)
-
-        // RecyclerView 세팅
-        rvAdapter = NearbyBusStopAdapter(this@NearbyBusStopActivity)
-        binding.rvNearbyBusStop.apply {
-            adapter = rvAdapter
-            layoutManager = LinearLayoutManager(this@NearbyBusStopActivity)
-            addItemDecoration(CustomItemDecoration(60))
-        }
-
-        // TTS 객체
-        tts = TextToSpeech(this, this)
     }
 
     /* Location 권한 요청 */
@@ -152,7 +154,6 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 Toast.makeText(this, "지원하지 않는 언어입니다.", Toast.LENGTH_SHORT).show()
             } else {
                 // TTS 사용 가능
-//                tts.speak("불러오기 완료", TextToSpeech.QUEUE_FLUSH, null, TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED)
             }
         } else {
             Toast.makeText(this, "TTS를 사용할 수 없습니다.", Toast.LENGTH_SHORT).show()

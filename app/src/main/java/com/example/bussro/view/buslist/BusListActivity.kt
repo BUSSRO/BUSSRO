@@ -29,7 +29,6 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private lateinit var viewModel: BusListViewModel
     private lateinit var binding: ActivityBusListBinding
     private lateinit var tts: TextToSpeech
-    private lateinit var rvAdapter: BusListAdapter
     private val busList = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,26 +37,8 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         initVar()
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-
-        initBusListRv()
         initSetOnClickListener()
         initTTS()
-
-        // LiveData 관찰
-        viewModel.apply {
-            busListLiveData.observe(this@BusListActivity, { data ->
-                rvAdapter.updateData(data)
-                tts.speak(
-                    "불러오기 완료",
-                    TextToSpeech.QUEUE_FLUSH,
-                    null,
-                    TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
-                )
-            })
-            loadingLiveData.observe(this@BusListActivity, { flag ->
-                binding.progressBusList.visibility = if (flag) View.VISIBLE else View.GONE
-            })
-        }
 
         if (savedInstanceState == null) {
             viewModel.requestBusList()
@@ -74,6 +55,31 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             viewModel = ViewModelProvider(this@BusListActivity, ViewModelFactory(this, stationNm))
                 .get(BusListViewModel::class.java)
             Log.d("test", "정류장고유번호 : arsId: ${intent.getStringExtra("arsId")}")
+        }
+
+        val rvAdapter = BusListAdapter(applicationContext, busList, this)
+        binding.rvBusList.apply {
+            adapter = rvAdapter
+            layoutManager = LinearLayoutManager(applicationContext)
+            addItemDecoration(
+                CustomItemDecoration(60)
+            )
+        }
+
+        // LiveData 관찰
+        viewModel.apply {
+            busListLiveData.observe(this@BusListActivity, { data ->
+                rvAdapter.updateData(data)
+                tts.speak(
+                    "불러오기 완료",
+                    TextToSpeech.QUEUE_FLUSH,
+                    null,
+                    TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
+                )
+            })
+            loadingLiveData.observe(this@BusListActivity, { flag ->
+                binding.progressBusList.visibility = if (flag) View.VISIBLE else View.GONE
+            })
         }
     }
 
@@ -127,17 +133,6 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         }
     }
 
-    private fun initBusListRv() {
-        rvAdapter = BusListAdapter(applicationContext, busList, this)
-        binding.rvBusList.apply {
-            adapter = rvAdapter
-            layoutManager = LinearLayoutManager(applicationContext)
-            addItemDecoration(
-                CustomItemDecoration(60)
-            )
-        }
-    }
-
     private fun initSetOnClickListener() {
         binding.txtBusListStart.setOnClickListener {
             val intent = Intent(this, SignActivity::class.java)
@@ -154,6 +149,16 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         } else {
             binding.txtBusListStart.visibility = View.GONE
         }
+    }
+
+    override fun onStop() {
+        tts.stop()
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        tts.shutdown()
+        super.onDestroy()
     }
 
     override fun onBackPressed() {

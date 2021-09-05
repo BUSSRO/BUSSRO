@@ -2,11 +2,12 @@
     <string name="app_name">BUSSRO</string>
 
     <!-- manifests (label for screen reader feature) -->
+    <string name="empty_label">""</string>
     <string name="main_activity_label">홈 화면입니다.</string>
     <string name="settings_activity_label">환경 설정 화면입니다.</string>
 
     <!-- activity_main -->
-    <string name="main_first_txt">내 주변 정류장</string>
+    <string name="main_first_txt">버스 탑승 도우미</string>
     <string name="main_second_txt">하차벨 위치</string>
     <string name="main_third_txt">히스토리</string>
     <string name="main_setting_txt">설정</string>
@@ -18,7 +19,7 @@
     <string name="list_header">목록</string>
     <string name="etc_header">기타</string>
 
-    <string name="tts_title">음성 안내(TTS)</string>
+    <string name="tts_title">음성 안내(도움말)</string>
     <string name="license_title">오픈소스 라이센스</string>
     <string name="license_summary">버스로 앱 제작에 사용된 오픈소스 라이센스 리스트</string>
 

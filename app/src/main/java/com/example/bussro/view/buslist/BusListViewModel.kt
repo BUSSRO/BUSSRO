@@ -38,7 +38,6 @@ class BusListViewModel(
                  BusAPI("BusListData").loadXmlFromNetwork<BusListData>(urlString)
             }
 
-
             Log.d("test", "requestBusList: $data")
 
             busListLiveData.postValue(data)
