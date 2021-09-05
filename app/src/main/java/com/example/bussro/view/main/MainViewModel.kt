@@ -4,6 +4,7 @@ import android.content.Intent
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
+import com.example.bussro.view.history.HistoryActivity
 import com.example.bussro.view.nearbybusstop.NearbyBusStopActivity
 import com.example.bussro.view.settings.SettingsActivity
 
@@ -31,8 +32,7 @@ class MainViewModel : ViewModel() {
                 toast = Toast.makeText(v.context, "[하차벨 위치]\n구현되지 않은 기능입니다.", Toast.LENGTH_SHORT)
             }
             3 -> {  // 히스토리
-                // TODO: implement HistoryActivity
-                toast = Toast.makeText(v.context, "[히스토리]\n구현되지 않은 기능입니다.", Toast.LENGTH_SHORT)
+                intent = Intent(v.context, HistoryActivity::class.java)
             }
         }
 
