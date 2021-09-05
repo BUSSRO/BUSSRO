@@ -7,11 +7,11 @@
 
         <variable
             name="activity"
-            type="com.example.bussro.view.main.MainActivity" />
+            type="com.example.bussro.feature.main.MainActivity" />
 
         <variable
             name="model"
-            type="com.example.bussro.view.main.MainViewModel" />
+            type="com.example.bussro.feature.main.MainViewModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -20,7 +20,7 @@
         android:background="@color/black"
         android:overScrollMode="never"
         android:fillViewport="true"
-        tools:context=".view.main.MainActivity">
+        tools:context=".feature.main.MainActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

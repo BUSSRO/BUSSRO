@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.sign.SignActivity"
+        tools:context=".feature.sign.SignActivity"
         android:background="@color/black">
 
         <!-- TODO: textSize 변경 -->

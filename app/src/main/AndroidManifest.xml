@@ -15,36 +15,36 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BUSSRO"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.history.HistoryActivity"
+        <activity android:name=".feature.history.HistoryActivity"
             android:label="@string/empty_label"/>
         <activity
-            android:name=".view.sign.SignActivity"
+            android:name=".feature.sign.SignActivity"
             android:label="전광판 화면입니다. 버스기사에게 보여주세요."
             android:screenOrientation="landscape" />
         <activity
-            android:name=".view.nearbybusstop.NearbyBusStopActivity"
+            android:name=".feature.nearbybusstop.NearbyBusStopActivity"
             android:label="@string/empty_label" />
         <activity
-            android:name=".view.settings.LicenseActivity"
+            android:name=".feature.settings.LicenseActivity"
             android:label="@string/empty_label" />
         <activity
-            android:name=".view.settings.SettingsActivity"
+            android:name=".feature.settings.SettingsActivity"
             android:label="@string/settings_activity_label"
             android:theme="@style/PreferenceScreen" />
         <activity
-            android:name=".view.businfo.BusInfoActivity"
+            android:name=".feature.businfo.BusInfoActivity"
             android:label="@string/empty_label" />
         <activity
-            android:name=".view.findstation.FindStationActivity"
+            android:name=".feature.findstation.FindStationActivity"
             android:label="@string/empty_label" />
         <activity
-            android:name=".view.buslist.BusListActivity"
+            android:name=".feature.buslist.BusListActivity"
             android:label="@string/empty_label" />
         <activity
-            android:name=".view.main.MainActivity"
+            android:name=".feature.main.MainActivity"
             android:label="@string/empty_label" />
         <activity
-            android:name=".launch.LaunchScreenActivity"
+            android:name=".feature.launch.LaunchScreenActivity"
             android:label="@string/app_name"
             android:theme="@style/LaunchTheme">
             <intent-filter>

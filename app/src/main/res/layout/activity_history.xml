@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.history.HistoryActivity"
+    tools:context=".feature.history.HistoryActivity"
     android:background="@color/black">
 
     <TextView
