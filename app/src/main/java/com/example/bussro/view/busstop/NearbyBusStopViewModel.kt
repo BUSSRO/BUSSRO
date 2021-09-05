@@ -7,7 +7,7 @@ import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.*
 import com.example.bussro.BuildConfig
-import com.example.bussro.api.API
+import com.example.bussro.api.BusAPI
 import com.example.bussro.data.NearbyBusStopData
 import com.example.bussro.data.SearchStopData
 import com.example.bussro.util.LocationToDistance
@@ -73,7 +73,7 @@ class NearbyBusStopViewModel(
             BASE_URL + "serviceKey=" + SERVICE_KEY + "&tmX=" + tmX + "&tmY=" + tmY + "&radius=" + radius
 
         return withContext(Dispatchers.IO) {
-            API("NearbyBusStopData").loadXmlFromNetwork(urlString)
+            BusAPI("NearbyBusStopData").loadXmlFromNetwork(urlString)
         }
     }
 
@@ -125,7 +125,7 @@ class NearbyBusStopViewModel(
         val urlString = TEST_BASE_URL + "serviceKey=" + SERVICE_KEY + "&stSrch=" + stSrch
 
         return withContext(Dispatchers.IO) {
-            API("SearchStopData").loadXmlFromNetwork(urlString)
+            BusAPI("SearchStopData").loadXmlFromNetwork(urlString)
         }
     }
 

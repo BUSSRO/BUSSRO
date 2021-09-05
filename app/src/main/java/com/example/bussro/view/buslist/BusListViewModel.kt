@@ -7,10 +7,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bussro.BuildConfig
-import com.example.bussro.api.API
+import com.example.bussro.api.BusAPI
 import com.example.bussro.data.BusListData
 import com.example.bussro.view.businfo.BusInfoActivity
-import com.example.bussro.view.sign.SignActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -36,7 +35,7 @@ class BusListViewModel(
         viewModelScope.launch {
             val urlString = BASE_URL + "serviceKey=" + SERVICE_KEY + "&arsId=" + arsId
             val data = withContext(Dispatchers.IO) {
-                 API("BusListData").loadXmlFromNetwork<BusListData>(urlString)
+                 BusAPI("BusListData").loadXmlFromNetwork<BusListData>(urlString)
             }
 
 
