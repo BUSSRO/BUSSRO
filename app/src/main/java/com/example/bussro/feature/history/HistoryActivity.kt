@@ -29,6 +29,7 @@ class HistoryActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         initVar()
+//        viewModel.deleteAll()
     }
 
     private fun initVar() {

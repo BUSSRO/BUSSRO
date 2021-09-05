@@ -21,4 +21,6 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
     fun insert(history: History) = repository.insert(history)
 
     fun delete(history: History) = repository.delete(history)
+
+    fun deleteAll() = repository.deleteAll()
 }

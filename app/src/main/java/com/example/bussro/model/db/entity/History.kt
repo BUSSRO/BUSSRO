@@ -12,6 +12,7 @@ import androidx.room.PrimaryKey
  *
  * @param arsId 정류소고유번호
  * @param stationNm 정류소명
+ * @param date 검색일자
  */
 
 @Entity(tableName = "history")

@@ -11,7 +11,8 @@ import com.example.bussro.model.db.entity.History
 
 @Dao
 interface HistoryDao {
-    @Query("SELECT * FROM history")
+    /* 모든 히스토리 조회(시간 내림차순) */
+    @Query("SELECT * FROM history ORDER BY date DESC")
     fun getAll(): LiveData<List<History>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
