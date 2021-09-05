@@ -33,7 +33,7 @@ class HistoryActivity : AppCompatActivity() {
     }
 
     private fun initVar() {
-        val rvAdapter = HistoryAdapter()
+        val rvAdapter = HistoryAdapter(application)
         binding.rvHistory.apply {
             adapter = rvAdapter
             layoutManager = LinearLayoutManager(this@HistoryActivity)

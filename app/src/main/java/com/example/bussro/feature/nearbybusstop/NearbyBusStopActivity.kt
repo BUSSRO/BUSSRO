@@ -90,7 +90,7 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 .get(NearbyBusStopViewModel::class.java)
 
         // RecyclerView 세팅
-        val rvAdapter = NearbyBusStopAdapter()
+        val rvAdapter = NearbyBusStopAdapter(application)
         binding.rvNearbyBusStop.apply {
             adapter = rvAdapter
             layoutManager = LinearLayoutManager(this@NearbyBusStopActivity)

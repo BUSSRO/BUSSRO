@@ -1,5 +1,7 @@
 package com.example.bussro.feature.history
 
+import android.app.Application
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,14 +10,22 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bussro.R
 import com.example.bussro.databinding.RvHistoryItemBinding
+import com.example.bussro.feature.buslist.BusListActivity
 import com.example.bussro.model.db.entity.History
+import com.example.bussro.model.repository.HistoryRepository
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * [HistoryAdapter]
  * HistoryActivity 의 RecyclerView 의 Adapter
+ *
+ * @param application application from HistoryActivity
  */
 
-class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
+class HistoryAdapter(
+    private val application: Application
+) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
     private var data = listOf<History>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
@@ -33,9 +43,25 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() 
             // 데이터 input
             history = data[position]
             // click event
-            root.setOnClickListener {
-                // TODO: BusListActivity 로 넘어가기
-                Log.d("test", "onBindViewHolder: clicked")
+            root.setOnClickListener { view ->
+                val intent = Intent(view.context, BusListActivity::class.java)
+                    .putExtra("stationNm", history?.stationNm)
+                    .putExtra("arsId", history?.arsId)
+                view.context.startActivity(intent)
+
+                // 현재 일자 및 시각
+                val date = Date(System.currentTimeMillis())
+                val dateFormat = SimpleDateFormat("yy-MM-dd\nhh:mm:ss", Locale.getDefault())
+
+                // History 입력
+                val repository = HistoryRepository(application)
+                repository.insert(
+                    History(
+                        history?.arsId!!,
+                        history?.stationNm!!,
+                        dateFormat.format(date)
+                    )
+                )
             }
         }
     }
