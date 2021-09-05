@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 배경색 -->
+    <item
+        android:drawable="@color/black"/>
+
+    <!-- 로고 이미지 -->
+    <!-- TODO: 현재 임시 이미지, 후에 버스로 로고 이미지로 변경하기 -->
+    <item
+        android:drawable="@drawable/ic_bus_list_location"
+        android:gravity="center"/>
+</layer-list>
