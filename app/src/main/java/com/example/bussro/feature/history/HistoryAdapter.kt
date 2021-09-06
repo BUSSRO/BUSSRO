@@ -2,7 +2,6 @@ package com.example.bussro.feature.history
 
 import android.app.Application
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.NonNull

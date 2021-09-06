@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.os.bundleOf
@@ -15,6 +14,7 @@ import com.example.bussro.util.CustomItemDecoration
 import com.example.bussro.R
 import com.example.bussro.databinding.ActivityBusListBinding
 import com.example.bussro.feature.sign.SignActivity
+import com.example.bussro.util.logd
 import java.util.*
 
 /**
@@ -52,7 +52,7 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         intent.getStringExtra("arsId")?.apply {
             viewModel = ViewModelProvider(this@BusListActivity, ViewModelFactory(this, stationNm))
                 .get(BusListViewModel::class.java)
-            Log.d("test", "정류장고유번호 : arsId: ${intent.getStringExtra("arsId")}")
+            logd("정류장고유번호 : arsId: ${intent.getStringExtra("arsId")}")
         }
 
         val rvAdapter = BusListAdapter(busList, this)

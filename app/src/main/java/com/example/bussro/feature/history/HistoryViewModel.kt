@@ -1,8 +1,6 @@
 package com.example.bussro.feature.history
 
 import android.app.Application
-import android.util.Log
-import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import com.example.bussro.model.db.entity.History
 import com.example.bussro.model.repository.HistoryRepository

@@ -2,16 +2,14 @@ package com.example.bussro.feature.history
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bussro.R
 import com.example.bussro.databinding.ActivityHistoryBinding
-import com.example.bussro.model.db.entity.History
 import com.example.bussro.util.CustomItemDecoration
+import com.example.bussro.util.logd
 
 /**
  * [HistoryActivity]
@@ -41,7 +39,7 @@ class HistoryActivity : AppCompatActivity() {
         }
 
         viewModel.getAll().observe(this, Observer {
-            Log.d("test", "onCreate: ${it}")
+            logd("onCreate: ${it}")
             rvAdapter.updateData(it)
         })
     }

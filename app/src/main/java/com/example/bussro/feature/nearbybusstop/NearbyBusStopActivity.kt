@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bussro.R
 import com.example.bussro.databinding.ActivityNearbyBusStopBinding
 import com.example.bussro.util.CustomItemDecoration
+import com.example.bussro.util.logd
 import com.google.android.gms.location.LocationServices
 import java.util.*
 
@@ -60,7 +61,7 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
                 it[Manifest.permission.ACCESS_FINE_LOCATION]?.let { granted ->
                     if (granted) {
-                        Log.d("test", "위치 권한 설정 완료")
+                        logd("위치 권한 설정 완료")
                     }
                     viewModel.requestNearbyBusStop()
                 }

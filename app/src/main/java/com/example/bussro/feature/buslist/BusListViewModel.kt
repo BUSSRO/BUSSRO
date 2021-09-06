@@ -1,7 +1,6 @@
 package com.example.bussro.feature.buslist
 
 import android.content.Intent
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,6 +9,7 @@ import com.example.bussro.BuildConfig
 import com.example.bussro.model.network.api.BusAPI
 import com.example.bussro.model.network.response.BusListData
 import com.example.bussro.feature.businfo.BusInfoActivity
+import com.example.bussro.util.logd
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -38,7 +38,7 @@ class BusListViewModel(
                  BusAPI("BusListData").loadXmlFromNetwork<BusListData>(urlString)
             }
 
-            Log.d("test", "requestBusList: $data")
+            logd("requestBusList: $data")
 
             busListLiveData.postValue(data)
             loadingLiveData.postValue(false)
@@ -49,7 +49,7 @@ class BusListViewModel(
     fun onClick(v: View) {
         val intent = Intent(v.context, BusInfoActivity::class.java)
             .putExtra("stationNm", stationNm)
-        Log.d("test", "onClick: $stationNm")
+        logd("onClick: $stationNm")
         v.context.startActivity(intent)
     }
 

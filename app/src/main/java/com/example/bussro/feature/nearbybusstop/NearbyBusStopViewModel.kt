@@ -2,7 +2,6 @@ package com.example.bussro.feature.nearbybusstop
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.util.Log
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.*
@@ -12,6 +11,7 @@ import com.example.bussro.model.network.response.NearbyBusStopData
 import com.example.bussro.model.network.response.SearchStopData
 import com.example.bussro.util.LocationToDistance
 import com.example.bussro.feature.findstation.FindStationActivity
+import com.example.bussro.util.logd
 import com.google.android.gms.location.FusedLocationProviderClient
 import kotlinx.coroutines.*
 
@@ -41,7 +41,7 @@ class NearbyBusStopViewModel(
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location ->
                 if (location != null) {
-                    Log.d("test", "위도 : ${location.latitude}, 경도 : ${location.longitude}")
+                    logd("위도 : ${location.latitude}, 경도 : ${location.longitude}")
                     // 2. API 데이터 가져오기
                     viewModelScope.launch {
                         val data = getApiData(
@@ -73,7 +73,7 @@ class NearbyBusStopViewModel(
     /* 사용자 검색 버스 정류장 요청 메서드 */
     @SuppressLint("MissingPermission")
     fun requestSearchedBusStop(stSrch: String) {
-        Log.d("test", "requestSearchedBusStop: 사용자 검색 ==> $stSrch 정류장")
+        logd("requestSearchedBusStop: 사용자 검색 ==> $stSrch 정류장")
         loadingLiveData.value = true
         // 1. 사용자 위치 받기
         fusedLocationClient.lastLocation
