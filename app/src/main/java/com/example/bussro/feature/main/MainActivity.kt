@@ -2,10 +2,12 @@ package com.example.bussro.feature.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.accessibility.AccessibilityNodeInfo
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import com.example.bussro.BuildConfig
 import com.example.bussro.R
 import com.example.bussro.databinding.ActivityMainBinding
 
