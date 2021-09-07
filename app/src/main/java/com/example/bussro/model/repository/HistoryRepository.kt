@@ -1,7 +1,9 @@
 package com.example.bussro.model.repository
 
 import android.app.Application
+import android.content.Context
 import com.example.bussro.model.db.HistoryDatabase
+import com.example.bussro.model.db.dao.HistoryDao
 import com.example.bussro.model.db.entity.History
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
@@ -17,13 +19,15 @@ import javax.inject.Singleton
  */
 
 @Singleton
-class HistoryRepository @Inject constructor(application: Application) {
-    private var historyDatabase = HistoryDatabase.getInstance(application)!!
-    private var historyDao = historyDatabase.historyDao()
-    private var histories = historyDao.getAll()
+class HistoryRepository @Inject constructor(
+    private val historyDao: HistoryDao
+) {
+//    private var historyDatabase = HistoryDatabase.getInstance(application)!!
+//    private var historyDao = historyDatabase.historyDao()
+//    private var histories = historyDao.getAll()
 
     /* ViewModel 에서 DB 접근시 수행할 함수 */
-    fun getAll() = histories
+    fun getAll() = historyDao.getAll()
 
     /* 새로운 히스토리 입력 */
     fun insert(history: History) {

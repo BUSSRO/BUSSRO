@@ -14,6 +14,7 @@ import com.example.bussro.model.db.entity.History
 import com.example.bussro.model.repository.HistoryRepository
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 /**
  * [HistoryAdapter]
@@ -23,6 +24,7 @@ import java.util.*
  */
 
 class HistoryAdapter(
+    private val historyRepository: HistoryRepository,
     private val application: Application
 ) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
     private var data = listOf<History>()
@@ -53,8 +55,8 @@ class HistoryAdapter(
                 val dateFormat = SimpleDateFormat("yy-MM-dd\nhh:mm:ss", Locale.getDefault())
 
                 // History 입력
-                val repository = HistoryRepository(application)
-                repository.insert(
+//                val repository = HistoryRepository(application)
+                historyRepository.insert(
                     History(
                         history?.arsId!!,
                         history?.stationNm!!,

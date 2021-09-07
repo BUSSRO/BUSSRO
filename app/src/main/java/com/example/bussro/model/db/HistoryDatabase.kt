@@ -16,23 +16,23 @@ import com.example.bussro.model.db.entity.History
 abstract class HistoryDatabase : RoomDatabase() {
     abstract fun historyDao(): HistoryDao
 
-    companion object {
-        private var instance: HistoryDatabase? = null
-
-        /* return History Database*/
-        fun getInstance(context: Context): HistoryDatabase? {
-            if (instance == null) {
-                synchronized(HistoryDatabase::class) {
-                    // db 객체 생성
-                    instance = Room.databaseBuilder(
-                        context.applicationContext,
-                        HistoryDatabase::class.java,
-                        "history")
-                        .fallbackToDestructiveMigration()  // db 갱신시 새 table 생성
-                        .build()
-                }
-            }
-            return instance
-        }
-    }
+//    companion object {
+//        private var instance: HistoryDatabase? = null
+//
+//        /* return History Database*/
+//        fun getInstance(context: Context): HistoryDatabase? {
+//            if (instance == null) {
+//                synchronized(HistoryDatabase::class) {
+//                    // db 객체 생성
+//                    instance = Room.databaseBuilder(
+//                        context.applicationContext,
+//                        HistoryDatabase::class.java,
+//                        "history")
+//                        .fallbackToDestructiveMigration()  // db 갱신시 새 table 생성
+//                        .build()
+//                }
+//            }
+//            return instance
+//        }
+//    }
 }

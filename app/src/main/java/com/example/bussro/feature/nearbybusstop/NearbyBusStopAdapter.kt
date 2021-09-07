@@ -13,8 +13,10 @@ import com.example.bussro.databinding.RvNearbyBusStopItemBinding
 import com.example.bussro.feature.buslist.BusListActivity
 import com.example.bussro.model.db.entity.History
 import com.example.bussro.model.repository.HistoryRepository
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 /**
  * [NearbyBusStopAdapter]
@@ -25,6 +27,7 @@ import java.util.*
  */
 
 class NearbyBusStopAdapter(
+    private val historyRepository: HistoryRepository,
     private val application: Application
 ) : RecyclerView.Adapter<NearbyBusStopAdapter.NearbyBusStopViewHolder>() {
     private var data = listOf<NearbyBusStopData>()
@@ -55,8 +58,9 @@ class NearbyBusStopAdapter(
                 val dateFormat = SimpleDateFormat("yy-MM-dd\nhh:mm:ss", Locale.getDefault())
 
                 // History 입력
-                val repository = HistoryRepository(application)
-                repository.insert(
+
+//                val repository = HistoryRepository(application)
+                historyRepository.insert(
                     History(
                         nearbyBusStop?.arsId!!,
                         nearbyBusStop?.stationNm!!,

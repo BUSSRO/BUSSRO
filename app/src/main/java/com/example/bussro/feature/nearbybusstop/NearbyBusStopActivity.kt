@@ -21,11 +21,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bussro.R
 import com.example.bussro.databinding.ActivityNearbyBusStopBinding
 import com.example.bussro.feature.findstation.FindStationActivity
+import com.example.bussro.model.repository.HistoryRepository
 import com.example.bussro.util.CustomItemDecoration
 import com.example.bussro.util.logd
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
+import javax.inject.Inject
 
 /**
  * [NearbyBusStopActivity]
@@ -51,6 +53,7 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 }
             }
         }
+    @Inject lateinit var historyRepository: HistoryRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,7 +93,7 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             }
 
         // RecyclerView 세팅
-        val rvAdapter = NearbyBusStopAdapter(application)
+        val rvAdapter = NearbyBusStopAdapter(historyRepository, application)
         binding.rvNearbyBusStop.apply {
             adapter = rvAdapter
             layoutManager = LinearLayoutManager(this@NearbyBusStopActivity)
