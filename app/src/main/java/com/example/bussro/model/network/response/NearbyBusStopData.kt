@@ -19,7 +19,7 @@ data class NearbyBusStopData(
 )
 
 /* DataBinding_정류소명 */
-@BindingAdapter("stationNm")
+@BindingAdapter("stationName")
 fun setStationNm(txt: TextView, stationNm: String) {
     txt.text = stationNm
 }

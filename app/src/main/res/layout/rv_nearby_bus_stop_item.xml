@@ -17,7 +17,7 @@
         <!-- 버스정류장 -->
         <TextView
             android:id="@+id/txt_bus_list_item_number"
-            app:stationNm="@{nearbyBusStop.stationNm}"
+            app:stationName="@{nearbyBusStop.stationNm}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             tools:text="돈암초등학교"
