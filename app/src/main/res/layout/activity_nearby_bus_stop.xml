@@ -8,6 +8,10 @@
             name="viewModel"
             type="com.example.bussro.feature.nearbybusstop.NearbyBusStopViewModel" />
 
+        <variable
+            name="activity"
+            type="com.example.bussro.feature.nearbybusstop.NearbyBusStopActivity" />
+
     </data>
 
     <!-- CHECK: UI/UX 확정 X, 임시 UI 사용 -->
@@ -44,7 +48,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@id/rv_nearby_bus_stop"
-            android:onClick="@{(v) -> viewModel.onclick(v)}"
+            android:onClick="@{(v) -> activity.onclick(v)}"
             android:layout_margin="16dp" />
 
         <androidx.recyclerview.widget.RecyclerView

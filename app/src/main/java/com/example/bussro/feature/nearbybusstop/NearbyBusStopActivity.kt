@@ -2,6 +2,7 @@ package com.example.bussro.feature.nearbybusstop
 
 import android.Manifest
 import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,6 +12,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -18,9 +20,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bussro.R
 import com.example.bussro.databinding.ActivityNearbyBusStopBinding
+import com.example.bussro.feature.findstation.FindStationActivity
 import com.example.bussro.util.CustomItemDecoration
 import com.example.bussro.util.logd
 import com.google.android.gms.location.LocationServices
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
 /**
@@ -31,11 +35,22 @@ import java.util.*
  * TODO: 무선인터넷 연결 여부 확인 후 예외 처리하기
  */
 
+@AndroidEntryPoint
 class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
-    private lateinit var viewModel: NearbyBusStopViewModel
+    private val viewModel: NearbyBusStopViewModel by viewModels()
     private lateinit var binding: ActivityNearbyBusStopBinding
     private lateinit var requestLocation: ActivityResultLauncher<Array<String>>
     private lateinit var tts: TextToSpeech
+    private val startActivityForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val stationNm = result.data?.getStringExtra("stationNm")
+
+                if (!stationNm.isNullOrEmpty()) {
+                    viewModel.requestSearchedBusStop(stationNm)
+                }
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,12 +61,19 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         initVar()
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+        binding.activity = this@NearbyBusStopActivity
         requestPermission()
 
         // 화면 전환 대응
         if (savedInstanceState == null) {
             viewModel.requestNearbyBusStop()
         }
+    }
+
+    /* onClick */
+    fun onclick(view: View) {
+        val intent = Intent(view.context, FindStationActivity::class.java)
+        startActivityForResult.launch(intent)
     }
 
     /* 변수 초기화 */
@@ -66,29 +88,6 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                     viewModel.requestNearbyBusStop()
                 }
             }
-
-        // startResultForActivity 객체
-        val startActivityForResult =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == Activity.RESULT_OK) {
-                    val stationNm = result.data?.getStringExtra("stationNm")
-
-                    if (!stationNm.isNullOrEmpty()) {
-                        viewModel.requestSearchedBusStop(stationNm)
-                    }
-                }
-            }
-
-        // ViewModel 객체
-        viewModel =
-            ViewModelProvider(
-                this,
-                ViewModelFactory(
-                    LocationServices.getFusedLocationProviderClient(applicationContext),
-                    startActivityForResult
-                )
-            )
-                .get(NearbyBusStopViewModel::class.java)
 
         // RecyclerView 세팅
         val rvAdapter = NearbyBusStopAdapter(application)

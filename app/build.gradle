@@ -21,8 +21,23 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation":
+                                     "$projectDir/schemas".toString()]
+            }
+        }
+
         // API KEY
         buildConfigField("String", "NEARBY_BUS_STOP_API_KEY", properties['NEARBY_BUS_STOP_API_KEY'])
+    }
+    kapt {
+        javacOptions {
+            // These options are normally set automatically via the Hilt Gradle plugin, but we
+            // set them manually to workaround a bug in the Kotlin 1.5.20
+            option("-Adagger.fastInit=ENABLED")
+            option("-Adagger.hilt.android.internal.disableAndroidSuperclassValidation=true")
+        }
     }
 
 
@@ -78,6 +93,10 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:18.0.0'
 
     // Hilt
-    implementation "com.google.dagger:hilt-android:2.37"
-    kapt "com.google.dagger:hilt-android-compiler:2.37"
+    implementation "com.google.dagger:hilt-android:2.38.1"
+    kapt "com.google.dagger:hilt-android-compiler:2.38.1"
+}
+
+kapt {
+    correctErrorTypes true
 }

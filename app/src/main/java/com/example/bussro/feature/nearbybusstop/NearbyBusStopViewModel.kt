@@ -13,25 +13,21 @@ import com.example.bussro.util.LocationToDistance
 import com.example.bussro.feature.findstation.FindStationActivity
 import com.example.bussro.util.logd
 import com.google.android.gms.location.FusedLocationProviderClient
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
+import javax.inject.Inject
 
 /**
  * [NearbyBusStopViewModel]
  * NearbyBusStopActivity 의 ViewModel
  */
 
-class NearbyBusStopViewModel(
+@HiltViewModel
+class NearbyBusStopViewModel @Inject constructor(
     private val fusedLocationClient: FusedLocationProviderClient,
-    private val startForResult: ActivityResultLauncher<Intent>
 ) : ViewModel() {
     var busStopsLiveData = MutableLiveData<List<NearbyBusStopData>>()
     var loadingLiveData = MutableLiveData<Boolean>()  // 로딩
-
-    /* handle click event */
-    fun onclick(view: View) {
-        val intent = Intent(view.context, FindStationActivity::class.java)
-        startForResult.launch(intent)
-    }
 
     /* 사용자 주변 버스 정류장 요청 메서드 */
     @SuppressLint("MissingPermission")

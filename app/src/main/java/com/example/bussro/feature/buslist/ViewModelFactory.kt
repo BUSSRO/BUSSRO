@@ -2,7 +2,6 @@ package com.example.bussro.feature.buslist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.bussro.feature.nearbybusstop.ViewModelFactory
 
 /**
  * [ViewModelFactory]

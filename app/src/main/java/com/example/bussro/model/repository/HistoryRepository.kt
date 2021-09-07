@@ -3,17 +3,21 @@ package com.example.bussro.model.repository
 import android.app.Application
 import com.example.bussro.model.db.HistoryDatabase
 import com.example.bussro.model.db.entity.History
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * [HistoryRepository]
  * HistoryViewModel 과 HistoryDB 사이를 중재할 repository
  */
 
-class HistoryRepository(application: Application) {
+@Singleton
+class HistoryRepository @Inject constructor(application: Application) {
     private var historyDatabase = HistoryDatabase.getInstance(application)!!
     private var historyDao = historyDatabase.historyDao()
     private var histories = historyDao.getAll()
