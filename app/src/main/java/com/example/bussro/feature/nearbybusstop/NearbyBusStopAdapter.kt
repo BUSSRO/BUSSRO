@@ -13,10 +13,8 @@ import com.example.bussro.databinding.RvNearbyBusStopItemBinding
 import com.example.bussro.feature.buslist.BusListActivity
 import com.example.bussro.model.db.entity.History
 import com.example.bussro.model.repository.HistoryRepository
-import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
-import javax.inject.Inject
 
 /**
  * [NearbyBusStopAdapter]
@@ -55,7 +53,7 @@ class NearbyBusStopAdapter(
 
                 // 현재 일자 및 시각
                 val date = Date(System.currentTimeMillis())
-                val dateFormat = SimpleDateFormat("yy-MM-dd\nhh:mm:ss", Locale.getDefault())
+                val dateFormat = SimpleDateFormat("yy.MM.dd hh:mm", Locale.getDefault())
 
                 // History 입력
 

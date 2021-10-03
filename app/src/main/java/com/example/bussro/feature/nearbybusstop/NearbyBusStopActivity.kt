@@ -8,7 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -119,6 +123,19 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                     TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
                 )
             })
+        }
+
+        // EditText Search 감지
+        binding.edtNearbyBusStop.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                viewModel.requestSearchedBusStop(v.text.toString())
+
+                // 키보드 동작
+                val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(binding.edtNearbyBusStop.windowToken, 0)
+                return@setOnEditorActionListener true
+            }
+            false
         }
     }
 

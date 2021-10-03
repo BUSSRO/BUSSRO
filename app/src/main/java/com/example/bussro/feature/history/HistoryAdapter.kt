@@ -12,6 +12,7 @@ import com.example.bussro.databinding.RvHistoryItemBinding
 import com.example.bussro.feature.buslist.BusListActivity
 import com.example.bussro.model.db.entity.History
 import com.example.bussro.model.repository.HistoryRepository
+import com.example.bussro.util.logd
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -52,10 +53,9 @@ class HistoryAdapter(
 
                 // 현재 일자 및 시각
                 val date = Date(System.currentTimeMillis())
-                val dateFormat = SimpleDateFormat("yy-MM-dd\nhh:mm:ss", Locale.getDefault())
+                val dateFormat = SimpleDateFormat("yy.MM.dd hh:mm", Locale.getDefault())
 
                 // History 입력
-//                val repository = HistoryRepository(application)
                 historyRepository.insert(
                     History(
                         history?.arsId!!,
@@ -63,6 +63,12 @@ class HistoryAdapter(
                         dateFormat.format(date)
                     )
                 )
+            }
+            // toggle click event
+            tbHistory.setOnCheckedChangeListener { buttonView, isChecked ->
+                // ERROR: toggle not working
+                logd("$isChecked")
+                tbHistory.toggle()
             }
         }
     }
