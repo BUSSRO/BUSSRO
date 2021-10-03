@@ -22,11 +22,7 @@ import javax.inject.Singleton
 class HistoryRepository @Inject constructor(
     private val historyDao: HistoryDao
 ) {
-//    private var historyDatabase = HistoryDatabase.getInstance(application)!!
-//    private var historyDao = historyDatabase.historyDao()
-//    private var histories = historyDao.getAll()
-
-    /* ViewModel 에서 DB 접근시 수행할 함수 */
+    /* History DB 에 저장된 모든 데이터 불러오기 */
     fun getAll() = historyDao.getAll()
 
     /* 새로운 히스토리 입력 */
