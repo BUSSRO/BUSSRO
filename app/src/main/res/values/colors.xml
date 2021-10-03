@@ -10,4 +10,5 @@
 
     <!-- Custom Color -->
     <color name="gray">#787878</color>
+    <color name="red">#FF1100</color>
 </resources>

@@ -1,10 +1,16 @@
 package com.example.bussro.feature.sign
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import com.example.bussro.R
 import com.example.bussro.databinding.ActivitySignBinding
+import com.example.bussro.util.logd
 
 /**
  * [SignActivity]
@@ -13,14 +19,59 @@ import com.example.bussro.databinding.ActivitySignBinding
 
 class SignActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignBinding
+    private lateinit var rtNm: String
+    private var cnt = 0
+    private val mDelayHandler: Handler by lazy {
+        Handler(Looper.getMainLooper())
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_sign)
 
         // 노선명
-        intent.getStringExtra("rtNm")?.apply {
-            binding.txtSign.text = this
+        rtNm = intent.getStringExtra("rtNm") ?: ""
+
+        // 전광판
+        start()
+    }
+
+    private fun start() {
+        when (++cnt % 2) {
+            0 -> first()
+            1 -> second()
+//            2 -> third()
         }
+    }
+
+    private fun rest() {
+        mDelayHandler.postDelayed(::start, 500)
+    }
+
+    // 배경색 변경
+    @SuppressLint("ResourceAsColor")
+    private fun first() {
+        binding.txtSign.text = rtNm
+        binding.txtSign.setTextColor(resources.getColor(R.color.yellow))
+        binding.constraint.setBackgroundColor(resources.getColor(R.color.black))
+        rest()
+    }
+
+    // 반짝임
+    @SuppressLint("ResourceAsColor")
+    private fun second() {
+        binding.txtSign.text = "탑승원함"
+        binding.txtSign.setTextColor(resources.getColor(R.color.black))
+        binding.constraint.setBackgroundColor(resources.getColor(R.color.white))
+        rest()
+    }
+
+    // 글자변경
+    @SuppressLint("ResourceAsColor")
+    private fun third() {
+        binding.txtSign.text = "★☆★"
+        binding.txtSign.setTextColor(resources.getColor(R.color.red))
+        binding.constraint.setBackgroundColor(resources.getColor(R.color.gray))
+        rest()
     }
 }
