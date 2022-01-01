@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import com.example.bussro.feature.main.MainActivity
+import com.example.bussro.feature.onboarding.OnBoardingActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlin.coroutines.CoroutineContext
 
@@ -17,11 +18,11 @@ class LaunchScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Handler().postDelayed({
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
-        }, 3000)
+        // OnBoardingActivity 와 MainActivity 로 갈 사용자 구분하기
+
+        val intent = Intent(this, OnBoardingActivity::class.java)
+        startActivity(intent)
+        finish()
 
 //        val intent = Intent(this, MainActivity::class.java)
 //        startActivity(intent)
