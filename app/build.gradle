@@ -39,7 +39,24 @@ android {
             option("-Adagger.hilt.android.internal.disableAndroidSuperclassValidation=true")
         }
     }
-
+    aaptOptions {
+        noCompress "tflite"
+    }
+    lintOptions {
+        abortOnError false
+    }
+    flavorDimensions "tfliteInference"
+    productFlavors {
+        // The TFLite inference is built using the TFLite Java interpreter.
+        interpreter {
+            dimension "tfliteInference"
+        }
+        // Default: The TFLite inference is built using the TFLite Task library (high-level API).
+        taskApi {
+            getIsDefault().set(true)
+            dimension "tfliteInference"
+        }
+    }
 
     buildTypes {
         release {
@@ -70,6 +87,10 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    // import ML module
+//    implementation fileTree(dir: 'libs', include: ['*.jar','*.aar'])
+    implementation project(path: ':machine_learning')
 
     // 코루틴
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2'
