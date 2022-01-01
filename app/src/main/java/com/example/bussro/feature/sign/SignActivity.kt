@@ -53,7 +53,7 @@ class SignActivity : AppCompatActivity() {
     private fun first() {
         binding.txtSign.text = rtNm
         binding.txtSign.setTextColor(resources.getColor(R.color.yellow))
-        binding.constraint.setBackgroundColor(resources.getColor(R.color.black))
+//        binding.constraint.setBackgroundColor(resources.getColor(R.color.black))
         rest()
     }
 
@@ -62,7 +62,7 @@ class SignActivity : AppCompatActivity() {
     private fun second() {
         binding.txtSign.text = "탑승원함"
         binding.txtSign.setTextColor(resources.getColor(R.color.black))
-        binding.constraint.setBackgroundColor(resources.getColor(R.color.white))
+//        binding.constraint.setBackgroundColor(resources.getColor(R.color.white))
         rest()
     }
 
@@ -71,7 +71,7 @@ class SignActivity : AppCompatActivity() {
     private fun third() {
         binding.txtSign.text = "★☆★"
         binding.txtSign.setTextColor(resources.getColor(R.color.red))
-        binding.constraint.setBackgroundColor(resources.getColor(R.color.gray))
+//        binding.constraint.setBackgroundColor(resources.getColor(R.color.gray))
         rest()
     }
 }
