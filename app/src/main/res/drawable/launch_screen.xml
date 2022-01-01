@@ -10,4 +10,12 @@
         android:width="257dp"
         android:height="260dp"
         android:gravity="center"/>
+
+    <!-- 앱 설명 -->
+    <item
+        android:drawable="@drawable/ic_logo_description"
+        android:width="300dp"
+        android:height="75dp"
+        android:gravity="bottom|center_horizontal"
+        android:bottom="96dp"/>
 </layer-list>

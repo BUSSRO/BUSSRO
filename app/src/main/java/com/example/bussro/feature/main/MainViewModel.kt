@@ -27,21 +27,7 @@ class MainViewModel : ViewModel() {
                 v.context.startActivity(Intent(v.context, NearbyBusStopActivity::class.java))
             }
             2 -> {  // 하차벨 위치
-//                val intent = Intent()
-//                intent.setClassName("org.tensorflow.lite.examples.detection", "org.tensorflow.lite.examples.detection.DetectorActivity")
-//                v.context.startActivity(intent)
-
-                try {
-                    val intent = Intent(
-                        v.context,
-                        Class.forName("org.tensorflow.lite.examples.detection.DetectorActivity")
-                    )
-                    v.context.startActivity(intent)
-                } catch (e: ClassNotFoundException) {
-                    e.printStackTrace()
-                }
-
-//                Toast.makeText(v.context, "[하차벨 위치]\n구현되지 않은 기능입니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(v.context, "[하차벨 위치]\n다음 업데이트에 포함될 기능입니다.", Toast.LENGTH_SHORT).show()
             }
             3 -> {  // 히스토리
                 v.context.startActivity(Intent(v.context, HistoryActivity::class.java))
