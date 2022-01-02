@@ -1,5 +1,6 @@
 package com.example.bussro.feature.onboarding
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -7,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import com.example.bussro.R
 import com.example.bussro.databinding.ActivityHistoryBinding
 import com.example.bussro.databinding.ActivityOnBoardingBinding
+import com.example.bussro.feature.clause.ClauseActivity
 import com.example.bussro.feature.main.MainActivity
 
 /**
@@ -40,7 +42,7 @@ class OnBoardingActivity : AppCompatActivity() {
     private fun setOnClickListener() {
         binding.txtOnboardingNext.setOnClickListener {
             if (binding.vpOnboarding.currentItem == 2) {
-                Toast.makeText(this, "마지막", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this, ClauseActivity::class.java))
             } else {
                 binding.vpOnboarding.currentItem += 1
             }

@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:text="다음"
             android:textAlignment="center"
-            android:textSize="13dp"
+            android:textSize="16dp"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:background="@color/light_gray"

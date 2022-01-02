@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.bussro" >
+    package="com.example.bussro">
     <!-- 권한 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -15,9 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BUSSRO"
-        android:usesCleartextTraffic="true" >
-        <activity android:name=".feature.onboarding.OnBoardingActivity" >
-        </activity>
+        android:usesCleartextTraffic="true">
+        <activity android:name=".feature.clause.ClauseActivity"></activity>
+        <activity android:name=".feature.onboarding.OnBoardingActivity"></activity>
         <activity
             android:name=".feature.history.HistoryActivity"
             android:label="@string/empty_label" />
@@ -50,7 +50,7 @@
         <activity
             android:name=".feature.launch.LaunchScreenActivity"
             android:label="@string/app_name"
-            android:theme="@style/LaunchTheme" >
+            android:theme="@style/LaunchTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

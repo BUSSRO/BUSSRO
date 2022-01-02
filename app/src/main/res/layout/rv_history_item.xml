@@ -43,8 +43,8 @@
         <!-- 구분자 -->
         <ImageView
             android:id="@+id/txt_history_divider"
-            android:layout_width="3dp"
-            android:layout_height="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:src="@drawable/ic_circle"
             app:layout_constraintTop_toTopOf="@id/txt_history_stationNm"
             app:layout_constraintBottom_toBottomOf="@id/txt_history_stationNm"

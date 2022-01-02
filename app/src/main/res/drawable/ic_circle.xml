@@ -3,4 +3,8 @@
     android:shape="oval"
     android:tint="#8B8B8B">
 
+    <size
+        android:width="3dp"
+        android:height="3dp"/>
+
 </shape>
