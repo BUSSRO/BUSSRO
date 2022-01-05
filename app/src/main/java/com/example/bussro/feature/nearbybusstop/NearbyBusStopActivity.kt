@@ -51,10 +51,11 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val stationNm = result.data?.getStringExtra("stationNm")
+                viewModel.requestSearchedBusStop(stationNm!!)
 
-                if (!stationNm.isNullOrEmpty()) {
-                    viewModel.requestSearchedBusStop(stationNm)
-                }
+//                if (!stationNm.isNullOrEmpty()) {
+//                    viewModel.requestSearchedBusStop(stationNm)
+//                }
             }
         }
     @Inject lateinit var historyRepository: HistoryRepository

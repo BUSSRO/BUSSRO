@@ -1,5 +1,6 @@
 package com.example.bussro.feature.history
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -35,7 +36,9 @@ class HistoryActivity : AppCompatActivity() {
 //        viewModel.deleteAll()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initVar() {
+        /* RecyclerView */
         val rvAdapter = HistoryAdapter(historyRepository, application)
         binding.rvHistory.apply {
             adapter = rvAdapter
@@ -46,6 +49,11 @@ class HistoryActivity : AppCompatActivity() {
         viewModel.getAll().observe(this, Observer {
             logd("onCreate: ${it}")
             rvAdapter.updateData(it)
+
+            /* 버스 이용 횟수 */
+            binding.txtHistoryDescription.text = "이번 달 버스 이용은 ${it.size} 번 입니다."
         })
+
+
     }
 }

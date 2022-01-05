@@ -3,6 +3,7 @@ package com.example.bussro.feature.clause
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import com.example.bussro.R
@@ -16,15 +17,37 @@ class ClauseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_clause)
 
-        // 뒤로가기
+        initVar()
+    }
+
+    private fun initVar() {
+        /* 뒤로가기 */
         binding.ibClauseBack.setOnClickListener {
             finish()
         }
 
-        // 앱 시작하기
+        /* 전체 동의하기 */
+        binding.cbClauseSelectAll.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                binding.cbClauseFirst.isChecked = true
+                binding.cbClauseSecond.isChecked = true
+                binding.cbClauseThird.isChecked = true
+            } else {
+                binding.cbClauseFirst.isChecked = false
+                binding.cbClauseSecond.isChecked = false
+                binding.cbClauseThird.isChecked = false
+            }
+        }
+
+        /* 앱 시작하기 */
         binding.txtClauseStart.setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
-            ActivityCompat.finishAffinity(this)
+            if (binding.cbClauseFirst.isChecked && binding.cbClauseSecond.isChecked) {
+                startActivity(Intent(this, MainActivity::class.java))
+                ActivityCompat.finishAffinity(this)
+            } else {
+                Toast.makeText(this, "필수 약관에 동의해주세요.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }
+

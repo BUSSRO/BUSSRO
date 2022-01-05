@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="6dp"
+    tools:context=".feature.buslist.CustomDialog">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <!-- 제목 -->
+        <View
+            android:id="@+id/view_dialog_title"
+            android:layout_width="0dp"
+            android:layout_height="65dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@color/yellow"/>
+
+        <ImageButton
+            android:id="@+id/ib_dialog_back"
+            android:background="@drawable/ic_baseline_close_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@+id/view_dialog_title"
+            app:layout_constraintEnd_toEndOf="@+id/view_dialog_title"
+            android:layout_margin="8dp"/>
+
+        <TextView
+            android:id="@+id/txt_dialog_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="어떤 방식으로 안내할까요?"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            app:layout_constraintTop_toTopOf="@+id/view_dialog_title"
+            app:layout_constraintStart_toStartOf="@+id/view_dialog_title"
+            app:layout_constraintBottom_toBottomOf="@+id/view_dialog_title"
+            android:layout_marginStart="16dp"/>
+
+        <!-- 전광판 -->
+        <TextView
+            android:id="@+id/txt_dialog_sign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="전광판"
+            android:textColor="@color/black"
+            android:textSize="12dp"
+            android:layout_margin="16dp"
+            app:layout_constraintTop_toBottomOf="@id/view_dialog_title"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/txt_dialog_sign_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="전광판 기능은 타고 싶은 버스를 기사님께 인식시키는 기능입니다.\n전광판 기능 버튼을 누르시고 버스를 향해 들어주시기 바랍니다."
+            android:textColor="@color/gray"
+            android:textSize="10dp"
+            app:layout_constraintTop_toBottomOf="@id/txt_dialog_sign"
+            android:layout_marginTop="14dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="16dp"/>
+
+        <!-- 구분선 -->
+        <View
+            android:id="@+id/view_dialog_div"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="16dp"
+            android:background="@color/light_gray"
+            app:layout_constraintTop_toBottomOf="@id/txt_dialog_sign_desc"/>
+
+        <!-- 카메라 -->
+        <TextView
+            android:id="@+id/txt_dialog_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="카메라"
+            android:textColor="@color/black"
+            android:textSize="12dp"
+            android:layout_margin="16dp"
+            app:layout_constraintTop_toBottomOf="@id/view_dialog_div"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/txt_dialog_camera_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="카메라 기능은 타고 싶은 버스를 비추면 그 버스의 번호판과 문을\n인식하여 쉽게 탑승할 수 있도록 도와주는 기능입니다."
+            android:textColor="@color/gray"
+            android:textSize="10dp"
+            app:layout_constraintTop_toBottomOf="@id/txt_dialog_camera"
+            android:layout_marginTop="14dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="16dp"/>
+
+        <!-- 기능 선택 버튼 -->
+        <View
+            android:id="@+id/view_dialog_bottom"
+            android:layout_width="0dp"
+            android:layout_height="44dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_dialog_camera_desc"
+            android:layout_marginTop="20dp"
+            android:background="@color/yellow"/>
+
+        <TextView
+            android:id="@+id/txt_dialog_use_sign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="전광판 기능"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="@+id/view_dialog_bottom"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/txt_dialog_use_camera"/>
+
+        <TextView
+            android:id="@+id/txt_dialog_use_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="카메라 인식"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="@+id/view_dialog_bottom"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/txt_dialog_use_sign"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

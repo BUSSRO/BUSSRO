@@ -20,12 +20,11 @@ class LaunchScreenActivity : AppCompatActivity() {
 
         // OnBoardingActivity 와 MainActivity 로 갈 사용자 구분하기
 
-        val intent = Intent(this, OnBoardingActivity::class.java)
-        startActivity(intent)
-        finish()
+        Handler().postDelayed({
+            val intent = Intent(this, OnBoardingActivity::class.java)
+            startActivity(intent)
+            finish()
 
-//        val intent = Intent(this, MainActivity::class.java)
-//        startActivity(intent)
-//        finish()
+        }, 1000)
     }
 }

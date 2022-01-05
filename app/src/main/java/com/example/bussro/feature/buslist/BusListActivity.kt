@@ -132,11 +132,15 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     }
 
     private fun initSetOnClickListener() {
+        /* 전광판 or 카메라 인식 */
         binding.txtBusListStart.setOnClickListener {
-            val intent = Intent(this, SignActivity::class.java)
-                .putExtras(bundleOf("busList" to busList))
-                .putExtra("rtNm", busList[0])
-            startActivity(intent)
+            val dialog = CustomDialog()
+            dialog.show(supportFragmentManager, "CustomDialog")
+
+//            val intent = Intent(this, SignActivity::class.java)
+//                .putExtras(bundleOf("busList" to busList))
+//                .putExtra("rtNm", busList[0])
+//            startActivity(intent)
         }
     }
 

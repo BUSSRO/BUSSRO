@@ -11,8 +11,6 @@ import com.example.bussro.feature.settings.SettingsActivity
 /**
  * [MainViewModel]
  * MainActivity 의 ViewModel
- *
- * TODO: "하차벨 위치" 버튼 클릭시 하차벨 액티비티로 넘어가기
  */
 
 class MainViewModel : ViewModel() {
