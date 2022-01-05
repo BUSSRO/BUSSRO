@@ -1,6 +1,8 @@
 package com.example.bussro.feature.settings
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -31,6 +33,7 @@ class SettingsActivity : AppCompatActivity(){
         initVar()
     }
 
+    @SuppressLint("QueryPermissionsNeeded")
     private fun initVar() {
         /* 뒤로가기 */
         binding.ivSettingBack.setOnClickListener {
@@ -44,9 +47,15 @@ class SettingsActivity : AppCompatActivity(){
             startActivity(intent)
         }
 
-        /* 문의하기 */
+        /* 문의하기 (이메일로 연결) */
         binding.ivSettingInquiryDetail.setOnClickListener {
+            val intent = Intent(Intent.ACTION_SENDTO)
+            intent.data = Uri.parse("mailto:${getString(R.string.email)}")
+            intent.putExtra(Intent.EXTRA_SUBJECT, "[버스스로] 사용자 건의사항")
 
+            if (intent.resolveActivity(packageManager) != null) {
+                startActivity(intent)
+            }
         }
 
         /* 개인정보처리방침 */
