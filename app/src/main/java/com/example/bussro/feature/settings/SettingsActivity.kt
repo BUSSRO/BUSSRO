@@ -1,9 +1,9 @@
 package com.example.bussro.feature.settings
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.preference.PreferenceFragmentCompat
 import com.example.bussro.R
 import com.example.bussro.databinding.ActivitySettingsBinding
 
@@ -39,7 +39,9 @@ class SettingsActivity : AppCompatActivity(){
 
         /* 공지사항 */
         binding.ivSettingNotiDetail.setOnClickListener {
-
+            val intent = Intent(this, WebViewActivity::class.java)
+                .putExtra("addr", NOTIFICATION_PAGE)
+            startActivity(intent)
         }
 
         /* 문의하기 */
@@ -49,13 +51,23 @@ class SettingsActivity : AppCompatActivity(){
 
         /* 개인정보처리방침 */
         binding.ivSettingClDetail.setOnClickListener {
-
+            val intent = Intent(this, WebViewActivity::class.java)
+                .putExtra("addr", PERSONAL_PAGE)
+            startActivity(intent)
         }
 
         /* 오픈소스 및 라이센스 */
         binding.ivSettingOsDetail.setOnClickListener {
-
+            val intent = Intent(this, WebViewActivity::class.java)
+                .putExtra("addr", LICENSE_PAGE)
+            startActivity(intent)
         }
+    }
+
+    companion object {
+        private const val NOTIFICATION_PAGE = "https://stitch-mandarin-baa.notion.site/70c0a410a7c6473b839962d06b107e59"
+        private const val PERSONAL_PAGE = "https://stitch-mandarin-baa.notion.site/bb0dd13476d64c01b820c673bac42602"
+        private const val LICENSE_PAGE = "https://stitch-mandarin-baa.notion.site/daee86be24c14b3d8f50c66aafc753a1"
     }
 
 //    class SettingsFragment : PreferenceFragmentCompat() {
