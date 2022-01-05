@@ -6,7 +6,7 @@
     <data>
         <variable
             name="activity"
-            type="com.example.bussro.feature.buslist.CustomDialog" />
+            type="com.youreye.bussro.feature.buslist.CustomDialog" />
     </data>
 
     <androidx.cardview.widget.CardView

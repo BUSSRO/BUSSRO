@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.bussro.feature.buslist.BusListViewModel" />
+            type="com.youreye.bussro.feature.buslist.BusListViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

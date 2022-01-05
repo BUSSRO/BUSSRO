@@ -5,7 +5,7 @@
     <data>
         <variable
             name="activity"
-            type="com.example.bussro.feature.settings.SettingsActivity" />
+            type="com.youreye.bussro.feature.settings.SettingsActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

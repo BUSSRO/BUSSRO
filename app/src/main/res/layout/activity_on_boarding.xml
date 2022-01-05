@@ -6,7 +6,7 @@
     <data>
         <variable
             name="activity"
-            type="com.example.bussro.feature.onboarding.OnBoardingActivity" />
+            type="com.youreye.bussro.feature.onboarding.OnBoardingActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

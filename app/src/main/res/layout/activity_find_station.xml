@@ -6,7 +6,7 @@
     <data>
         <variable
             name="activity"
-            type="com.example.bussro.feature.findstation.FindStationActivity" />
+            type="com.youreye.bussro.feature.findstation.FindStationActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

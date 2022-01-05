@@ -7,11 +7,11 @@
 
         <variable
             name="activity"
-            type="com.example.bussro.feature.main.MainActivity" />
+            type="com.youreye.bussro.feature.main.MainActivity" />
 
         <variable
             name="model"
-            type="com.example.bussro.feature.main.MainViewModel" />
+            type="com.youreye.bussro.feature.main.MainViewModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView

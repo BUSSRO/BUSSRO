@@ -6,7 +6,7 @@
     <data>
         <variable
             name="activity"
-            type="com.example.bussro.feature.clause.ClauseActivity" />
+            type="com.youreye.bussro.feature.clause.ClauseActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

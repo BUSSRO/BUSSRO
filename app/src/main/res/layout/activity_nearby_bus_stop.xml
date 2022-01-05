@@ -6,11 +6,11 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.bussro.feature.nearbybusstop.NearbyBusStopViewModel" />
+            type="com.youreye.bussro.feature.nearbybusstop.NearbyBusStopViewModel" />
 
         <variable
             name="activity"
-            type="com.example.bussro.feature.nearbybusstop.NearbyBusStopActivity" />
+            type="com.youreye.bussro.feature.nearbybusstop.NearbyBusStopActivity" />
 
     </data>
 

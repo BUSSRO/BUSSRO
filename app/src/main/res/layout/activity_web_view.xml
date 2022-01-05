@@ -6,7 +6,7 @@
     <data>
         <variable
             name="activity"
-            type="com.example.bussro.feature.settings.WebViewActivity" />
+            type="com.youreye.bussro.feature.settings.WebViewActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
