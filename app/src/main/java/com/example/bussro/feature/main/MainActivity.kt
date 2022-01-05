@@ -8,7 +8,6 @@ import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
-import com.example.bussro.BuildConfig
 import com.example.bussro.R
 import com.example.bussro.databinding.ActivityMainBinding
 

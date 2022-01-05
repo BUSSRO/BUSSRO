@@ -1,2 +1,5 @@
 rootProject.name = "BUSSRO"
 include ':app'
+include ':lib_interpreter'
+include ':lib_task_api'
+include ':machine_learning'
