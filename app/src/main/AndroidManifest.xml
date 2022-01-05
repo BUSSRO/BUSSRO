@@ -16,8 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BUSSRO"
         android:usesCleartextTraffic="true">
-        <activity android:name=".feature.clause.ClauseActivity"></activity>
-        <activity android:name=".feature.onboarding.OnBoardingActivity"></activity>
+        <activity android:name=".feature.settings.WebViewActivity"></activity>
+        <activity android:name=".feature.clause.ClauseActivity" />
+        <activity android:name=".feature.onboarding.OnBoardingActivity" />
         <activity
             android:name=".feature.history.HistoryActivity"
             android:label="@string/empty_label" />
@@ -27,9 +28,6 @@
             android:screenOrientation="landscape" />
         <activity
             android:name=".feature.nearbybusstop.NearbyBusStopActivity"
-            android:label="@string/empty_label" />
-        <activity
-            android:name=".feature.settings.LicenseActivity"
             android:label="@string/empty_label" />
         <activity
             android:name=".feature.settings.SettingsActivity"

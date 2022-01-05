@@ -4,15 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".feature.settings.LicenseActivity"
-    android:background="@color/black">
-
-    <TextView
-        android:text="LicenseActivity"
-        android:textColor="@color/white"
-        android:gravity="center"
-        style="@style/TextAppearance.MaterialComponents.Headline3"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+    tools:context=".feature.settings.WebViewActivity">
 
 </androidx.constraintlayout.widget.ConstraintLayout>
