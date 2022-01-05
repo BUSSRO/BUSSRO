@@ -27,7 +27,7 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private lateinit var viewModel: BusListViewModel
     private lateinit var binding: ActivityBusListBinding
     private lateinit var tts: TextToSpeech
-    private val busList = mutableListOf<String>()
+    val busList = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
