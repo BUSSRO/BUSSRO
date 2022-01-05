@@ -78,18 +78,19 @@
             app:layout_constraintBottom_toBottomOf="@id/img_history_item"
             app:layout_constraintStart_toEndOf="@id/img_history_item"
             tools:text="왕십리역 ~ 행운동 동사무소" />
-        
-        <ToggleButton
-            android:id="@+id/tb_history"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:textOff=""
-            android:textOn=""
-            app:layout_constraintTop_toTopOf="@id/txt_history_date"
-            app:layout_constraintBottom_toBottomOf="@id/txt_history_section"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/ic_history_selector"/>
+
+        <!-- 즐겨찾기 -->
+<!--        <ToggleButton-->
+<!--            android:id="@+id/tb_history"-->
+<!--            android:layout_width="32dp"-->
+<!--            android:layout_height="32dp"-->
+<!--            android:textOff=""-->
+<!--            android:textOn=""-->
+<!--            app:layout_constraintTop_toTopOf="@id/txt_history_date"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/txt_history_section"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            android:layout_marginEnd="16dp"-->
+<!--            android:background="@drawable/ic_history_selector"/>-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

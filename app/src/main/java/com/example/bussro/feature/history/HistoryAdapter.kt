@@ -65,11 +65,11 @@ class HistoryAdapter(
                 )
             }
             // toggle click event
-            tbHistory.setOnCheckedChangeListener { buttonView, isChecked ->
-                // ERROR: toggle not working
-                logd("$isChecked")
-                tbHistory.toggle()
-            }
+//            tbHistory.setOnCheckedChangeListener { buttonView, isChecked ->
+//                // ERROR: toggle not working
+//                logd("$isChecked")
+//                tbHistory.toggle()
+//            }
         }
     }
 

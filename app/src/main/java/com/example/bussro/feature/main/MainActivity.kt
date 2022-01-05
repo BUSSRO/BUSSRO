@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.accessibility.AccessibilityNodeInfo
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import com.example.bussro.BuildConfig
@@ -18,6 +19,7 @@ import com.example.bussro.databinding.ActivityMainBinding
  */
 
 class MainActivity : AppCompatActivity() {
+    private var backKeyPressed: Long = 0
     private val model by viewModels<MainViewModel>()
     private lateinit var binding: ActivityMainBinding
 
@@ -48,6 +50,18 @@ class MainActivity : AppCompatActivity() {
                     info?.isClickable = false
                 }
             }
+        }
+    }
+
+    override fun onBackPressed() {
+        val toast = Toast.makeText(this, "종료하시려면 뒤로가기를 한 번 더 누르세요.", Toast.LENGTH_SHORT)
+
+        if (System.currentTimeMillis() > backKeyPressed + 2000) {
+            backKeyPressed = System.currentTimeMillis()
+            toast.show()
+        } else if (System.currentTimeMillis() <= backKeyPressed + 2000) {
+            finish()
+            toast.cancel()
         }
     }
 }

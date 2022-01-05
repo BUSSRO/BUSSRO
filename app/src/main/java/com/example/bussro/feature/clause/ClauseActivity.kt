@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import com.example.bussro.R
 import com.example.bussro.databinding.ActivityClauseBinding
 import com.example.bussro.feature.main.MainActivity
+import com.example.bussro.util.User
 
 class ClauseActivity : AppCompatActivity() {
     private lateinit var binding: ActivityClauseBinding
@@ -42,6 +43,9 @@ class ClauseActivity : AppCompatActivity() {
         /* 앱 시작하기 */
         binding.txtClauseStart.setOnClickListener {
             if (binding.cbClauseFirst.isChecked && binding.cbClauseSecond.isChecked) {
+                /* 앱 최초 실행여부 저장 */
+                User.setFirst(this, false)
+
                 startActivity(Intent(this, MainActivity::class.java))
                 ActivityCompat.finishAffinity(this)
             } else {
