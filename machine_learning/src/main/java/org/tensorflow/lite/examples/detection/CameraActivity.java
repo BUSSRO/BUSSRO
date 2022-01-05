@@ -36,18 +36,18 @@ import android.os.HandlerThread;
 import android.os.Trace;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
-import androidx.appcompat.widget.Toolbar;
+
+import android.os.Vibrator;
 import android.util.Size;
 import android.view.Surface;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
+
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import java.nio.ByteBuffer;
 import org.tensorflow.lite.examples.detection.env.ImageUtils;
@@ -81,11 +81,15 @@ public abstract class CameraActivity extends AppCompatActivity
   private BottomSheetBehavior<LinearLayout> sheetBehavior;
 
   protected TextView frameValueTextView, cropValueTextView, inferenceTimeTextView;
-  protected TextView textView;
+  protected TextView txtCameraInfo;
   protected ImageView bottomSheetArrowImageView;
   private ImageView plusImageView, minusImageView;
   private SwitchCompat apiSwitchCompat;
+
+  /* custom var */
   private TextView threadsTextView;
+  private String rtNm; // 사용자가 탑승하려는 버스 번호
+  private Vibrator vibrator;  // 진동
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -94,8 +98,8 @@ public abstract class CameraActivity extends AppCompatActivity
     getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
     setContentView(R.layout.tfe_od_activity_camera);
-    Toolbar toolbar = findViewById(R.id.toolbar);
-    setSupportActionBar(toolbar);
+//    Toolbar toolbar = findViewById(R.id.toolbar);
+//    setSupportActionBar(toolbar);
 
 //    getSupportActionBar().setDisplayShowTitleEnabled(true);
 //    getSupportActionBar().hide();
@@ -106,71 +110,74 @@ public abstract class CameraActivity extends AppCompatActivity
       requestPermission();
     }
 
+    txtCameraInfo = findViewById(R.id.txt_camera_info);
+    rtNm = getIntent().getStringExtra("rtNm");
+    vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
     threadsTextView = findViewById(R.id.threads);
     plusImageView = findViewById(R.id.plus);
     minusImageView = findViewById(R.id.minus);
     apiSwitchCompat = findViewById(R.id.api_info_switch);
-    bottomSheetLayout = findViewById(R.id.bottom_sheet_layout);
+//    bottomSheetLayout = findViewById(R.id.bottom_sheet_layout);
     gestureLayout = findViewById(R.id.gesture_layout);
-    sheetBehavior = BottomSheetBehavior.from(bottomSheetLayout);
-    bottomSheetArrowImageView = findViewById(R.id.bottom_sheet_arrow);
+//    sheetBehavior = BottomSheetBehavior.from(bottomSheetLayout);
+//    bottomSheetArrowImageView = findViewById(R.id.bottom_sheet_arrow);
 
-    ViewTreeObserver vto = gestureLayout.getViewTreeObserver();
-    vto.addOnGlobalLayoutListener(
-        new ViewTreeObserver.OnGlobalLayoutListener() {
-          @Override
-          public void onGlobalLayout() {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-              gestureLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-            } else {
-              gestureLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-            }
-            //                int width = bottomSheetLayout.getMeasuredWidth();
-            int height = gestureLayout.getMeasuredHeight();
+//    ViewTreeObserver vto = gestureLayout.getViewTreeObserver();
+//    vto.addOnGlobalLayoutListener(
+//        new ViewTreeObserver.OnGlobalLayoutListener() {
+//          @Override
+//          public void onGlobalLayout() {
+//            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+//              gestureLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+//            } else {
+//              gestureLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+//            }
+//            int width = bottomSheetLayout.getMeasuredWidth();
+//            int height = gestureLayout.getMeasuredHeight();
+//
+//            sheetBehavior.setPeekHeight(height);
+//          }
+//        });
+//    sheetBehavior.setHideable(false);
 
-            sheetBehavior.setPeekHeight(height);
-          }
-        });
-    sheetBehavior.setHideable(false);
-
-    sheetBehavior.setBottomSheetCallback(
-        new BottomSheetBehavior.BottomSheetCallback() {
-          @Override
-          public void onStateChanged(@NonNull View bottomSheet, int newState) {
-            switch (newState) {
-              case BottomSheetBehavior.STATE_HIDDEN:
-                break;
-              case BottomSheetBehavior.STATE_EXPANDED:
-                {
-                  bottomSheetArrowImageView.setImageResource(R.drawable.icn_chevron_down);
-                }
-                break;
-              case BottomSheetBehavior.STATE_COLLAPSED:
-                {
-                  bottomSheetArrowImageView.setImageResource(R.drawable.icn_chevron_up);
-                }
-                break;
-              case BottomSheetBehavior.STATE_DRAGGING:
-                break;
-              case BottomSheetBehavior.STATE_SETTLING:
-                bottomSheetArrowImageView.setImageResource(R.drawable.icn_chevron_up);
-                break;
-            }
-          }
-
-          @Override
-          public void onSlide(@NonNull View bottomSheet, float slideOffset) {}
-        });
+//    sheetBehavior.setBottomSheetCallback(
+//        new BottomSheetBehavior.BottomSheetCallback() {
+//          @Override
+//          public void onStateChanged(@NonNull View bottomSheet, int newState) {
+//            switch (newState) {
+//              case BottomSheetBehavior.STATE_HIDDEN:
+//                break;
+//              case BottomSheetBehavior.STATE_EXPANDED:
+//                {
+//                  bottomSheetArrowImageView.setImageResource(R.drawable.icn_chevron_down);
+//                }
+//                break;
+//              case BottomSheetBehavior.STATE_COLLAPSED:
+//                {
+//                  bottomSheetArrowImageView.setImageResource(R.drawable.icn_chevron_up);
+//                }
+//                break;
+//              case BottomSheetBehavior.STATE_DRAGGING:
+//                break;
+//              case BottomSheetBehavior.STATE_SETTLING:
+//                bottomSheetArrowImageView.setImageResource(R.drawable.icn_chevron_up);
+//                break;
+//            }
+//          }
+//
+//          @Override
+//          public void onSlide(@NonNull View bottomSheet, float slideOffset) {}
+//        });
 
     frameValueTextView = findViewById(R.id.frame_info);
     cropValueTextView = findViewById(R.id.crop_info);
     inferenceTimeTextView = findViewById(R.id.inference_info);
-    textView = findViewById(R.id.text);
 
-    apiSwitchCompat.setOnCheckedChangeListener(this);
+//    apiSwitchCompat.setOnCheckedChangeListener(this);
 
-    plusImageView.setOnClickListener(this);
-    minusImageView.setOnClickListener(this);
+//    plusImageView.setOnClickListener(this);
+//    minusImageView.setOnClickListener(this);
   }
 
   protected int[] getRgbBytes() {
@@ -228,7 +235,7 @@ public abstract class CameraActivity extends AppCompatActivity
             isProcessingFrame = false;
           }
         };
-    processImage(textView);
+    processImage(txtCameraInfo, rtNm, vibrator);
   }
 
   /** Callback for Camera2 API */
@@ -286,7 +293,7 @@ public abstract class CameraActivity extends AppCompatActivity
             }
           };
 
-      processImage(textView);
+      processImage(txtCameraInfo, rtNm, vibrator);
     } catch (final Exception e) {
       LOGGER.e(e, "Exception!");
       Trace.endSection();
@@ -540,7 +547,7 @@ public abstract class CameraActivity extends AppCompatActivity
     inferenceTimeTextView.setText(inferenceTime);
   }
 
-  protected abstract void processImage(TextView view);
+  protected abstract void processImage(TextView view, String rtNm, Vibrator vibrator);
 
   protected abstract void onPreviewSizeChosen(final Size size, final int rotation);
 

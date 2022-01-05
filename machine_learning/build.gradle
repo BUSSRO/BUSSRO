@@ -55,6 +55,7 @@ dependencies {
     taskApiImplementation project(":lib_task_api")
     implementation 'androidx.appcompat:appcompat:1.0.0'
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
     implementation 'com.google.android.material:material:1.0.0'
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

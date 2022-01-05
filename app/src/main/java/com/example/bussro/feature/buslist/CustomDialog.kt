@@ -57,7 +57,9 @@ class CustomDialog : DialogFragment() {
 
         /* 카메라 기능 */
         binding.txtDialogUseCamera.setOnClickListener {
-            startActivity(Intent(view?.context, DetectorActivity::class.java))
+            val intent = Intent(view?.context, DetectorActivity::class.java)
+                .putExtra("rtNm", (activity as BusListActivity).busList[0])
+            startActivity(intent)
         }
     }
 }
