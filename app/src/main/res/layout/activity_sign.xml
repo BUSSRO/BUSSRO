@@ -20,7 +20,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             tools:text="1234"
-            android:textSize="270dp"
+            android:textSize="230dp"
             android:textColor="@color/yellow"
             android:textStyle="bold"
             android:gravity="center"

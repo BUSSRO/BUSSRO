@@ -40,12 +40,7 @@ class SignActivity : AppCompatActivity() {
         when (++cnt % 2) {
             0 -> first()
             1 -> second()
-//            2 -> third()
         }
-    }
-
-    private fun rest() {
-        mDelayHandler.postDelayed(::start, 500)
     }
 
     // 배경색 변경
@@ -53,25 +48,17 @@ class SignActivity : AppCompatActivity() {
     private fun first() {
         binding.txtSign.text = rtNm
         binding.txtSign.setTextColor(resources.getColor(R.color.yellow))
-//        binding.constraint.setBackgroundColor(resources.getColor(R.color.black))
         rest()
     }
 
     // 반짝임
     @SuppressLint("ResourceAsColor")
     private fun second() {
-        binding.txtSign.text = "탑승원함"
         binding.txtSign.setTextColor(resources.getColor(R.color.black))
-//        binding.constraint.setBackgroundColor(resources.getColor(R.color.white))
         rest()
     }
 
-    // 글자변경
-    @SuppressLint("ResourceAsColor")
-    private fun third() {
-        binding.txtSign.text = "★☆★"
-        binding.txtSign.setTextColor(resources.getColor(R.color.red))
-//        binding.constraint.setBackgroundColor(resources.getColor(R.color.gray))
-        rest()
+    private fun rest() {
+        mDelayHandler.postDelayed(::start, 700)
     }
 }
