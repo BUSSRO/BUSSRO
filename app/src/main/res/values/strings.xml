@@ -6,6 +6,10 @@
     <string name="main_activity_label">홈 화면입니다.</string>
     <string name="settings_activity_label">환경 설정 화면입니다.</string>
 
+    <!-- activity_launch_screen -->
+    <string name="iv_launch_logo">버스스로 로고 이미지</string>
+    <string name="txt_launch_desc">시각장애인을 위한 버스 원스톱 솔루션</string>
+
     <!-- activity_main -->
     <string name="main_first_txt">버스 탑승 도우미</string>
     <string name="main_second_txt">버스 하차 도우미</string>
