@@ -1,9 +1,12 @@
 package com.youreye.bussro.feature.onboarding
 
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityOnBoardingBinding
 import com.youreye.bussro.feature.clause.ClauseActivity
@@ -33,15 +36,36 @@ class OnBoardingActivity : AppCompatActivity() {
         pagerAdapter.addFragment(SecondFragment())
         pagerAdapter.addFragment(ThirdFragment())
 
-        binding.vpOnboarding.adapter = pagerAdapter
+        binding.vpOnBoarding.apply {
+            adapter = pagerAdapter
+
+            // ban overscroll
+            getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+
+            // overriding onPagedSelectedListener
+            registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    if (position == 2) {
+                        binding.txtOnBoardingNext.text = "약관동의 페이지로 이동"
+                        binding.txtOnBoardingNext.setBackgroundColor(Color.parseColor("#FFCC00"))
+                    } else {
+                        binding.txtOnBoardingNext.text = "다음"
+                        binding.txtOnBoardingNext.setBackgroundColor(Color.parseColor("#AAAAAA"))
+                    }
+                }
+            })
+        }
+
+        // apply ViewPager2 indicator
+        binding.wdiOnBoarding.setViewPager2(binding.vpOnBoarding)
     }
 
     private fun setOnClickListener() {
-        binding.txtOnboardingNext.setOnClickListener {
-            if (binding.vpOnboarding.currentItem == 2) {
+        binding.txtOnBoardingNext.setOnClickListener {
+            if (binding.vpOnBoarding.currentItem == 2) {
                 startActivity(Intent(this, ClauseActivity::class.java))
             } else {
-                binding.vpOnboarding.currentItem += 1
+                binding.vpOnBoarding.currentItem += 1
             }
         }
     }

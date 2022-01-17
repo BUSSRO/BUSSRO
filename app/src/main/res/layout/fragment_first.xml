@@ -5,38 +5,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/black"
     tools:context=".feature.onboarding.FirstFragment">
 
     <TextView
-        android:id="@+id/txt_1"
+        android:id="@+id/txt_fragment_first"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="서울시 버스정보"
+        android:text="@string/txt_fragment_first"
         android:textSize="18dp"
+        android:fontFamily="@font/spoqa_han_sans_neo_regular"
         android:textColor="@color/white"
-        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="86dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="이제는 간편하게 확인"
-        android:textSize="18dp"
-        android:textStyle="bold"
-        android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@+id/txt_1"
-        app:layout_constraintStart_toStartOf="@+id/txt_1"
-        app:layout_constraintEnd_toEndOf="@+id/txt_1"/>
+        app:layout_constraintBottom_toTopOf="@+id/img_fragment_1"
+        android:layout_marginBottom="55dp"/>
 
     <ImageView
+        android:id="@+id/img_fragment_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/onboarding_first"
+        android:src="@drawable/img_on_boarding_1"
+        android:scaleType="fitEnd"
+        android:adjustViewBounds="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

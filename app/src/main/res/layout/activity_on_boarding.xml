@@ -12,20 +12,18 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black"
         tools:context=".feature.onboarding.OnBoardingActivity">
 
         <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/vp_onboarding"
+            android:id="@+id/vp_on_boarding"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:overScrollMode="never"/>
+            android:layout_height="match_parent" />
 
         <TextView
-            android:id="@+id/txt_onboarding_next"
+            android:id="@+id/txt_on_boarding_next"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="다음"
+            android:text="@string/txt_on_boarding_next"
             android:textAlignment="center"
             android:textSize="16dp"
             android:textStyle="bold"
@@ -37,6 +35,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <!-- ViewPager indicator -->
+        <com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator
+            android:id="@+id/wdi_on_boarding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:dotsColor="@color/yellow"
+            app:dotsSize="8dp"
+            app:dotsStrokeColor="@color/light_gray"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias=".1"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
