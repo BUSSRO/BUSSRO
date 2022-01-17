@@ -34,9 +34,6 @@
             android:label="@string/settings_activity_label"
             android:theme="@style/PreferenceScreen" />
         <activity
-            android:name="com.youreye.bussro.feature.businfo.BusInfoActivity"
-            android:label="@string/empty_label" />
-        <activity
             android:name="com.youreye.bussro.feature.findstation.FindStationActivity"
             android:label="@string/empty_label" />
         <activity

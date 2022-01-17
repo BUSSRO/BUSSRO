@@ -69,13 +69,14 @@
 
             <!-- 아이콘 -->
             <item
-                android:width="23dp"
-                android:height="27dp"
+                android:width="29dp"
+                android:height="29dp"
                 android:drawable="@drawable/ic_main_third"
                 android:gravity="center">
             </item>
 
         </layer-list>
+
     </item>
 
 </layer-list>

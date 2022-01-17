@@ -69,8 +69,8 @@
 
             <!-- 아이콘 -->
             <item
-                android:width="29dp"
-                android:height="29dp"
+                android:width="23dp"
+                android:height="27dp"
                 android:drawable="@drawable/ic_main_second"
                 android:gravity="center">
             </item>

@@ -42,6 +42,10 @@
     <!-- activity_bus_list -->
     <string name="bus_list_info_txt">선택한 버스 도착 안내</string>
 
+    <!-- activity_history -->
+    <string name="txt_history">버스 탑승 기록</string>
+    <string name="txt_history_description">이번 달 버스 이용은 0번 입니다.</string>
+
     <!-- activity_settings -->
     <string name="txt_setting_title">설정</string>
     <string name="iv_setting_back_cd">뒤로가기</string>
@@ -55,6 +59,7 @@
     <string name="iv_setting_os_detail_cd">오픈소스 및 라이센스로 이동하기</string>
     <string name="txt_setting_version">버전정보 1.0.0</string>
     <string name="email">otu1650@gmail.com</string>
+
 
 
 </resources>

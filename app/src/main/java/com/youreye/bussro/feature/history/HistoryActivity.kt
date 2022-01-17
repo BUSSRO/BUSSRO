@@ -3,6 +3,10 @@ package com.youreye.bussro.feature.history
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
+import android.widget.CheckBox
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -43,17 +47,20 @@ class HistoryActivity : AppCompatActivity() {
         binding.rvHistory.apply {
             adapter = rvAdapter
             layoutManager = LinearLayoutManager(this@HistoryActivity)
-            addItemDecoration(CustomItemDecoration(60))
+            addItemDecoration(CustomItemDecoration(40))
         }
 
         viewModel.getAll().observe(this, Observer {
-            logd("onCreate: ${it}")
+//            logd("onCreate: ${it}")
             rvAdapter.updateData(it)
 
             /* 버스 이용 횟수 */
-            binding.txtHistoryDescription.text = "이번 달 버스 이용은 ${it.size} 번 입니다."
+            val text = "이번 달 버스 이용은 ${it.size} 번 입니다."
+            val builder = SpannableStringBuilder(text)
+            val colorSpan = ForegroundColorSpan(resources.getColor(R.color.yellow))
+            val end = 12 + (it.size / 10) + 3  // 시작점 + 숫자 자릿수
+            builder.setSpan(colorSpan, 12, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            binding.txtHistoryDescription.text = builder
         })
-
-
     }
 }
