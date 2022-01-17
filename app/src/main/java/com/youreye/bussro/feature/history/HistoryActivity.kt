@@ -43,7 +43,7 @@ class HistoryActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun initVar() {
         /* RecyclerView */
-        val rvAdapter = HistoryAdapter(historyRepository, application)
+        val rvAdapter = HistoryAdapter(supportFragmentManager, historyRepository, application)
         binding.rvHistory.apply {
             adapter = rvAdapter
             layoutManager = LinearLayoutManager(this@HistoryActivity)

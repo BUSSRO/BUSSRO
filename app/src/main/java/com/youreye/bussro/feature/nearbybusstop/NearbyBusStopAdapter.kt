@@ -51,18 +51,19 @@ class NearbyBusStopAdapter(
                     .putExtra("arsId", nearbyBusStop?.arsId)
                 view.context.startActivity(intent)
 
-                // 현재 일자 및 시각
-                val date = Date(System.currentTimeMillis())
-                val dateFormat = SimpleDateFormat("yy.MM.dd hh:mm", Locale.getDefault())
-
-                // History 입력
-                historyRepository.insert(
-                    History(
-                        nearbyBusStop?.arsId!!,
-                        nearbyBusStop?.stationNm!!,
-                        dateFormat.format(date)
-                    )
-                )
+//                // 현재 일자 및 시각
+//                val date = Date(System.currentTimeMillis())
+////                val dateFormat = SimpleDateFormat("yy.MM.dd hh:mm:ss", Locale.getDefault())
+//
+//                // History 입력
+//                historyRepository.insert(
+//                    History(
+//                        date.toString(),
+//                        nearbyBusStop?.arsId!!,
+//                        nearbyBusStop?.stationNm!!,
+////                        dateFormat.format(date)
+//                    )
+//                )
             }
         }
     }

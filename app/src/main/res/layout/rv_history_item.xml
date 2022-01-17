@@ -29,7 +29,7 @@
         <!-- 버스번호 -->
         <TextView
             android:id="@+id/txt_history_stationNm"
-            stationNm="@{history.stationNm}"
+            stationNm="@{history.rtNm}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -38,7 +38,7 @@
             app:layout_constraintTop_toTopOf="@id/img_history_item"
             app:layout_constraintStart_toEndOf="@id/img_history_item"
             app:layout_constraintBottom_toTopOf="@id/txt_history_section"
-            tools:text="돈암초등학교" />
+            tools:text="3314" />
 
         <!-- 구분자 -->
         <ImageView

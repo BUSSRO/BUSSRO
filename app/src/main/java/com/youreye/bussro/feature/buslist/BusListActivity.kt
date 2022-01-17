@@ -12,6 +12,7 @@ import com.youreye.bussro.util.CustomItemDecoration
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityBusListBinding
 import com.youreye.bussro.util.logd
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
 /**
@@ -20,6 +21,7 @@ import java.util.*
  * 사용자가 현재 위치한 버스 정류장을 거치는 버스 리스트를 제공한다.
  */
 
+@AndroidEntryPoint
 class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private lateinit var viewModel: BusListViewModel
     private lateinit var binding: ActivityBusListBinding
@@ -132,7 +134,8 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         /* 전광판 or 카메라 인식 */
         binding.txtBusListStart.setOnClickListener {
             val dialog = CustomDialog()
-            dialog.show(supportFragmentManager, "CustomDialog")
+            dialog.setRtNm(busList[0])
+            dialog.show(supportFragmentManager, "FromBusListActivity")
         }
     }
 

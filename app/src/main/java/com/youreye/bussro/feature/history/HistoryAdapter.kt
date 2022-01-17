@@ -1,15 +1,18 @@
 package com.youreye.bussro.feature.history
 
 import android.app.Application
+import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.RvHistoryItemBinding
 import com.youreye.bussro.feature.buslist.BusListActivity
+import com.youreye.bussro.feature.buslist.CustomDialog
 import com.youreye.bussro.model.db.entity.History
 import com.youreye.bussro.model.repository.HistoryRepository
 import java.text.SimpleDateFormat
@@ -23,6 +26,7 @@ import java.util.*
  */
 
 class HistoryAdapter(
+    private val supportFragmentManager: FragmentManager,
     private val historyRepository: HistoryRepository,
     private val application: Application
 ) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
@@ -44,6 +48,11 @@ class HistoryAdapter(
             history = data[position]
             // click event
             root.setOnClickListener { view ->
+                val dialog = CustomDialog()
+                dialog.setRtNm(data[position].rtNm!!)
+                dialog.show(supportFragmentManager, "FromHistoryActivity")
+
+                /*
                 val intent = Intent(view.context, BusListActivity::class.java)
                     .putExtra("stationNm", history?.stationNm)
                     .putExtra("arsId", history?.arsId)
@@ -51,17 +60,19 @@ class HistoryAdapter(
 
                 // 현재 일자 및 시각
                 val date = Date(System.currentTimeMillis())
-                val dateFormat = SimpleDateFormat("yy.MM.dd hh:mm", Locale.getDefault())
+//                val dateFormat = SimpleDateFormat("yy.MM.dd hh:mm", Locale.getDefault())
 
                 // History 입력
                 historyRepository.insert(
                     History(
+                        date.toString(),
                         history?.arsId!!,
                         history?.stationNm!!,
-                        dateFormat.format(date)
                     )
                 )
+                 */
             }
+
             // toggle click event
 //            tbHistory.setOnCheckedChangeListener { buttonView, isChecked ->
 //                // ERROR: toggle not working
