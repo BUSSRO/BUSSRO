@@ -11,7 +11,7 @@ object User {
     private const val FIRST_KEY = "isFirst"
 
     /* 앱 접속이력 */
-    fun getFirst(context: Context) :Boolean {
+    fun isFirst(context: Context) :Boolean {
         val sharedPreferences = context.getSharedPreferences(FIRST_KEY, Context.MODE_PRIVATE)
         return sharedPreferences.getBoolean(FIRST_KEY, true)
     }

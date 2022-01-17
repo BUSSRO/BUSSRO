@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/black"
+    tools:context=".feature.launch.LaunchScreenActivity">
+
+    <!-- 로고 이미지 -->
+    <ImageView
+        android:id="@+id/iv_launch_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias=".4" />
+
+    <!-- 앱 설명 -->
+    <ImageView
+        android:id="@+id/iv_launch_app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_app_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/txt_launch_desc"
+        android:layout_marginBottom="12dp"/>
+
+    <TextView
+        android:id="@+id/txt_launch_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="시각장애인을 위한 버스 원스톱 솔루션"
+        android:fontFamily="@font/spoqa_han_sans_neo_light"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/iv_launch_app_name"
+        app:layout_constraintEnd_toEndOf="@id/iv_launch_app_name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="76dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

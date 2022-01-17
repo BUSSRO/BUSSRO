@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BUSSRO</string>
+    <string name="app_name">버스스로</string>
 
     <!-- manifests (label for screen reader feature) -->
     <string name="empty_label">""</string>
