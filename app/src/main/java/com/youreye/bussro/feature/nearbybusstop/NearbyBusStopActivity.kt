@@ -30,8 +30,8 @@ import javax.inject.Inject
 
 /**
  * [NearbyBusStopActivity]
- * MainActivity 의 "내 주변 정류장" 버튼을 클릭했을시 보여짐
- * 사용자의 위치를 기준으로 1km 이내의 버스 정류장을 가까운 순으로 정렬해 제공한다.
+ * MainActivity 의 "버스 탑승 도우미" 버튼을 클릭했을시 보여짐
+ * 사용자의 위치를 기준으로 0.4km 이내의 버스 정류장을 가까운 순으로 정렬해 제공한다.
  *
  * TODO: 무선인터넷 연결 여부 확인 후 예외 처리하기
  */

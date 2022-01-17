@@ -56,8 +56,6 @@ class NearbyBusStopAdapter(
                 val dateFormat = SimpleDateFormat("yy.MM.dd hh:mm", Locale.getDefault())
 
                 // History 입력
-
-//                val repository = HistoryRepository(application)
                 historyRepository.insert(
                     History(
                         nearbyBusStop?.arsId!!,

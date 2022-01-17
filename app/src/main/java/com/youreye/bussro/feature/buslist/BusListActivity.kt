@@ -133,11 +133,6 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         binding.txtBusListStart.setOnClickListener {
             val dialog = CustomDialog()
             dialog.show(supportFragmentManager, "CustomDialog")
-
-//            val intent = Intent(this, SignActivity::class.java)
-//                .putExtras(bundleOf("busList" to busList))
-//                .putExtra("rtNm", busList[0])
-//            startActivity(intent)
         }
     }
 
