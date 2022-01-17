@@ -23,7 +23,15 @@
     <string name="txt_fragment_third">하차벨 위치는\n<b>카메라로 하차벨 인식</b></string>
 
     <!-- activity_clause -->
-
+    <string name="txt_clause_head">약관동의</string>
+    <string name="txt_clause_head_desc">버스로 이용을 위해 아래 약관에 동의해 주세요</string>
+    <string name="cb_clause_first">[필수] 서비스 이용약관</string>
+    <string name="cb_clause_second">[필수] 개인정보처리방침</string>
+    <string name="cb_clause_third">서비스 이용약관</string>
+    <string name="cb_clause_desc_1">서비스를 이용하기 위해서는 위에 해당하는\n권한들을 허용해주셔야 사용이 가능합니다.</string>
+    <string name="cb_clause_desc_2"><![CDATA[접근 권한 변경 방법\n휴대폰 설정 > 앱 > 버스스로]]></string>
+    <string name="cb_clause_select_all">전체 동의하기</string>
+    <string name="txt_clause_start">앱 시작하기</string>
 
     <!-- activity_main -->
     <string name="main_first_txt">버스 탑승 도우미</string>
@@ -34,18 +42,19 @@
     <!-- activity_bus_list -->
     <string name="bus_list_info_txt">선택한 버스 도착 안내</string>
 
-    <!-- root_preferences -->
-    <string name="list_header">목록</string>
-    <string name="etc_header">기타</string>
-
-    <string name="tts_title">음성 안내(도움말)</string>
-    <string name="license_title">오픈소스 라이센스</string>
-    <string name="license_summary">버스로 앱 제작에 사용된 오픈소스 라이센스 리스트</string>
-
+    <!-- activity_settings -->
+    <string name="txt_setting_title">설정</string>
+    <string name="iv_setting_back_cd">뒤로가기</string>
+    <string name="txt_setting_noti_desc">공지사항</string>
+    <string name="iv_setting_noti_detail_cd">공지사항으로 이동하기</string>
+    <string name="txt_setting_inquiry_desc">문의하기</string>
+    <string name="iv_setting_inquiry_detail_cd">문의사항으로 이동하기</string>
+    <string name="txt_setting_cl_desc">개인정보처리방침</string>
+    <string name="iv_setting_cl_detail_desc">개인정보처리방침으로 이동하기</string>
+    <string name="txt_setting_os_desc">오픈소스 및 라이센스</string>
+    <string name="iv_setting_os_detail_cd">오픈소스 및 라이센스로 이동하기</string>
+    <string name="txt_setting_version">버전정보 1.0.0</string>
     <string name="email">otu1650@gmail.com</string>
-    <string name="txt_clause_start">앱 시작하기</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
