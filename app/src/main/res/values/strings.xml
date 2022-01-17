@@ -22,6 +22,9 @@
     <!-- fragment_third -->
     <string name="txt_fragment_third">하차벨 위치는\n<b>카메라로 하차벨 인식</b></string>
 
+    <!-- activity_clause -->
+
+
     <!-- activity_main -->
     <string name="main_first_txt">버스 탑승 도우미</string>
     <string name="main_second_txt">버스 하차 도우미</string>
@@ -40,6 +43,7 @@
     <string name="license_summary">버스로 앱 제작에 사용된 오픈소스 라이센스 리스트</string>
 
     <string name="email">otu1650@gmail.com</string>
+    <string name="txt_clause_start">앱 시작하기</string>
 
 
 </resources>
