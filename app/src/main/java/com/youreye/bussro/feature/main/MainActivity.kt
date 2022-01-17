@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityMainBinding
+import com.youreye.bussro.util.BackPressDialog
 
 /**
  * [MainActivity]
@@ -52,14 +53,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        val toast = Toast.makeText(this, "종료하시려면 뒤로가기를 한 번 더 누르세요.", Toast.LENGTH_SHORT)
+//        val toast = Toast.makeText(this, "종료하시려면 뒤로가기를 한 번 더 누르세요.", Toast.LENGTH_SHORT)
+//
+//        if (System.currentTimeMillis() > backKeyPressed + 2000) {
+//            backKeyPressed = System.currentTimeMillis()
+//            toast.show()
+//        } else if (System.currentTimeMillis() <= backKeyPressed + 2000) {
+//            finish()
+//            toast.cancel()
+//        }
 
-        if (System.currentTimeMillis() > backKeyPressed + 2000) {
-            backKeyPressed = System.currentTimeMillis()
-            toast.show()
-        } else if (System.currentTimeMillis() <= backKeyPressed + 2000) {
-            finish()
-            toast.cancel()
-        }
+        val dialog = BackPressDialog()
+        dialog.show(supportFragmentManager, "BackPressDialog")
     }
 }

@@ -19,6 +19,7 @@ import androidx.databinding.DataBindingUtil
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityClauseBinding
 import com.youreye.bussro.feature.main.MainActivity
+import com.youreye.bussro.util.BackPressDialog
 import com.youreye.bussro.util.User
 
 class ClauseActivity : AppCompatActivity() {
@@ -101,6 +102,11 @@ class ClauseActivity : AppCompatActivity() {
         } else {
             binding.txtClauseStart.setBackgroundColor(resources.getColor(R.color.light_gray))
         }
+    }
+
+    override fun onBackPressed() {
+        val dialog = BackPressDialog()
+        dialog.show(supportFragmentManager, "BackPressDialog")
     }
 }
 
