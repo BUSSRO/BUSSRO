@@ -55,5 +55,30 @@
             app:layout_constraintBottom_toBottomOf="parent"
             tools:listitem="@layout/rv_history_item"/>
 
+        <!-- 히스토리가 없는 경우 -->
+        <ImageView
+            android:id="@+id/iv_history_off"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:src="@drawable/ic_baseline_directions_bus_24"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/txt_history_off_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/iv_history_off"
+            app:layout_constraintStart_toStartOf="@id/iv_history_off"
+            app:layout_constraintEnd_toEndOf="@id/iv_history_off"
+            android:layout_marginTop="12dp"
+            android:textSize="18dp"
+            android:textColor="@color/white"
+            android:text="@string/txt_history_off_desc"
+            android:visibility="gone"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

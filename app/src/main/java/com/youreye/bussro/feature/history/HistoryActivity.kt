@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
+import android.view.View
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -51,7 +52,6 @@ class HistoryActivity : AppCompatActivity() {
         }
 
         viewModel.getAll().observe(this, Observer {
-//            logd("onCreate: ${it}")
             rvAdapter.updateData(it)
 
             /* 버스 이용 횟수 */
@@ -61,6 +61,15 @@ class HistoryActivity : AppCompatActivity() {
             val end = 12 + (it.size / 10) + 3  // 시작점 + 숫자 자릿수
             builder.setSpan(colorSpan, 12, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             binding.txtHistoryDescription.text = builder
+
+            /* 버스 이용 횟수가 없는경우 띄워줄 이미지 + 텍스트 */
+            if (it.isEmpty()) {
+                binding.ivHistoryOff.visibility = View.VISIBLE
+                binding.txtHistoryOffDesc.visibility = View.VISIBLE
+            } else {
+                binding.ivHistoryOff.visibility = View.GONE
+                binding.txtHistoryOffDesc.visibility = View.GONE
+            }
         })
     }
 
