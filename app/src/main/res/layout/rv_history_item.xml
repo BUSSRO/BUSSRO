@@ -67,6 +67,7 @@
             android:layout_height="32dp"
             android:textOff=""
             android:textOn=""
+            android:checked="@{history.scrap}"
             app:layout_constraintStart_toEndOf="@id/txt_history_rtNm_and_date"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

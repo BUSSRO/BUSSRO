@@ -13,7 +13,7 @@ import com.youreye.bussro.util.DateTypeConverter
  * History 데이터베이스 객체
  */
 
-@Database(entities = [History::class], version = 8, exportSchema = false)
+@Database(entities = [History::class], version = 10, exportSchema = false)
 @TypeConverters(value = [DateTypeConverter::class])
 abstract class HistoryDatabase : RoomDatabase() {
     abstract fun historyDao(): HistoryDao

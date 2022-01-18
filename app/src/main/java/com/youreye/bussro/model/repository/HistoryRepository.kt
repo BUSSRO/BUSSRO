@@ -34,6 +34,21 @@ class HistoryRepository @Inject constructor(
         }
     }
 
+    /* 특정 히스토리의 스크랩 데이터 갱신 */
+    fun update(history: History) {
+        CoroutineScope(Dispatchers.IO).launch {
+            historyDao.update(
+                History(
+                    history.date,
+                    history.rtNm,
+                    history.arsId,
+                    history.stationNm,
+                    !history.scrap
+                )
+            )
+        }
+    }
+
     /* 전체 히스토리 삭제 */
     fun deleteAll() {
         CoroutineScope(Dispatchers.IO).launch {

@@ -88,7 +88,8 @@ class CustomDialog(
                 date,
                 rtNm,
                 arsId,
-                stationNm
+                stationNm,
+                false
             )
         )
     }

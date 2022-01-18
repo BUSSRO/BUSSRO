@@ -1,6 +1,7 @@
 package com.youreye.bussro.model.db.entity
 
 import android.widget.TextView
+import android.widget.ToggleButton
 import androidx.databinding.BindingAdapter
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -17,6 +18,7 @@ import java.util.*
  * @param rtNm 버스번호
  * @param arsId 정류소고유번호
  * @param stationNm 정류소명
+ * @param scrap 즐겨찾기 여부
  */
 
 @Entity(tableName = "history")
@@ -32,12 +34,21 @@ data class History(
 
     @ColumnInfo(name = "stationNm")
     var stationNm: String,
+
+    @ColumnInfo(name = "scrap")
+    val scrap: Boolean
 )
 
 /* DataBinding_정류장명 */
 @BindingAdapter("stationNm")
 fun setStationNm(txt: TextView, stationNm: String) {
     txt.text = stationNm
+}
+
+/* DataBinding_즐겨찾기 여부 */
+@BindingAdapter("scrap")
+fun setScrap(tb: ToggleButton, scrap: Boolean) {
+    tb.isChecked = scrap
 }
 
 /*

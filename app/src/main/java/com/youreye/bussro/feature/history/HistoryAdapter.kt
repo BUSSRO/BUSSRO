@@ -6,6 +6,7 @@ import android.content.Intent
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.CheckBox
@@ -21,6 +22,7 @@ import com.youreye.bussro.feature.buslist.BusListActivity
 import com.youreye.bussro.feature.buslist.CustomDialog
 import com.youreye.bussro.model.db.entity.History
 import com.youreye.bussro.model.repository.HistoryRepository
+import com.youreye.bussro.util.logd
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -30,11 +32,13 @@ import java.util.*
  *
  * @param supportFragmentManager supportFragmentManager from HistoryActivity
  * @param application application from HistoryActivity
+ * @param historyRepository History DB 조작을 위한 repository
  */
 
 class HistoryAdapter(
     private val supportFragmentManager: FragmentManager,
-    private val application: Application
+    private val application: Application,
+    private val historyRepository: HistoryRepository
 ) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
     private var data = listOf<History>()
 
@@ -53,8 +57,7 @@ class HistoryAdapter(
         holder.binding.history = data[position]
 
         /* txt_history_rtNm_and_date 데이터 초기화 */
-        // Date 형식 지정
-//        val dateFormat = SimpleDateFormat("yy.MM.dd hh:mm", Locale.getDefault())
+        // text 완성
         val date = data[position].date
         val rtNmAndDate = "${data[position].rtNm} • ${date.substring(0, date.length - 3)}"
 
@@ -76,13 +79,9 @@ class HistoryAdapter(
             dialog.show(supportFragmentManager, "FromHistoryActivity")
         }
 
-        /* ToggleButton checked change listener */
-        holder.binding.tbHistory.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                Toast.makeText(application, "${data[position].rtNm} 즐겨찾기 등록", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(application, "${data[position].rtNm} 즐겨찾기 해제", Toast.LENGTH_SHORT).show()
-            }
+        /* 히스토리 스크랩 여부 갱신 */
+        holder.binding.tbHistory.setOnClickListener {
+            historyRepository.update(data[position])
         }
     }
 

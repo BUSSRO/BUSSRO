@@ -12,10 +12,12 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityHistoryBinding
+import com.youreye.bussro.model.repository.HistoryRepository
 import com.youreye.bussro.util.CustomItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 /**
  * [HistoryActivity]
@@ -27,6 +29,7 @@ import java.util.*
 class HistoryActivity : AppCompatActivity() {
     private val viewModel: HistoryViewModel by viewModels()
     private lateinit var binding: ActivityHistoryBinding
+    @Inject lateinit var historyRepository: HistoryRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +43,7 @@ class HistoryActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun initVar() {
         /* RecyclerView */
-        val rvAdapter = HistoryAdapter(supportFragmentManager, application)
+        val rvAdapter = HistoryAdapter(supportFragmentManager, application, historyRepository)
         binding.rvHistory.apply {
             adapter = rvAdapter
             layoutManager = LinearLayoutManager(this@HistoryActivity)
