@@ -29,7 +29,6 @@ import javax.inject.Inject
 class HistoryActivity : AppCompatActivity() {
     private val viewModel: HistoryViewModel by viewModels()
     private lateinit var binding: ActivityHistoryBinding
-    @Inject lateinit var historyRepository: HistoryRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +42,7 @@ class HistoryActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun initVar() {
         /* RecyclerView */
-        val rvAdapter = HistoryAdapter(supportFragmentManager, historyRepository, application)
+        val rvAdapter = HistoryAdapter(supportFragmentManager, application)
         binding.rvHistory.apply {
             adapter = rvAdapter
             layoutManager = LinearLayoutManager(this@HistoryActivity)

@@ -36,11 +36,11 @@
     <!-- activity_main -->
     <string name="main_first_txt">버스 탑승 도우미</string>
     <string name="main_second_txt">버스 하차 도우미</string>
-    <string name="main_third_txt">히스토리</string>
+    <string name="main_third_txt">버스 탑승 기록</string>
     <string name="main_setting_txt">설정</string>
 
     <!-- activity_bus_list -->
-    <string name="bus_list_info_txt">선택한 버스 도착 안내</string>
+    <string name="bus_list_info_txt">번 버스로 도착을 안내합니다.</string>
 
     <!-- activity_history -->
     <string name="txt_history">버스 탑승 기록</string>

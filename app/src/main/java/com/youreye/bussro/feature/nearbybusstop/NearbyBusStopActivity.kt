@@ -51,7 +51,6 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 }
             }
         }
-    @Inject lateinit var historyRepository: HistoryRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,7 +90,7 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             }
 
         // RecyclerView 세팅
-        val rvAdapter = NearbyBusStopAdapter(historyRepository, application)
+        val rvAdapter = NearbyBusStopAdapter(application)
         binding.rvNearbyBusStop.apply {
             adapter = rvAdapter
             layoutManager = LinearLayoutManager(this@NearbyBusStopActivity)

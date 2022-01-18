@@ -65,7 +65,7 @@
             android:text="@string/bus_list_info_txt"
             android:singleLine="true"
             android:textColor="@color/black"
-            android:textSize="23sp"
+            android:textSize="18dp"
             android:textStyle="bold"
             android:background="#FFCC00"
             android:gravity="center"

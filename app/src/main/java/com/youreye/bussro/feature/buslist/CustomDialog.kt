@@ -22,10 +22,13 @@ import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class CustomDialog : DialogFragment() {
+class CustomDialog(
+    private val rtNm: String,
+    private val stationNm: String,
+    private val arsId: String
+) : DialogFragment() {
     private lateinit var binding: FragmentCustomDialogBinding
     @Inject lateinit var historyRepository: HistoryRepository
-    private var rtNm = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,11 +43,6 @@ class CustomDialog : DialogFragment() {
 
         initDialog()
         initVar()
-    }
-
-    /* 버스번호 지정 */
-    fun setRtNm(rtNm: String) {
-        this.rtNm = rtNm
     }
 
     private fun initDialog() {
@@ -64,6 +62,7 @@ class CustomDialog : DialogFragment() {
                 .putExtra("rtNm", rtNm)
             startActivity(intent)
             insertHistory()
+            dismiss()
         }
 
         /* 카메라 기능 */
@@ -72,6 +71,7 @@ class CustomDialog : DialogFragment() {
                 .putExtra("rtNm", rtNm)
             startActivity(intent)
             insertHistory()
+            dismiss()
         }
     }
 
@@ -80,7 +80,9 @@ class CustomDialog : DialogFragment() {
         historyRepository.insert(
             History(
                 Date(System.currentTimeMillis()),
-                rtNm
+                rtNm,
+                arsId,
+                stationNm
             )
         )
     }

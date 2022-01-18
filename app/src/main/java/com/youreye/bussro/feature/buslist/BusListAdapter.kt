@@ -3,7 +3,9 @@ package com.youreye.bussro.feature.buslist
 import android.graphics.Color
 import android.graphics.Typeface
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -15,15 +17,16 @@ import com.youreye.bussro.databinding.RvBusListItemBinding
  * [BusListAdapter]
  * BusListActivity 의 RecyclerView 에 연결될 Adapter
  *
- * @param buses 사용자가 안내받기로 선택한 버스
  * @param activity BusListActivity
  */
 
 class BusListAdapter(
-    private val buses: MutableList<String>,
     private val activity: BusListActivity
 ) : RecyclerView.Adapter<BusListAdapter.BusListViewHolder>() {
     private var data = listOf<BusListData>()
+
+    private var lastSelectedItem: View? = null
+    private var lastSelectedPosition: Int = -1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BusListViewHolder {
         val binding: RvBusListItemBinding = DataBindingUtil.inflate(
@@ -36,29 +39,40 @@ class BusListAdapter(
     }
 
     override fun onBindViewHolder(holder: BusListViewHolder, position: Int) {
+        /* ViewBinding 에 data insert */
         holder.binding.busList = data[position]
 
-        holder.binding.apply {
-            // 데이터 input
-            busList = data[position]
-            // click listener
-            root.setOnClickListener {
-                if (buses.contains(busList?.rtNm)) {  // 선택 취소
-                    buses.remove(busList?.rtNm)
+        /* 항목 click listener */
+        holder.binding.root.setOnClickListener {
+            /*
+             * 다른것 선택시)
+             * 이전에 선택되었던 아이템 해제 및 새로운 아이템 등록
+             *
+             * 같은것 선택시)
+             * 이전에 선택되었던 아이템 해제
+             */
 
-                    root.setBackgroundColor(Color.parseColor("#ECEBFF"))
-                    txtBusListItemNumber.typeface = Typeface.DEFAULT
-                    txtBusListItemInfo.typeface = Typeface.DEFAULT
-                } else {  // 선택
-                    buses.add(busList?.rtNm!!)
+            // 이전에 선택되었던 아이템 해제
+            lastSelectedItem?.setBackgroundColor(Color.parseColor("#ECEBFF"))
+            lastSelectedItem?.findViewById<TextView>(R.id.txt_bus_list_item_number)?.typeface = Typeface.DEFAULT
+            lastSelectedItem?.findViewById<TextView>(R.id.txt_bus_list_item_info)?.typeface = Typeface.DEFAULT
 
-                    root.setBackgroundColor(Color.parseColor("#FFCC00"))
-                    txtBusListItemNumber.typeface = Typeface.DEFAULT_BOLD
-                    txtBusListItemInfo.typeface = Typeface.DEFAULT_BOLD
-                }
+            // 새로운 아이템 등록
+            if (lastSelectedPosition != position) {
+                holder.binding.root.setBackgroundColor(Color.parseColor("#FFCC00"))
+                holder.binding.txtBusListItemNumber.typeface = Typeface.DEFAULT_BOLD
+                holder.binding.txtBusListItemInfo.typeface = Typeface.DEFAULT_BOLD
 
-                activity.setVisible()
+                activity.rtNm = data[position].rtNm!!
+                lastSelectedItem = holder.binding.root
+                lastSelectedPosition = position
+            } else {
+                activity.rtNm = ""
+                lastSelectedItem = null
+                lastSelectedPosition = -1
             }
+
+            activity.setVisible()
         }
     }
 

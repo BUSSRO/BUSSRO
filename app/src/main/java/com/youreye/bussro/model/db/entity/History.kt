@@ -25,13 +25,13 @@ data class History(
     var date: Date,
 
     @ColumnInfo(name = "rtNm")
-    var rtNm: String? = "",
+    var rtNm: String,
 
     @ColumnInfo(name = "arsId")
-    var arsId: String? = "",
+    var arsId: String,
 
     @ColumnInfo(name = "stationNm")
-    var stationNm: String? = "",
+    var stationNm: String,
 )
 
 /* DataBinding_정류장명 */
@@ -48,6 +48,7 @@ fun setDate(txt: TextView, date: Date) {
 }
 
 /* DataBinding_버스번호 */
+@BindingAdapter("rtNm")
 fun setRtNm(txt: TextView, rtNm: String) {
     txt.text = rtNm
 }

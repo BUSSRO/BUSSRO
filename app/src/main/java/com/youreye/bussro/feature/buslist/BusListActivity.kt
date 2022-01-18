@@ -1,5 +1,6 @@
 package com.youreye.bussro.feature.buslist
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
@@ -26,7 +27,7 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private lateinit var viewModel: BusListViewModel
     private lateinit var binding: ActivityBusListBinding
     private lateinit var tts: TextToSpeech
-    val busList = mutableListOf<String>()
+    var rtNm: String = ""  // 사용자가 선택한 버스번호
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +35,7 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         initVar()
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+
         initSetOnClickListener()
         initTTS()
 
@@ -54,7 +56,7 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             logd("정류장고유번호 : arsId: ${intent.getStringExtra("arsId")}")
         }
 
-        val rvAdapter = BusListAdapter(busList, this)
+        val rvAdapter = BusListAdapter(this)
         binding.rvBusList.apply {
             adapter = rvAdapter
             layoutManager = LinearLayoutManager(applicationContext)
@@ -133,16 +135,21 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private fun initSetOnClickListener() {
         /* 전광판 or 카메라 인식 */
         binding.txtBusListStart.setOnClickListener {
-            val dialog = CustomDialog()
-            dialog.setRtNm(busList[0])
+            val dialog = CustomDialog(
+                rtNm,
+                intent.getStringExtra("stationNm")!!,
+                intent.getStringExtra("arsId")!!
+            )
             dialog.show(supportFragmentManager, "FromBusListActivity")
         }
     }
 
+    /* [302번 버스로 도착을 안내합니다.] 버튼 띄워주기 */
+    @SuppressLint("SetTextI18n")
     fun setVisible() {
-        if (busList.size > 0) {
+        if (rtNm.isNotEmpty()) {
+            binding.txtBusListStart.text = "${rtNm}번 버스로 도착을 안내합니다."
             binding.txtBusListStart.visibility = View.VISIBLE
-
         } else {
             binding.txtBusListStart.visibility = View.GONE
         }

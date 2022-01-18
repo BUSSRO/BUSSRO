@@ -25,7 +25,6 @@ import java.util.*
  */
 
 class NearbyBusStopAdapter(
-    private val historyRepository: HistoryRepository,
     private val application: Application
 ) : RecyclerView.Adapter<NearbyBusStopAdapter.NearbyBusStopViewHolder>() {
     private var data = listOf<NearbyBusStopData>()
@@ -50,20 +49,6 @@ class NearbyBusStopAdapter(
                     .putExtra("stationNm", nearbyBusStop?.stationNm)
                     .putExtra("arsId", nearbyBusStop?.arsId)
                 view.context.startActivity(intent)
-
-//                // 현재 일자 및 시각
-//                val date = Date(System.currentTimeMillis())
-////                val dateFormat = SimpleDateFormat("yy.MM.dd hh:mm:ss", Locale.getDefault())
-//
-//                // History 입력
-//                historyRepository.insert(
-//                    History(
-//                        date.toString(),
-//                        nearbyBusStop?.arsId!!,
-//                        nearbyBusStop?.stationNm!!,
-////                        dateFormat.format(date)
-//                    )
-//                )
             }
         }
     }

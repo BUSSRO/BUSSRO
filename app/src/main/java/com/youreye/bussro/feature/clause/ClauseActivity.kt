@@ -103,10 +103,4 @@ class ClauseActivity : AppCompatActivity() {
             binding.txtClauseStart.setBackgroundColor(resources.getColor(R.color.light_gray))
         }
     }
-
-    override fun onBackPressed() {
-        val dialog = BackPressDialog()
-        dialog.show(supportFragmentManager, "BackPressDialog")
-    }
 }
-
