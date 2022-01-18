@@ -54,15 +54,14 @@ class HistoryAdapter(
 
         /* txt_history_rtNm_and_date 데이터 초기화 */
         // Date 형식 지정
-        val dateFormat = SimpleDateFormat("yy.MM.dd hh:mm", Locale.getDefault())
-        val date = dateFormat.format(data[position].date)
-        val rtNmAndDate = "${data[position].rtNm} • $date"
+//        val dateFormat = SimpleDateFormat("yy.MM.dd hh:mm", Locale.getDefault())
+        val date = data[position].date
+        val rtNmAndDate = "${data[position].rtNm} • ${date.substring(0, date.length - 3)}"
 
         // Date 색상 변경
         val builder = SpannableStringBuilder(rtNmAndDate)
         val colorSpan = ForegroundColorSpan(application.resources.getColor(R.color.light_gray))
-//        builder.setSpan(colorSpan, rtNmAndDate.indexOf("•" + 1), rtNmAndDate.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        builder.setSpan(colorSpan, data[position].rtNm!!.toString().length + 1, rtNmAndDate.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        builder.setSpan(colorSpan, data[position].rtNm.length + 1, rtNmAndDate.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         holder.binding.txtHistoryRtNmAndDate.text = builder
 

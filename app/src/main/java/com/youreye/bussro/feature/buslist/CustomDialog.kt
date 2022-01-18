@@ -18,6 +18,7 @@ import com.youreye.bussro.model.db.entity.History
 import com.youreye.bussro.model.repository.HistoryRepository
 import dagger.hilt.android.AndroidEntryPoint
 import org.tensorflow.lite.examples.detection.DetectorActivity
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
@@ -77,9 +78,14 @@ class CustomDialog(
 
     /* DB 에 히스토리 저장 */
     private fun insertHistory() {
+        // date 형식 지정
+        val dateFormat = SimpleDateFormat("yy.MM.dd hh:mm:ss", Locale.getDefault())
+        val date = dateFormat.format(System.currentTimeMillis())
+
+
         historyRepository.insert(
             History(
-                Date(System.currentTimeMillis()),
+                date,
                 rtNm,
                 arsId,
                 stationNm

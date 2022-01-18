@@ -6,18 +6,16 @@ import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
-import android.widget.CheckBox
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityHistoryBinding
-import com.youreye.bussro.model.repository.HistoryRepository
 import com.youreye.bussro.util.CustomItemDecoration
-import com.youreye.bussro.util.logd
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * [HistoryActivity]
@@ -61,5 +59,15 @@ class HistoryActivity : AppCompatActivity() {
             builder.setSpan(colorSpan, 12, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             binding.txtHistoryDescription.text = builder
         })
+    }
+
+    /* 30일 이전의 날짜 얻기 */
+    private fun getDate(): String {
+        val cal = Calendar.getInstance()
+        cal.time = Date()
+        cal.add(Calendar.MONTH, -1)
+
+        val dateFormat = SimpleDateFormat("yy.MM.dd", Locale.getDefault())
+        return dateFormat.format(cal.time)
     }
 }

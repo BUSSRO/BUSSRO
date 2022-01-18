@@ -22,7 +22,7 @@ import java.util.*
 @Entity(tableName = "history")
 data class History(
     @PrimaryKey
-    var date: Date,
+    var date: String,
 
     @ColumnInfo(name = "rtNm")
     var rtNm: String,
@@ -40,6 +40,7 @@ fun setStationNm(txt: TextView, stationNm: String) {
     txt.text = stationNm
 }
 
+/*
 /* DataBinding_검색일 */
 @BindingAdapter("date")
 fun setDate(txt: TextView, date: Date) {
@@ -52,3 +53,4 @@ fun setDate(txt: TextView, date: Date) {
 fun setRtNm(txt: TextView, rtNm: String) {
     txt.text = rtNm
 }
+ */

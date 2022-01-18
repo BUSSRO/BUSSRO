@@ -28,7 +28,7 @@ class HistoryModule {
     @Singleton
     fun getHistoryDatabase(@ApplicationContext context: Context, gson: Gson) =
         Room.databaseBuilder(context, HistoryDatabase::class.java, "history")
-            .addTypeConverter(DateTypeConverter(gson))
+//            .addTypeConverter(DateTypeConverter(gson))
             .fallbackToDestructiveMigration()  // db 갱신시 새 table 생성
             .build()
 }
