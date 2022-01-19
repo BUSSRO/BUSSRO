@@ -1,6 +1,7 @@
 package com.youreye.bussro.feature.nearbybusstop
 
 import android.annotation.SuppressLint
+import android.location.Geocoder
 import androidx.lifecycle.*
 import com.youreye.bussro.BuildConfig
 import com.youreye.bussro.model.network.api.BusAPI
@@ -21,6 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class NearbyBusStopViewModel @Inject constructor(
     private val fusedLocationClient: FusedLocationProviderClient,
+    private val geocoder: Geocoder
 ) : ViewModel() {
     var busStopsLiveData = MutableLiveData<List<NearbyBusStopData>>()
     var loadingLiveData = MutableLiveData<Boolean>()  // 로딩
@@ -34,15 +36,28 @@ class NearbyBusStopViewModel @Inject constructor(
             .addOnSuccessListener { location ->
                 if (location != null) {
                     logd("위도 : ${location.latitude}, 경도 : ${location.longitude}")
-                    // 2. API 데이터 가져오기
+
                     viewModelScope.launch {
-                        val data = getApiData(
-                            location.longitude.toString(),
-                            location.latitude.toString(),
-                            "300"
+                        // 사용자의 위치가 서울특별시인지 확인
+                        val city = geocoder.getFromLocation(
+                            location.latitude,
+                            location.longitude,
+                            1
                         )
 
-                        busStopsLiveData.postValue(data)
+                        if (!city.isNullOrEmpty() && city[0].adminArea == "서울특별시") {
+                            // 2. API 데이터 가져오기
+                            val data = getApiData(
+                                location.longitude.toString(),
+                                location.latitude.toString(),
+                                "300"
+                            )
+
+                            busStopsLiveData.postValue(data)
+                        } else {
+                            busStopsLiveData.postValue(listOf())
+                        }
+
                         loadingLiveData.postValue(false)  // 로딩 끝
                     }
                 }
@@ -79,24 +94,40 @@ class NearbyBusStopViewModel @Inject constructor(
                         // List<NearbyBusStops> 타입으로 변경하기
                         val theData = mutableListOf<NearbyBusStopData>()
 
-                        for (d in data) {
-                            theData.add(
-                                NearbyBusStopData(
-                                    d.arsId,
-                                    d.stNm,
-                                    LocationToDistance().distance(
-                                        location.longitude, location.latitude,
-                                        d.tmX!!, d.tmY!!,
-                                        "meter"
+                        withContext(Dispatchers.IO) {
+                            for (d in data) {
+                                // 서울특별시 소재의 버스정류장이 맞는지 확인
+                                val city = geocoder.getFromLocation(
+                                    d.tmY!!,
+                                    d.tmX!!,
+                                    1
+                                )
+
+                                logd("$city")
+
+                                if (!city.isNullOrEmpty() && city[0].adminArea != "서울특별시") {
+                                    continue
+                                }
+
+                                // 서울특별시 소재의 버스정류장만 데이터 입력
+                                theData.add(
+                                    NearbyBusStopData(
+                                        d.arsId,
+                                        d.stNm,
+                                        LocationToDistance().distance(
+                                            location.longitude, location.latitude,
+                                            d.tmX!!, d.tmY!!,
+                                            "meter"
+                                        )
                                     )
                                 )
-                            )
+                            }
+
+                            theData.sortBy { data -> data.dist }
+
+                            busStopsLiveData.postValue(theData)
+                            loadingLiveData.postValue(false)  // 로딩 끝
                         }
-
-                        theData.sortBy { data -> data.dist }
-
-                        busStopsLiveData.postValue(theData)
-                        loadingLiveData.postValue(false)  // 로딩 끝
                     }
                 }
             }

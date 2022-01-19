@@ -119,7 +119,7 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 /* 버스정류장이 없는 경우 */
                 if (data.isEmpty()) {
                     binding.ivNearbyPlaceholderImage.setBackgroundResource(R.drawable.ic_search_off)
-                    binding.txtNearbyPlaceholderDesc.text = "검색 결과가 없어요.\n(서울특별시 소재 정류장만 조회 가능합니다)"
+                    binding.txtNearbyPlaceholderDesc.text = "해당하는 정류장이 없어요.\n(서울특별시 소재 정류장만 서비스 가능합니다)"
 
                     binding.ivNearbyPlaceholderImage.visibility = View.VISIBLE
                     binding.txtNearbyPlaceholderDesc.visibility = View.VISIBLE
