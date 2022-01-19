@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityOnBoardingBinding
-import com.youreye.bussro.feature.buslist.CustomDialog
 import com.youreye.bussro.feature.clause.ClauseActivity
 import com.youreye.bussro.util.BackPressDialog
 

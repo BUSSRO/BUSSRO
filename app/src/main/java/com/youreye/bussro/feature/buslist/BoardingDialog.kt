@@ -7,12 +7,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.youreye.bussro.R
-import com.youreye.bussro.databinding.FragmentCustomDialogBinding
+import com.youreye.bussro.databinding.FragmentBoardingDialogBinding
 import com.youreye.bussro.feature.sign.SignActivity
 import com.youreye.bussro.model.db.entity.History
 import com.youreye.bussro.model.repository.HistoryRepository
@@ -23,19 +21,19 @@ import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class CustomDialog(
+class BoardingDialog(
     private val rtNm: String,
     private val stationNm: String,
     private val arsId: String
 ) : DialogFragment() {
-    private lateinit var binding: FragmentCustomDialogBinding
+    private lateinit var binding: FragmentBoardingDialogBinding
     @Inject lateinit var historyRepository: HistoryRepository
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_custom_dialog, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_boarding_dialog, container, false)
         return binding.root
     }
 

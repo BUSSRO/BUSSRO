@@ -1,30 +1,20 @@
 package com.youreye.bussro.feature.history
 
 import android.app.Application
-import android.content.Context
-import android.content.Intent
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.Toast
-import android.widget.ToggleButton
 import androidx.annotation.NonNull
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.RvHistoryItemBinding
-import com.youreye.bussro.feature.buslist.BusListActivity
-import com.youreye.bussro.feature.buslist.CustomDialog
+import com.youreye.bussro.feature.buslist.BoardingDialog
 import com.youreye.bussro.model.db.entity.History
 import com.youreye.bussro.model.repository.HistoryRepository
-import com.youreye.bussro.util.logd
-import java.text.SimpleDateFormat
-import java.util.*
 
 /**
  * [HistoryAdapter]
@@ -71,7 +61,7 @@ class HistoryAdapter(
         /* 항목 click listener */
         holder.binding.root.setOnClickListener {
             // 버스 탑승 dialog 띄우기
-            val dialog = CustomDialog(
+            val dialog = BoardingDialog(
                 data[position].rtNm,
                 data[position].stationNm,
                 data[position].arsId

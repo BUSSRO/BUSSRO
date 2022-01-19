@@ -135,7 +135,7 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private fun initSetOnClickListener() {
         /* 전광판 or 카메라 인식 */
         binding.txtBusListStart.setOnClickListener {
-            val dialog = CustomDialog(
+            val dialog = BoardingDialog(
                 rtNm,
                 intent.getStringExtra("stationNm")!!,
                 intent.getStringExtra("arsId")!!
