@@ -18,15 +18,5 @@ data class NearbyBusStopData(
     var dist: Double?
 )
 
-/* DataBinding_정류소명 */
-@BindingAdapter("stationName")
-fun setStationNm(txt: TextView, stationNm: String) {
-    txt.text = stationNm
-}
 
-/* DataBinding_거리(기준 : km) */
-@BindingAdapter("dist")
-fun setDist(txt: TextView, dist: Double) {
-    txt.text = String.format("%.3f km", dist.div(1000))
-}
 

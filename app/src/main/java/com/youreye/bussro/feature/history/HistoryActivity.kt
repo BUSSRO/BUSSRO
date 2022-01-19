@@ -58,7 +58,7 @@ class HistoryActivity : AppCompatActivity() {
             val text = "이번 달 버스 이용은 ${it.size} 번 입니다."
             val builder = SpannableStringBuilder(text)
             val colorSpan = ForegroundColorSpan(resources.getColor(R.color.yellow))
-            val end = 12 + (it.size / 10) + 3  // 시작점 + 숫자 자릿수
+            val end = 12 + (it.size.toString().length) + 2
             builder.setSpan(colorSpan, 12, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             binding.txtHistoryDescription.text = builder
 

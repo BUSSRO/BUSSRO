@@ -1,4 +1,4 @@
-package com.youreye.bussro.feature.nearbybusstop
+package com.youreye.bussro.feature.busstop
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -8,6 +8,10 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -20,10 +24,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.youreye.bussro.R
-import com.youreye.bussro.databinding.ActivityNearbyBusStopBinding
+import com.youreye.bussro.databinding.ActivityBusStopBinding
 import com.youreye.bussro.feature.findstation.FindStationActivity
-import com.youreye.bussro.model.repository.HistoryRepository
-import com.youreye.bussro.util.CustomItemDecoration
+import com.youreye.bussro.feature.search.SearchActivity
 import com.youreye.bussro.util.NetworkConnection
 import com.youreye.bussro.util.logd
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,15 +34,15 @@ import java.util.*
 import javax.inject.Inject
 
 /**
- * [NearbyBusStopActivity]
+ * [BusStopActivity]
  * MainActivity 의 "버스 탑승 도우미" 버튼을 클릭했을시 보여짐
  * 사용자의 위치를 기준으로 0.4km 이내의 버스 정류장을 가까운 순으로 정렬해 제공한다.
  */
 
 @AndroidEntryPoint
-class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
-    private val viewModel: NearbyBusStopViewModel by viewModels()
-    private lateinit var binding: ActivityNearbyBusStopBinding
+class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
+    private val viewModel: BusStopViewModel by viewModels()
+    private lateinit var binding: ActivityBusStopBinding
     private lateinit var requestLocation: ActivityResultLauncher<Array<String>>
     private lateinit var tts: TextToSpeech
     @Inject lateinit var connection: NetworkConnection
@@ -50,7 +53,7 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             if (result.resultCode == Activity.RESULT_OK) {
                 val stationNm = result.data?.getStringExtra("stationNm")
                 if (!stationNm.isNullOrEmpty()) {
-                    viewModel.requestSearchedBusStop(stationNm)
+//                    viewModel.requestSearchedBusStop(stationNm)
                 }
             }
         }
@@ -58,8 +61,8 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(
-            this@NearbyBusStopActivity,
-            R.layout.activity_nearby_bus_stop
+            this@BusStopActivity,
+            R.layout.activity_bus_stop
         )
         binding.lifecycleOwner = this
 
@@ -73,12 +76,12 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 viewModel.requestNearbyBusStop()
 
                 binding.rvNearbyBusStop.visibility = View.VISIBLE
-                binding.edtNearbyBusStop.visibility = View.VISIBLE
-                binding.imgNearbyBusStop.visibility = View.VISIBLE
+//                binding.edtNearbyBusStop.visibility = View.VISIBLE
+//                binding.imgNearbyBusStop.visibility = View.VISIBLE
             } else {
                 binding.rvNearbyBusStop.visibility = View.GONE
-                binding.edtNearbyBusStop.visibility = View.GONE
-                binding.imgNearbyBusStop.visibility = View.GONE
+//                binding.edtNearbyBusStop.visibility = View.GONE
+//                binding.imgNearbyBusStop.visibility = View.GONE
 
                 binding.ivNearbyPlaceholderImage.setBackgroundResource(R.drawable.ic_baseline_wifi_off_24)
                 binding.txtNearbyPlaceholderDesc.text = "네트워크 연결 없음"
@@ -90,7 +93,7 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
         initVar()
         binding.viewModel = viewModel
-        binding.activity = this@NearbyBusStopActivity
+        binding.activity = this@BusStopActivity
         requestPermission()
     }
 
@@ -103,6 +106,11 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     /* 변수 초기화 */
     @SuppressLint("SetTextI18n", "ResourceAsColor")
     private fun initVar() {
+        /* 뒤로가기 */
+        binding.ibSearchBack.setOnClickListener {
+            finish()
+        }
+
         // Location 객체
         requestLocation =
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
@@ -115,11 +123,15 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 }
             }
 
+        binding.txtBusStopSearch.setOnClickListener {
+            startActivity(Intent(this, SearchActivity::class.java))
+        }
+
         // RecyclerView 세팅
-        val rvAdapter = NearbyBusStopAdapter(application)
+        val rvAdapter = BusStopAdapter(application)
         binding.rvNearbyBusStop.apply {
             adapter = rvAdapter
-            layoutManager = LinearLayoutManager(this@NearbyBusStopActivity)
+            layoutManager = LinearLayoutManager(this@BusStopActivity)
 //            addItemDecoration(CustomItemDecoration(60))
         }
 
@@ -129,11 +141,11 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         // LiveData 관찰
         viewModel.apply {
             // loading 데이터 변경 감지
-            loadingLiveData.observe(this@NearbyBusStopActivity, Observer { flag ->
+            loadingLiveData.observe(this@BusStopActivity, Observer { flag ->
                 binding.progressNearbyBusStop.visibility = if (flag) View.VISIBLE else View.GONE
             })
             // busStop 데이터 변경 감지
-            busStopsLiveData.observe(this@NearbyBusStopActivity, Observer { data ->
+            busStopsLiveData.observe(this@BusStopActivity, Observer { data ->
                 rvAdapter.updateData(data)
                 tts.speak(
                     "불러오기 완료",
@@ -142,10 +154,17 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                     TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
                 )
 
+                /* 안내문구 갱신 */
+                val text = "${data.size}개의 정류장이 나왔습니다."
+                val builder = SpannableStringBuilder(text)
+                val colorSpan = ForegroundColorSpan(resources.getColor(R.color.yellow))
+                builder.setSpan(colorSpan, 0, data.size.toString().length + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                binding.txtBusStopDesc.text = builder
+
                 /* 버스정류장이 없는 경우 */
                 if (data.isEmpty()) {
                     binding.ivNearbyPlaceholderImage.setBackgroundResource(R.drawable.ic_search_off)
-                    binding.txtNearbyPlaceholderDesc.text = "해당하는 정류장이 없어요.\n(서울특별시 소재 정류장만 서비스 가능합니다)"
+                    binding.txtNearbyPlaceholderDesc.text = "해당하는 정류장이 없어요.\n(서울특별시 지역만 서비스 가능합니다)"
 
                     binding.ivNearbyPlaceholderImage.visibility = View.VISIBLE
                     binding.txtNearbyPlaceholderDesc.visibility = View.VISIBLE
@@ -154,19 +173,6 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                     binding.txtNearbyPlaceholderDesc.visibility = View.GONE
                 }
             })
-        }
-
-        // EditText Search 감지
-        binding.edtNearbyBusStop.setOnEditorActionListener { v, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                viewModel.requestSearchedBusStop(v.text.toString())
-
-                // 키보드 동작
-                val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(binding.edtNearbyBusStop.windowToken, 0)
-                return@setOnEditorActionListener true
-            }
-            false
         }
     }
 

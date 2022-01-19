@@ -39,9 +39,15 @@
     <string name="main_third_txt">버스 탑승 기록</string>
     <string name="main_setting_txt">설정</string>
 
-    <!-- activity_nearby_bus_stop -->
-    <string name="txt_nearby_bus_stop">주변 정류장</string>
+    <!-- activity_bus_stop -->
+    <string name="txt_nearby_bus_stop">버스 정류장</string>
     <string name="edt_nearby_bus_stop">다른 정류장 검색 …</string>
+
+    <!-- activity_search -->
+    <string name="txt_search_title">버스 정류장 검색</string>
+    <string name="txt_search_desc">최근 검색어</string>
+    <string name="txt_search_delete_all">전체 삭제</string>
+    <string name="txt_search_placeholder">최근 검색어가 없습니다.</string>
 
     <!-- activity_bus_list -->
     <string name="bus_list_info_txt">번 버스로 도착을 안내합니다.</string>

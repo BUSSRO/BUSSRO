@@ -1,7 +1,5 @@
 package com.youreye.bussro.feature.buslist
 
-import android.content.Intent
-import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -46,6 +44,6 @@ class BusListViewModel(
 
     companion object {
         private const val BASE_URL = "http://ws.bus.go.kr/api/rest/stationinfo/getStationByUid?"
-        private const val SERVICE_KEY = BuildConfig.NEARBY_BUS_STOP_API_KEY
+        private const val SERVICE_KEY = BuildConfig.API_KEY
     }
 }

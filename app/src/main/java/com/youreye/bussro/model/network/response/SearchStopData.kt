@@ -19,9 +19,3 @@ data class SearchStopData (
     var tmY: Double?,
     var arsId: String?
 )
-
-/* DataBinding_정류소고유번호 */
-@BindingAdapter("arsId")
-fun setDist(txt: TextView, arsId: String) {
-    txt.text = arsId
-}

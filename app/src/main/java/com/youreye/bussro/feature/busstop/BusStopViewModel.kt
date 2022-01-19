@@ -1,4 +1,4 @@
-package com.youreye.bussro.feature.nearbybusstop
+package com.youreye.bussro.feature.busstop
 
 import android.annotation.SuppressLint
 import android.location.Geocoder
@@ -10,22 +10,27 @@ import com.youreye.bussro.model.network.response.SearchStopData
 import com.youreye.bussro.util.LocationToDistance
 import com.youreye.bussro.util.logd
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.youreye.bussro.util.NetworkConnection
+import com.youreye.bussro.model.network.api.StationInfoAPI
+import com.youreye.bussro.model.network.response.BusStopData
+import com.youreye.bussro.model.network.response.SearchedBusStopData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import javax.inject.Inject
 
 /**
- * [NearbyBusStopViewModel]
+ * [BusStopViewModel]
  * NearbyBusStopActivity 의 ViewModel
  */
 
 @HiltViewModel
-class NearbyBusStopViewModel @Inject constructor(
+class BusStopViewModel @Inject constructor(
     private val fusedLocationClient: FusedLocationProviderClient,
     private val geocoder: Geocoder
 ) : ViewModel() {
-    var busStopsLiveData = MutableLiveData<List<NearbyBusStopData>>()
+    var busStopsLiveData = MutableLiveData<List<BusStopData.MsgBody.BusStop>>()
     var loadingLiveData = MutableLiveData<Boolean>()  // 로딩
 
     /* 사용자 주변 버스 정류장 요청 메서드 */
@@ -33,7 +38,7 @@ class NearbyBusStopViewModel @Inject constructor(
     fun requestNearbyBusStop() {
         loadingLiveData.value = true
 
-        // 1. 사용자 위치 받기
+        // 사용자 위치 받기
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location ->
                 if (location != null) {
@@ -48,24 +53,12 @@ class NearbyBusStopViewModel @Inject constructor(
                         )
 
                         if (!city.isNullOrEmpty() && city[0].adminArea == "서울특별시") {
-                            // 2. API 데이터 가져오기
-                            val data = getApiData(
+                            // API 데이터 가져오기
+                            requestBusStopData(
                                 location.longitude.toString(),
-                                location.latitude.toString(),
-                                "300"
+                                location.latitude.toString()
                             )
-
-                            for (d in data) {
-                                logd("stationNm: ${d.stationNm}, arsId: ${d.arsId}")
-                                logd("$city")
-                            }
-
-                            busStopsLiveData.postValue(data)
-                        } else {
-                            busStopsLiveData.postValue(listOf())
                         }
-
-                        loadingLiveData.postValue(false)  // 로딩 끝
                     }
                 }
             }
@@ -75,15 +68,35 @@ class NearbyBusStopViewModel @Inject constructor(
     }
 
     /* 공공데이터 응답 가져오기, parameter : 인증키(serviceKey), 경도(tmX), 위도(tmY), 거리(radius) */
-    private suspend fun getApiData(tmX: String, tmY: String, radius: String): List<NearbyBusStopData> {
-        val urlString =
-            BASE_URL + "getStationByPos?serviceKey=" + SERVICE_KEY + "&tmX=" + tmX + "&tmY=" + tmY + "&radius=" + radius
+    private fun requestBusStopData(tmX: String, tmY: String) {
+        val call = StationInfoAPI.api.getStationByPos(
+            BuildConfig.API_KEY,
+            tmX,
+            tmY
+        )
 
-        return withContext(Dispatchers.IO) {
-            BusAPI("NearbyBusStopData").loadXmlFromNetwork(urlString)
-        }
+        call.enqueue(object: retrofit2.Callback<BusStopData> {
+            override fun onResponse(call: Call<BusStopData>, response: Response<BusStopData>) {
+                if (response.isSuccessful) {
+                    response.body()?.msgBody?.busStopList?.apply {
+                        busStopsLiveData.postValue(this)
+                    }
+                } else {
+                    busStopsLiveData.postValue(listOf())
+                }
+                loadingLiveData.postValue(false)  // 로딩 끝
+            }
+
+            override fun onFailure(call: Call<BusStopData>, t: Throwable) {
+                logd("onFailure: $t")
+
+                busStopsLiveData.postValue(listOf())
+                loadingLiveData.postValue(false)  // 로딩 끝
+            }
+        })
     }
 
+    /*
     /* 사용자 검색 버스 정류장 요청 메서드 */
     @SuppressLint("MissingPermission")
     fun requestSearchedBusStop(stSrch: String) {
@@ -144,17 +157,25 @@ class NearbyBusStopViewModel @Inject constructor(
     }
 
     /* 공공데이터 응답 가져오기, parameter : 인증키(serviceKey), 검색어(stSrch) */
-    private suspend fun getTestData(stSrch: String): List<SearchStopData> {
-        val urlString =
-            BASE_URL + "getStationByName?serviceKey=" + SERVICE_KEY + "&stSrch=" + stSrch
+    private fun requestSearchedBusStopData(stSrch: String) {
+        val call = StationInfoAPI.api.getStationByName(
+            BuildConfig.API_KEY,
+            stSrch
+        )
 
-        return withContext(Dispatchers.IO) {
-            BusAPI("SearchStopData").loadXmlFromNetwork(urlString)
-        }
+        call.enqueue(object: Callback<SearchedBusStopData> {
+            override fun onResponse(
+                call: Call<SearchedBusStopData>,
+                response: Response<SearchedBusStopData>
+            ) {
+
+            }
+
+            override fun onFailure(call: Call<SearchedBusStopData>, t: Throwable) {
+
+            }
+        })
     }
 
-    companion object {
-        private const val BASE_URL = "http://ws.bus.go.kr/api/rest/stationinfo/"
-        private const val SERVICE_KEY = BuildConfig.NEARBY_BUS_STOP_API_KEY
-    }
+     */
 }

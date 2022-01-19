@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="nearbyBusStop"
-            type="com.youreye.bussro.model.network.response.NearbyBusStopData" />
+            name="busStop"
+            type="com.youreye.bussro.model.network.response.BusStopData.MsgBody.BusStop" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,7 +18,7 @@
         <!-- 버스 정류장명 -->
         <TextView
             android:id="@+id/txt_bus_list_item_number"
-            app:stationName="@{nearbyBusStop.stationNm}"
+            app:stationName="@{busStop.stationNm}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             tools:text="돈암초등학교"
@@ -37,7 +37,7 @@
             android:id="@+id/txt_bus_list_item_dir"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{nearbyBusStop.arsId}"
+            android:text="@{busStop.arsId}"
             tools:text="18911 / 성신여대입구역 방면"
             android:textColor="@color/light_gray"
             android:textSize="16dp"
@@ -52,7 +52,7 @@
         <!-- 사용자와의 거리 -->
         <TextView
             android:id="@+id/txt_bus_list_item_info"
-            app:dist="@{nearbyBusStop.dist}"
+            app:dist="@{busStop.dist}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="0.062km"

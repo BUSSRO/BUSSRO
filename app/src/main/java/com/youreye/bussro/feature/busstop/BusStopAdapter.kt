@@ -1,4 +1,4 @@
-package com.youreye.bussro.feature.nearbybusstop
+package com.youreye.bussro.feature.busstop
 
 import android.app.Application
 import android.content.Intent
@@ -8,47 +8,43 @@ import androidx.annotation.NonNull
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.youreye.bussro.R
-import com.youreye.bussro.model.network.response.NearbyBusStopData
-import com.youreye.bussro.databinding.RvNearbyBusStopItemBinding
+import com.youreye.bussro.databinding.RvBusStopItemBinding
 import com.youreye.bussro.feature.buslist.BusListActivity
-import com.youreye.bussro.model.db.entity.History
-import com.youreye.bussro.model.repository.HistoryRepository
-import java.text.SimpleDateFormat
-import java.util.*
+import com.youreye.bussro.model.network.response.BusStopData
 
 /**
- * [NearbyBusStopAdapter]
+ * [BusStopAdapter]
  * NearbyBusStopActivity 의 RecyclerView Adapter
  * 주변 정류장 및 다른 정류장 찾기의 결과를 반영한다.
  *
  * @param application application from NearbyBusStopActivity
  */
 
-class NearbyBusStopAdapter(
+class BusStopAdapter(
     private val application: Application
-) : RecyclerView.Adapter<NearbyBusStopAdapter.NearbyBusStopViewHolder>() {
-    private var data = listOf<NearbyBusStopData>()
+) : RecyclerView.Adapter<BusStopAdapter.BusStopViewHolder>() {
+    private var data = listOf<BusStopData.MsgBody.BusStop>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NearbyBusStopViewHolder {
-        val binding: RvNearbyBusStopItemBinding = DataBindingUtil.inflate(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BusStopViewHolder {
+        val binding: RvBusStopItemBinding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
-            R.layout.rv_nearby_bus_stop_item,
+            R.layout.rv_bus_stop_item,
             parent,
             false
         )
-        return NearbyBusStopViewHolder(binding)
+        return BusStopViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: NearbyBusStopViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: BusStopViewHolder, position: Int) {
         /* ViewBinding data input */
-        holder.binding.nearbyBusStop = data[position]
+        holder.binding.busStop = data[position]
 
         /* 항목 click listener */
         holder.binding.apply {
             root.setOnClickListener { view ->
                 val intent = Intent(view.context, BusListActivity::class.java)
-                    .putExtra("stationNm", nearbyBusStop?.stationNm)
-                    .putExtra("arsId", nearbyBusStop?.arsId)
+                    .putExtra("stationNm", busStop?.stationNm)
+                    .putExtra("arsId", busStop?.arsId)
                 view.context.startActivity(intent)
             }
         }
@@ -57,13 +53,13 @@ class NearbyBusStopAdapter(
     override fun getItemCount(): Int = data.size
 
     /* 데이터 갱신 */
-    fun updateData(apiData: List<NearbyBusStopData>) {
+    fun updateData(apiData: List<BusStopData.MsgBody.BusStop>) {
         data = apiData
         notifyDataSetChanged()
     }
 
     /* ViewHolder */
-    inner class NearbyBusStopViewHolder(@NonNull val binding: RvNearbyBusStopItemBinding) :
+    inner class BusStopViewHolder(@NonNull val binding: RvBusStopItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
     }
 }
