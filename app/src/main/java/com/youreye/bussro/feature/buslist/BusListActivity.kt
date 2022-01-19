@@ -1,5 +1,6 @@
 package com.youreye.bussro.feature.buslist
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
@@ -11,7 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.youreye.bussro.util.CustomItemDecoration
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityBusListBinding
+import com.youreye.bussro.util.BoardingDialog
 import com.youreye.bussro.util.logd
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
 /**
@@ -20,11 +23,12 @@ import java.util.*
  * 사용자가 현재 위치한 버스 정류장을 거치는 버스 리스트를 제공한다.
  */
 
+@AndroidEntryPoint
 class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private lateinit var viewModel: BusListViewModel
     private lateinit var binding: ActivityBusListBinding
     private lateinit var tts: TextToSpeech
-    val busList = mutableListOf<String>()
+    var rtNm: String = ""  // 사용자가 선택한 버스번호
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +36,7 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         initVar()
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+
         initSetOnClickListener()
         initTTS()
 
@@ -52,13 +57,13 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             logd("정류장고유번호 : arsId: ${intent.getStringExtra("arsId")}")
         }
 
-        val rvAdapter = BusListAdapter(busList, this)
+        val rvAdapter = BusListAdapter(this)
         binding.rvBusList.apply {
             adapter = rvAdapter
             layoutManager = LinearLayoutManager(applicationContext)
-            addItemDecoration(
-                CustomItemDecoration(60)
-            )
+//            addItemDecoration(
+//                CustomItemDecoration(60)
+//            )
         }
 
         // LiveData 관찰
@@ -131,20 +136,21 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private fun initSetOnClickListener() {
         /* 전광판 or 카메라 인식 */
         binding.txtBusListStart.setOnClickListener {
-            val dialog = CustomDialog()
-            dialog.show(supportFragmentManager, "CustomDialog")
-
-//            val intent = Intent(this, SignActivity::class.java)
-//                .putExtras(bundleOf("busList" to busList))
-//                .putExtra("rtNm", busList[0])
-//            startActivity(intent)
+            val dialog = BoardingDialog(
+                rtNm,
+                intent.getStringExtra("stationNm")!!,
+                intent.getStringExtra("arsId")!!
+            )
+            dialog.show(supportFragmentManager, "FromBusListActivity")
         }
     }
 
+    /* [302번 버스로 도착을 안내합니다.] 버튼 띄워주기 */
+    @SuppressLint("SetTextI18n")
     fun setVisible() {
-        if (busList.size > 0) {
+        if (rtNm.isNotEmpty()) {
+            binding.txtBusListStart.text = "${rtNm}번 버스로 도착을 안내합니다."
             binding.txtBusListStart.visibility = View.VISIBLE
-
         } else {
             binding.txtBusListStart.visibility = View.GONE
         }

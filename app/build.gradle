@@ -120,6 +120,9 @@ dependencies {
 
     // ViewPager2 indicator
     implementation 'com.tbuonomo:dotsindicator:4.2'
+
+    // Gson
+    implementation 'com.google.code.gson:gson:2.8.9'
 }
 
 kapt {

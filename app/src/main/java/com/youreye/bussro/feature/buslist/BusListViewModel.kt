@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.youreye.bussro.BuildConfig
 import com.youreye.bussro.model.network.api.BusAPI
 import com.youreye.bussro.model.network.response.BusListData
-import com.youreye.bussro.feature.businfo.BusInfoActivity
 import com.youreye.bussro.util.logd
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -43,14 +42,6 @@ class BusListViewModel(
             busListLiveData.postValue(data)
             loadingLiveData.postValue(false)
         }
-    }
-
-    /* onClick */
-    fun onClick(v: View) {
-        val intent = Intent(v.context, BusInfoActivity::class.java)
-            .putExtra("stationNm", stationNm)
-        logd("onClick: $stationNm")
-        v.context.startActivity(intent)
     }
 
     companion object {

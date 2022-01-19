@@ -1,6 +1,7 @@
 package com.youreye.bussro.di.module
 
 import android.content.Context
+import android.location.Geocoder
 import com.google.android.gms.location.LocationServices
 import dagger.Module
 import dagger.Provides
@@ -15,4 +16,8 @@ class LocationModule {
     @Provides
     fun getFusedLocationProviderClient(@ApplicationContext context: Context) =
         LocationServices.getFusedLocationProviderClient(context)
+
+    @Provides
+    fun getGeoClient(@ApplicationContext context: Context) =
+        Geocoder(context)
 }

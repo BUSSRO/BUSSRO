@@ -12,7 +12,7 @@ import com.youreye.bussro.model.db.entity.History
 @Dao
 interface HistoryDao {
     /* 모든 히스토리 조회(시간 내림차순) */
-    @Query("SELECT * FROM history ORDER BY date DESC")
+    @Query("SELECT * FROM history ORDER BY scrap DESC, date DESC")
     fun getAll(): LiveData<List<History>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -20,6 +20,9 @@ interface HistoryDao {
 
     @Delete
     suspend fun delete(history: History)
+
+    @Update
+    suspend fun update(history: History)
 
     @Query("DELETE FROM history")
     fun deleteAll()

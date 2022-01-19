@@ -1,5 +1,8 @@
 package com.youreye.bussro.model.network.response
 
+import android.widget.TextView
+import androidx.databinding.BindingAdapter
+
 /**
  * [SearchStopData]
  * 서울특별시_정류조정보조회 서비스 中 정류소 명칭 검색의 Response Message 를 받을 data class
@@ -16,3 +19,9 @@ data class SearchStopData (
     var tmY: Double?,
     var arsId: String?
 )
+
+/* DataBinding_정류소고유번호 */
+@BindingAdapter("arsId")
+fun setDist(txt: TextView, arsId: String) {
+    txt.text = arsId
+}

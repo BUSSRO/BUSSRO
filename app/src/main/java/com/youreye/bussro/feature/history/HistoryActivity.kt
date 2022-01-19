@@ -3,6 +3,10 @@ package com.youreye.bussro.feature.history
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
+import android.view.View
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -11,8 +15,9 @@ import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityHistoryBinding
 import com.youreye.bussro.model.repository.HistoryRepository
 import com.youreye.bussro.util.CustomItemDecoration
-import com.youreye.bussro.util.logd
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -39,21 +44,42 @@ class HistoryActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun initVar() {
         /* RecyclerView */
-        val rvAdapter = HistoryAdapter(historyRepository, application)
+        val rvAdapter = HistoryAdapter(supportFragmentManager, application, historyRepository)
         binding.rvHistory.apply {
             adapter = rvAdapter
             layoutManager = LinearLayoutManager(this@HistoryActivity)
-            addItemDecoration(CustomItemDecoration(60))
+//            addItemDecoration(CustomItemDecoration(40))
         }
 
         viewModel.getAll().observe(this, Observer {
-            logd("onCreate: ${it}")
             rvAdapter.updateData(it)
 
             /* 버스 이용 횟수 */
-            binding.txtHistoryDescription.text = "이번 달 버스 이용은 ${it.size} 번 입니다."
+            val text = "이번 달 버스 이용은 ${it.size} 번 입니다."
+            val builder = SpannableStringBuilder(text)
+            val colorSpan = ForegroundColorSpan(resources.getColor(R.color.yellow))
+            val end = 12 + (it.size / 10) + 3  // 시작점 + 숫자 자릿수
+            builder.setSpan(colorSpan, 12, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            binding.txtHistoryDescription.text = builder
+
+            /* 버스 이용 횟수가 없는경우 띄워줄 이미지 + 텍스트 */
+            if (it.isEmpty()) {
+                binding.ivHistoryOff.visibility = View.VISIBLE
+                binding.txtHistoryOffDesc.visibility = View.VISIBLE
+            } else {
+                binding.ivHistoryOff.visibility = View.GONE
+                binding.txtHistoryOffDesc.visibility = View.GONE
+            }
         })
+    }
 
+    /* 30일 이전의 날짜 얻기 */
+    private fun getDate(): String {
+        val cal = Calendar.getInstance()
+        cal.time = Date()
+        cal.add(Calendar.MONTH, -1)
 
+        val dateFormat = SimpleDateFormat("yy.MM.dd", Locale.getDefault())
+        return dateFormat.format(cal.time)
     }
 }
