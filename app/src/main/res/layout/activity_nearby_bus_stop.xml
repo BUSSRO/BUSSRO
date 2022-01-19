@@ -32,7 +32,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/edt_nearby_bus_stop"
             android:layout_margin="16dp"/>
 
         <EditText
@@ -49,9 +48,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@id/rv_nearby_bus_stop"
             app:layout_constraintEnd_toStartOf="@id/img_nearby_bus_stop"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"/>
+            android:layout_margin="16dp"/>
 
         <ImageView
             android:id="@+id/img_nearby_bus_stop"

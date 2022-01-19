@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.youreye.bussro.util.CustomItemDecoration
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityBusListBinding
+import com.youreye.bussro.util.BoardingDialog
 import com.youreye.bussro.util.logd
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*

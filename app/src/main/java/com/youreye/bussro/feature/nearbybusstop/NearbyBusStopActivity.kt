@@ -24,6 +24,7 @@ import com.youreye.bussro.databinding.ActivityNearbyBusStopBinding
 import com.youreye.bussro.feature.findstation.FindStationActivity
 import com.youreye.bussro.model.repository.HistoryRepository
 import com.youreye.bussro.util.CustomItemDecoration
+import com.youreye.bussro.util.NetworkConnection
 import com.youreye.bussro.util.logd
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -41,6 +42,9 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private lateinit var binding: ActivityNearbyBusStopBinding
     private lateinit var requestLocation: ActivityResultLauncher<Array<String>>
     private lateinit var tts: TextToSpeech
+    @Inject lateinit var connection: NetworkConnection
+
+    // 음성으로 검색하는 것
     private val startActivityForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -57,16 +61,37 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             this@NearbyBusStopActivity,
             R.layout.activity_nearby_bus_stop
         )
-        initVar()
         binding.lifecycleOwner = this
+
+        // 네트워크 연결 확인
+        connection.observe(this, Observer { isConnected ->
+            if (isConnected) {
+                binding.ivNearbyPlaceholderImage.visibility = View.GONE
+                binding.txtNearbyPlaceholderDesc.visibility = View.GONE
+
+                // 데이터 요청
+                viewModel.requestNearbyBusStop()
+
+                binding.rvNearbyBusStop.visibility = View.VISIBLE
+                binding.edtNearbyBusStop.visibility = View.VISIBLE
+                binding.imgNearbyBusStop.visibility = View.VISIBLE
+            } else {
+                binding.rvNearbyBusStop.visibility = View.GONE
+                binding.edtNearbyBusStop.visibility = View.GONE
+                binding.imgNearbyBusStop.visibility = View.GONE
+
+                binding.ivNearbyPlaceholderImage.setBackgroundResource(R.drawable.ic_baseline_wifi_off_24)
+                binding.txtNearbyPlaceholderDesc.text = "네트워크 연결 없음"
+
+                binding.ivNearbyPlaceholderImage.visibility = View.VISIBLE
+                binding.txtNearbyPlaceholderDesc.visibility = View.VISIBLE
+            }
+        })
+
+        initVar()
         binding.viewModel = viewModel
         binding.activity = this@NearbyBusStopActivity
         requestPermission()
-
-        // 화면 전환 대응
-        if (savedInstanceState == null) {
-            viewModel.requestNearbyBusStop()
-        }
     }
 
     /* onClick */
@@ -85,7 +110,8 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                     if (granted) {
                         logd("위치 권한 설정 완료")
                     }
-                    viewModel.requestNearbyBusStop()
+                    // 잠깐 뺐음
+//                    viewModel.requestNearbyBusStop()
                 }
             }
 

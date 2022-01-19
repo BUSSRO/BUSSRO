@@ -1,4 +1,4 @@
-package com.youreye.bussro.feature.buslist
+package com.youreye.bussro.util
 
 import android.content.Intent
 import android.graphics.Color

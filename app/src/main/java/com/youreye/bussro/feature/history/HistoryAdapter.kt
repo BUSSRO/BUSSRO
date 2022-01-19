@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.RvHistoryItemBinding
-import com.youreye.bussro.feature.buslist.BoardingDialog
+import com.youreye.bussro.util.BoardingDialog
 import com.youreye.bussro.model.db.entity.History
 import com.youreye.bussro.model.repository.HistoryRepository
 

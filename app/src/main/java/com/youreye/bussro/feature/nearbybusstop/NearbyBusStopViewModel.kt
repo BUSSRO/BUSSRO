@@ -10,6 +10,7 @@ import com.youreye.bussro.model.network.response.SearchStopData
 import com.youreye.bussro.util.LocationToDistance
 import com.youreye.bussro.util.logd
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.youreye.bussro.util.NetworkConnection
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import javax.inject.Inject
@@ -31,6 +32,7 @@ class NearbyBusStopViewModel @Inject constructor(
     @SuppressLint("MissingPermission")
     fun requestNearbyBusStop() {
         loadingLiveData.value = true
+
         // 1. 사용자 위치 받기
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location ->
