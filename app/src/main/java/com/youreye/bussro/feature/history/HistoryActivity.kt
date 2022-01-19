@@ -48,7 +48,7 @@ class HistoryActivity : AppCompatActivity() {
         binding.rvHistory.apply {
             adapter = rvAdapter
             layoutManager = LinearLayoutManager(this@HistoryActivity)
-            addItemDecoration(CustomItemDecoration(40))
+//            addItemDecoration(CustomItemDecoration(40))
         }
 
         viewModel.getAll().observe(this, Observer {

@@ -61,9 +61,9 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         binding.rvBusList.apply {
             adapter = rvAdapter
             layoutManager = LinearLayoutManager(applicationContext)
-            addItemDecoration(
-                CustomItemDecoration(60)
-            )
+//            addItemDecoration(
+//                CustomItemDecoration(60)
+//            )
         }
 
         // LiveData 관찰

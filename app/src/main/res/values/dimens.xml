@@ -8,4 +8,9 @@
     <dimen name="main_point_color_width">8dp</dimen>
     <dimen name="main_background_radius">8dp</dimen>
     <dimen name="main_background_height">112dp</dimen>
+
+    <!-- for divider -->
+    <dimen name="dp_05">0.5dp</dimen>
+    <dimen name="dp_1">1dp</dimen>
+    <dimen name="dp_2">2dp</dimen>
 </resources>

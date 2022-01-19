@@ -120,7 +120,7 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         binding.rvNearbyBusStop.apply {
             adapter = rvAdapter
             layoutManager = LinearLayoutManager(this@NearbyBusStopActivity)
-            addItemDecoration(CustomItemDecoration(60))
+//            addItemDecoration(CustomItemDecoration(60))
         }
 
         // TTS 객체

@@ -40,7 +40,7 @@
     <string name="main_setting_txt">설정</string>
 
     <!-- activity_nearby_bus_stop -->
-    <string name="txt_nearby_bus_stop">버스 탑승 도우미</string>
+    <string name="txt_nearby_bus_stop">주변 정류장</string>
     <string name="edt_nearby_bus_stop">다른 정류장 검색 …</string>
 
     <!-- activity_bus_list -->

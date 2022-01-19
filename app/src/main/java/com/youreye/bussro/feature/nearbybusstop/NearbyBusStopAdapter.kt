@@ -40,10 +40,11 @@ class NearbyBusStopAdapter(
     }
 
     override fun onBindViewHolder(holder: NearbyBusStopViewHolder, position: Int) {
+        /* ViewBinding data input */
+        holder.binding.nearbyBusStop = data[position]
+
+        /* 항목 click listener */
         holder.binding.apply {
-            // 데이터 input
-            nearbyBusStop = data[position]
-            // click listener
             root.setOnClickListener { view ->
                 val intent = Intent(view.context, BusListActivity::class.java)
                     .putExtra("stationNm", nearbyBusStop?.stationNm)

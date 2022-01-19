@@ -55,6 +55,11 @@ class NearbyBusStopViewModel @Inject constructor(
                                 "300"
                             )
 
+                            for (d in data) {
+                                logd("stationNm: ${d.stationNm}, arsId: ${d.arsId}")
+                                logd("$city")
+                            }
+
                             busStopsLiveData.postValue(data)
                         } else {
                             busStopsLiveData.postValue(listOf())
