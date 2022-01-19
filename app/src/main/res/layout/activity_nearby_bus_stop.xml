@@ -14,7 +14,6 @@
 
     </data>
 
-    <!-- CHECK: UI/UX 확정 X, 임시 UI 사용 -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -25,7 +24,7 @@
             android:id="@+id/txt_nearby_bus_stop"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="버스 정류장"
+            android:text="@string/txt_nearby_bus_stop"
             android:textColor="@color/yellow"
             android:textStyle="bold"
             style="@style/TextAppearance.MaterialComponents.Headline5"
@@ -40,7 +39,7 @@
             android:id="@+id/edt_nearby_bus_stop"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="다른 정류장 검색 ..."
+            android:hint="@string/edt_nearby_bus_stop"
             android:padding="12dp"
             android:singleLine="true"
             android:textColor="@color/black"
@@ -66,22 +65,6 @@
             android:onClick="@{(v) -> activity.onclick(v)}"
             android:layout_marginEnd="16dp"/>
 
-<!--        <TextView-->
-<!--            android:id="@+id/txt_nearby_bus_stop_find"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="다른 정류장 찾기"-->
-<!--            android:textColor="@color/black"-->
-<!--            style="@style/TextAppearance.MaterialComponents.Headline3"-->
-<!--            android:gravity="center"-->
-<!--            android:background="@color/yellow"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/txt_nearby_bus_stop"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintBottom_toTopOf="@id/rv_nearby_bus_stop"-->
-<!--            android:onClick="@{(v) -> activity.onclick(v)}"-->
-<!--            android:layout_margin="16dp" />-->
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_nearby_bus_stop"
             android:layout_width="0dp"
@@ -92,6 +75,30 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:listitem="@layout/rv_bus_list_item"/>
+
+        <!-- placeholder image & text -->
+        <ImageView
+            android:id="@+id/iv_nearby_placeholder_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/txt_nearby_placeholder_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/iv_nearby_placeholder_image"
+            app:layout_constraintStart_toStartOf="@id/iv_nearby_placeholder_image"
+            app:layout_constraintEnd_toEndOf="@id/iv_nearby_placeholder_image"
+            android:layout_marginTop="12dp"
+            android:textSize="18dp"
+            android:textColor="@color/light_gray"
+            android:gravity="center"
+            android:visibility="gone" />
 
         <!-- 로딩바 -->
         <ProgressBar

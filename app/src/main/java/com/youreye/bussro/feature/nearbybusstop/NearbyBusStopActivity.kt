@@ -1,6 +1,7 @@
 package com.youreye.bussro.feature.nearbybusstop
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -32,8 +33,6 @@ import javax.inject.Inject
  * [NearbyBusStopActivity]
  * MainActivity 의 "버스 탑승 도우미" 버튼을 클릭했을시 보여짐
  * 사용자의 위치를 기준으로 0.4km 이내의 버스 정류장을 가까운 순으로 정렬해 제공한다.
- *
- * TODO: 무선인터넷 연결 여부 확인 후 예외 처리하기
  */
 
 @AndroidEntryPoint
@@ -77,6 +76,7 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     }
 
     /* 변수 초기화 */
+    @SuppressLint("SetTextI18n", "ResourceAsColor")
     private fun initVar() {
         // Location 객체
         requestLocation =
@@ -115,6 +115,18 @@ class NearbyBusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                     null,
                     TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
                 )
+
+                /* 버스정류장이 없는 경우 */
+                if (data.isEmpty()) {
+                    binding.ivNearbyPlaceholderImage.setBackgroundResource(R.drawable.ic_search_off)
+                    binding.txtNearbyPlaceholderDesc.text = "검색 결과가 없어요.\n(서울특별시 소재 정류장만 조회 가능합니다)"
+
+                    binding.ivNearbyPlaceholderImage.visibility = View.VISIBLE
+                    binding.txtNearbyPlaceholderDesc.visibility = View.VISIBLE
+                } else {
+                    binding.ivNearbyPlaceholderImage.visibility = View.GONE
+                    binding.txtNearbyPlaceholderDesc.visibility = View.GONE
+                }
             })
         }
 
