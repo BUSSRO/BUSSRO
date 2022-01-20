@@ -1,26 +1,20 @@
 package com.youreye.bussro.feature.clause
 
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
-import android.view.View
 import android.widget.CheckBox
 import android.widget.CompoundButton
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityClauseBinding
 import com.youreye.bussro.feature.main.MainActivity
-import com.youreye.bussro.util.BackPressDialog
-import com.youreye.bussro.util.User
+import com.youreye.bussro.util.SharedPrefManager
 
 class ClauseActivity : AppCompatActivity() {
     private lateinit var binding: ActivityClauseBinding
@@ -53,7 +47,7 @@ class ClauseActivity : AppCompatActivity() {
         binding.txtClauseStart.setOnClickListener {
             if (binding.cbClauseFirst.isChecked && binding.cbClauseSecond.isChecked) {
                 /* 앱 최초 실행여부 저장 */
-                User.setFirst(this, false)
+                SharedPrefManager.setFirst(this, false)
 
                 startActivity(Intent(this, MainActivity::class.java))
                 ActivityCompat.finishAffinity(this)

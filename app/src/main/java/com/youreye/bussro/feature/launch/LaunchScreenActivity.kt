@@ -7,7 +7,7 @@ import android.os.Handler
 import com.youreye.bussro.R
 import com.youreye.bussro.feature.main.MainActivity
 import com.youreye.bussro.feature.onboarding.OnBoardingActivity
-import com.youreye.bussro.util.User
+import com.youreye.bussro.util.SharedPrefManager
 
 /**
  * [LaunchScreenActivity]
@@ -21,7 +21,7 @@ class LaunchScreenActivity : AppCompatActivity() {
 
         Handler().postDelayed({
             // OnBoardingActivity 와 MainActivity 로 갈 사용자 구분하기
-            val intent = when (User.isFirst(this)) {
+            val intent = when (SharedPrefManager.isFirst(this)) {
                 true -> {
                     Intent(this, OnBoardingActivity::class.java)
                 }

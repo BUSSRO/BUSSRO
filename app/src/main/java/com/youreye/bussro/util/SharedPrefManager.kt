@@ -4,8 +4,23 @@ import android.content.Context
 import com.google.gson.Gson
 
 object SharedPrefManager {
+    private const val FIRST = "first"
+    private const val FIRST_KEY = "first_key"
+
     private const val SEARCH_HISTORY = "search_history"
     private const val SEARCH_HISTORY_KEY = "search_history_key"
+
+    /* 앱 접속이력 저장 */
+    fun setFirst(context: Context, flag: Boolean) {
+        val sharedPreferences = context.getSharedPreferences(FIRST, Context.MODE_PRIVATE)
+        sharedPreferences.edit().putBoolean(FIRST_KEY, flag).apply()
+    }
+
+    /* 앱 접속이력 가져오기 */
+    fun isFirst(context: Context) :Boolean {
+        val sharedPreferences = context.getSharedPreferences(FIRST, Context.MODE_PRIVATE)
+        return sharedPreferences.getBoolean(FIRST_KEY, true)
+    }
 
     /* 검색어 저장 */
     fun setSearchHistory(context: Context, searchHistory: MutableList<String>) {

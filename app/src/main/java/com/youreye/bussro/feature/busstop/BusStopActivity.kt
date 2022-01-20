@@ -11,28 +11,22 @@ import android.speech.tts.TextToSpeech
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.View
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityBusStopBinding
-import com.youreye.bussro.feature.findstation.FindStationActivity
 import com.youreye.bussro.feature.search.SearchActivity
-import com.youreye.bussro.util.NetworkConnection
 import com.youreye.bussro.util.logd
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
-import javax.inject.Inject
 
 /**
  * [BusStopActivity]
@@ -46,19 +40,7 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private lateinit var binding: ActivityBusStopBinding
     private lateinit var requestLocation: ActivityResultLauncher<Array<String>>
     private lateinit var tts: TextToSpeech
-    @Inject
-    lateinit var connection: NetworkConnection
-
-    // 음성으로 검색하는 것
-    private val startActivityForResult =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val stationNm = result.data?.getStringExtra("stationNm")
-                if (!stationNm.isNullOrEmpty()) {
-//                    viewModel.requestSearchedBusStop(stationNm)
-                }
-            }
-        }
+    private lateinit var rvAdapter: BusStopAdapter
 
     /* SearchActivity 에서의 검색값 받기 */
     private val startSearchActivityForResult =
@@ -74,79 +56,38 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             }
         }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(
-            this@BusStopActivity,
-            R.layout.activity_bus_stop
-        )
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_bus_stop)
         binding.lifecycleOwner = this
-
-        // 네트워크 연결 확인
-        connection.observe(this, Observer { isConnected ->
-            if (isConnected) {
-                binding.ivNearbyPlaceholderImage.visibility = View.GONE
-                binding.txtNearbyPlaceholderDesc.visibility = View.GONE
-
-                // 데이터 요청
-//                viewModel.requestNearbyBusStop()
-
-                binding.rvNearbyBusStop.visibility = View.VISIBLE
-//                binding.edtNearbyBusStop.visibility = View.VISIBLE
-//                binding.imgNearbyBusStop.visibility = View.VISIBLE
-            } else {
-                binding.rvNearbyBusStop.visibility = View.GONE
-//                binding.edtNearbyBusStop.visibility = View.GONE
-//                binding.imgNearbyBusStop.visibility = View.GONE
-
-                binding.ivNearbyPlaceholderImage.setBackgroundResource(R.drawable.ic_baseline_wifi_off_24)
-                binding.txtNearbyPlaceholderDesc.text = "네트워크 연결 없음"
-
-                binding.ivNearbyPlaceholderImage.visibility = View.VISIBLE
-                binding.txtNearbyPlaceholderDesc.visibility = View.VISIBLE
-            }
-        })
-
-        initVar()
         binding.viewModel = viewModel
         binding.activity = this@BusStopActivity
-        requestPermission()
+
+        initVar()
+        initClickListener()
+        requestLocationPermission()
+        initObserver()
+
+        // 사용자 주변 정류장 목록 요청
+        viewModel.requestBusStop()
     }
 
-    /* onClick */
-    fun onclick(view: View) {
-        val intent = Intent(view.context, FindStationActivity::class.java)
-        startActivityForResult.launch(intent)
-    }
-
-    /* 변수 초기화 */
+    /* 객체 초기화 */
     @SuppressLint("SetTextI18n", "ResourceAsColor")
     private fun initVar() {
-        /* 뒤로가기 */
-        binding.ibSearchBack.setOnClickListener {
-            finish()
-        }
-
-        /* 검색 click listener */
-        binding.txtBusStopSearch.setOnClickListener {
-            startSearchActivityForResult.launch(Intent(this, SearchActivity::class.java))
-        }
-
         // Location 객체
         requestLocation =
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
                 it[Manifest.permission.ACCESS_FINE_LOCATION]?.let { granted ->
                     if (granted) {
-                        logd("위치 권한 설정 완료")
+                        // 사용자 주변 정류장 목록 요청
+                        viewModel.requestBusStop()
                     }
-                    // 잠깐 뺐음
-//                    viewModel.requestNearbyBusStop()
                 }
             }
 
         // RecyclerView 세팅
-        val rvAdapter = BusStopAdapter(application)
+        rvAdapter = BusStopAdapter(application)
         binding.rvNearbyBusStop.apply {
             adapter = rvAdapter
             layoutManager = LinearLayoutManager(this@BusStopActivity)
@@ -155,52 +96,27 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
         // TTS 객체
         tts = TextToSpeech(this, this)
+    }
 
-        // LiveData 관찰
-        viewModel.apply {
-            // loading 데이터 변경 감지
-            loadingLiveData.observe(this@BusStopActivity, Observer { flag ->
-                binding.progressNearbyBusStop.visibility = if (flag) View.VISIBLE else View.GONE
-            })
-            // busStop 데이터 변경 감지
-            busStopsLiveData.observe(this@BusStopActivity, Observer { data ->
-                rvAdapter.updateData(data)
-                tts.speak(
-                    "불러오기 완료",
-                    TextToSpeech.QUEUE_FLUSH,
-                    null,
-                    TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
-                )
+    private fun initClickListener() {
+        /* 뒤로가기 */
+        binding.ibSearchBack.setOnClickListener {
+            finish()
+        }
 
-                /* 안내문구 갱신 */
-                val text = "${data.size}개의 정류장이 나왔습니다."
-                val builder = SpannableStringBuilder(text)
-                val colorSpan = ForegroundColorSpan(resources.getColor(R.color.yellow))
-                builder.setSpan(
-                    colorSpan,
-                    0,
-                    data.size.toString().length + 1,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-                binding.txtBusStopDesc.text = builder
+        /* 검색 */
+        binding.txtBusStopSearch.setOnClickListener {
+            startSearchActivityForResult.launch(Intent(this, SearchActivity::class.java))
+        }
 
-                /* 버스정류장이 없는 경우 */
-                if (data.isEmpty()) {
-                    binding.ivNearbyPlaceholderImage.setBackgroundResource(R.drawable.ic_search_off)
-                    binding.txtNearbyPlaceholderDesc.text = "해당하는 정류장이 없어요.\n(서울특별시 지역만 서비스 가능합니다)"
-
-                    binding.ivNearbyPlaceholderImage.visibility = View.VISIBLE
-                    binding.txtNearbyPlaceholderDesc.visibility = View.VISIBLE
-                } else {
-                    binding.ivNearbyPlaceholderImage.visibility = View.GONE
-                    binding.txtNearbyPlaceholderDesc.visibility = View.GONE
-                }
-            })
+        /* 새로고침 */
+        binding.ivBusStopRefresh.setOnClickListener {
+            viewModel.requestBusStop()
         }
     }
 
     /* Location 권한 요청 */
-    private fun requestPermission() {
+    private fun requestLocationPermission() {
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -219,6 +135,75 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
             return
         }
+    }
+
+    private fun initObserver() {
+        // 로딩바
+        viewModel.loadingLiveData.observe(this, { isLoading ->
+            binding.progressNearbyBusStop.visibility = if (isLoading) View.VISIBLE else View.GONE
+        })
+
+        // 버스 정류장
+        viewModel.busStopsLiveData.observe(this, { busStopList ->
+            rvAdapter.updateData(busStopList)
+
+            tts.speak(
+                "불러오기 완료",
+                TextToSpeech.QUEUE_FLUSH,
+                null,
+                TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
+            )
+
+            /* 안내문구 갱신 */
+            val text = "${busStopList.size}개의 정류장이 나왔습니다."
+            val builder = SpannableStringBuilder(text)
+            val colorSpan = ForegroundColorSpan(resources.getColor(R.color.yellow))
+            builder.setSpan(
+                colorSpan,
+                0,
+                busStopList.size.toString().length + 1,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            binding.txtBusStopDesc.text = builder
+
+            /* PlaceHolder 숨기기 */
+            if (binding.ivNearbyPlaceholderImage.isVisible) {
+                hidePlaceHolder()
+            }
+        })
+
+        // 데이터 로드 실패 이유
+        viewModel.failReason.observe(this, { reason ->
+            when(reason) {
+                "network" -> {
+                    showPlaceHolder(R.drawable.ic_baseline_wifi_off_24, "네트워크 연결이 없어요")
+                }
+                "location" -> {
+                    showPlaceHolder(R.drawable.ic_baseline_warning_24, "위치를 파악할 수 없어요")
+                }
+                "no_result" -> {
+                    showPlaceHolder(R.drawable.ic_baseline_warning_24, "주변 정류장이 없어요.\n(서울특별시 지역만 서비스 가능합니다)")
+                }
+                "no_search_result" -> {
+                    showPlaceHolder(R.drawable.ic_search_off, "검색 결과가 없어요.\n(서울특별시 소재 정류장만 검색 가능합니다)")
+                }
+            }
+        })
+    }
+
+    /* PlaceHolder 띄우기 */
+    private fun showPlaceHolder(src: Int, text: String) {
+        binding.ivNearbyPlaceholderImage.setBackgroundResource(src)
+        binding.txtNearbyPlaceholderDesc.text = text
+
+        binding.ivNearbyPlaceholderImage.visibility = View.VISIBLE
+        binding.txtNearbyPlaceholderDesc.visibility = View.VISIBLE
+    }
+
+    /* PlaceHolder 숨기기 */
+    private fun hidePlaceHolder() {
+        binding.ivNearbyPlaceholderImage.visibility = View.GONE
+        binding.txtNearbyPlaceholderDesc.visibility = View.GONE
     }
 
     override fun onInit(status: Int) {

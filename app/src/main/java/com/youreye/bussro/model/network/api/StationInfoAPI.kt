@@ -16,7 +16,8 @@ import retrofit2.http.Query
 
 interface StationInfoAPI {
 
-    /* 좌표기반 근접 정류소 조회 */
+    /* 좌표기반 근접 정류소 조회
+    * 인증키(serviceKey), 경도(tmX), 위도(tmY), 검색거리(radius), 응답유형(resultType) */
     @GET("getStationByPos")
     fun getStationByPos(
         @Query("serviceKey") serviceKey: String,
@@ -26,7 +27,8 @@ interface StationInfoAPI {
         @Query("resultType") resultType: String = "json"
     ): Call<BusStopData>
 
-    /* 검색어가 포함된 정류소 명칭을 조회 */
+    /* 검색어가 포함된 정류소 명칭을 조회
+    * 인증키(serviceKey), 검색어(stSrch), 응답유형(resultType) */
     @GET("getStationByName")
     fun getStationByName(
         @Query("serviceKey") serviceKey: String,
