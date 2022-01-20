@@ -16,6 +16,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -45,7 +46,8 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private lateinit var binding: ActivityBusStopBinding
     private lateinit var requestLocation: ActivityResultLauncher<Array<String>>
     private lateinit var tts: TextToSpeech
-    @Inject lateinit var connection: NetworkConnection
+    @Inject
+    lateinit var connection: NetworkConnection
 
     // 음성으로 검색하는 것
     private val startActivityForResult =
@@ -57,6 +59,21 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 }
             }
         }
+
+    /* SearchActivity 에서의 검색값 받기 */
+    private val startSearchActivityForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                // 사용자가 입력한 값
+                val station = result.data?.getStringExtra("station")
+
+                station?.apply {
+                    logd("검색어 : $station")
+                    viewModel.requestSearchedBusStop(this)
+                }
+            }
+        }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +90,7 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 binding.txtNearbyPlaceholderDesc.visibility = View.GONE
 
                 // 데이터 요청
-                viewModel.requestNearbyBusStop()
+//                viewModel.requestNearbyBusStop()
 
                 binding.rvNearbyBusStop.visibility = View.VISIBLE
 //                binding.edtNearbyBusStop.visibility = View.VISIBLE
@@ -111,6 +128,11 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             finish()
         }
 
+        /* 검색 click listener */
+        binding.txtBusStopSearch.setOnClickListener {
+            startSearchActivityForResult.launch(Intent(this, SearchActivity::class.java))
+        }
+
         // Location 객체
         requestLocation =
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
@@ -122,10 +144,6 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 //                    viewModel.requestNearbyBusStop()
                 }
             }
-
-        binding.txtBusStopSearch.setOnClickListener {
-            startActivity(Intent(this, SearchActivity::class.java))
-        }
 
         // RecyclerView 세팅
         val rvAdapter = BusStopAdapter(application)
@@ -158,7 +176,12 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 val text = "${data.size}개의 정류장이 나왔습니다."
                 val builder = SpannableStringBuilder(text)
                 val colorSpan = ForegroundColorSpan(resources.getColor(R.color.yellow))
-                builder.setSpan(colorSpan, 0, data.size.toString().length + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                builder.setSpan(
+                    colorSpan,
+                    0,
+                    data.size.toString().length + 1,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
                 binding.txtBusStopDesc.text = builder
 
                 /* 버스정류장이 없는 경우 */

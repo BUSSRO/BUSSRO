@@ -2,6 +2,7 @@ package com.youreye.bussro.feature.busstop
 
 import android.annotation.SuppressLint
 import android.location.Geocoder
+import android.location.Location
 import androidx.lifecycle.*
 import com.youreye.bussro.BuildConfig
 import com.youreye.bussro.model.network.api.BusAPI
@@ -75,7 +76,7 @@ class BusStopViewModel @Inject constructor(
             tmY
         )
 
-        call.enqueue(object: retrofit2.Callback<BusStopData> {
+        call.enqueue(object : retrofit2.Callback<BusStopData> {
             override fun onResponse(call: Call<BusStopData>, response: Response<BusStopData>) {
                 if (response.isSuccessful) {
                     response.body()?.msgBody?.busStopList?.apply {
@@ -96,7 +97,6 @@ class BusStopViewModel @Inject constructor(
         })
     }
 
-    /*
     /* 사용자 검색 버스 정류장 요청 메서드 */
     @SuppressLint("MissingPermission")
     fun requestSearchedBusStop(stSrch: String) {
@@ -107,48 +107,7 @@ class BusStopViewModel @Inject constructor(
             .addOnSuccessListener { location ->
                 if (location != null) {
                     // 2. API 데이터 가져오기
-                    viewModelScope.launch {
-                        val data = getTestData(stSrch)
-
-                        // TestData 의 위도, 경도를 현재 사용자의 위도, 경도와 비교해 거리 얻어낸 후
-                        // List<NearbyBusStops> 타입으로 변경하기
-                        val theData = mutableListOf<NearbyBusStopData>()
-
-                        withContext(Dispatchers.IO) {
-                            for (d in data) {
-                                // 서울특별시 소재의 버스정류장이 맞는지 확인
-                                val city = geocoder.getFromLocation(
-                                    d.tmY!!,
-                                    d.tmX!!,
-                                    1
-                                )
-
-                                logd("$city")
-
-                                if (!city.isNullOrEmpty() && city[0].adminArea != "서울특별시") {
-                                    continue
-                                }
-
-                                // 서울특별시 소재의 버스정류장만 데이터 입력
-                                theData.add(
-                                    NearbyBusStopData(
-                                        d.arsId,
-                                        d.stNm,
-                                        LocationToDistance().distance(
-                                            location.longitude, location.latitude,
-                                            d.tmX!!, d.tmY!!,
-                                            "meter"
-                                        )
-                                    )
-                                )
-                            }
-
-                            theData.sortBy { data -> data.dist }
-
-                            busStopsLiveData.postValue(theData)
-                            loadingLiveData.postValue(false)  // 로딩 끝
-                        }
-                    }
+                    requestSearchedBusStopData(stSrch, location)
                 }
             }
             .addOnFailureListener {  // 위치 정보 받아올 수 없음
@@ -157,25 +116,73 @@ class BusStopViewModel @Inject constructor(
     }
 
     /* 공공데이터 응답 가져오기, parameter : 인증키(serviceKey), 검색어(stSrch) */
-    private fun requestSearchedBusStopData(stSrch: String) {
+    private fun requestSearchedBusStopData(stSrch: String, location: Location) {
         val call = StationInfoAPI.api.getStationByName(
             BuildConfig.API_KEY,
             stSrch
         )
 
-        call.enqueue(object: Callback<SearchedBusStopData> {
+        call.enqueue(object : Callback<SearchedBusStopData> {
             override fun onResponse(
                 call: Call<SearchedBusStopData>,
                 response: Response<SearchedBusStopData>
             ) {
+                if (response.isSuccessful) {
+                    val dataList = response.body()?.msgBody?.itemList
 
+                    /* 데이터 가공 */
+
+                    // data 의 위도, 경도를 현재 사용자의 위도, 경도와 비교해 거리 얻어낸 후
+                    // List<BusStopData.MsgBody.BusStop> 타입으로 변경하기
+
+
+                    if (dataList != null) {
+                        val theData = mutableListOf<BusStopData.MsgBody.BusStop>()
+
+                        for (data in dataList) {
+                            // 서울특별시 소재의 버스정류장이 맞는지 확인
+                            val city = geocoder.getFromLocation(
+                                data.tmY.toDouble(),
+                                data.tmX.toDouble(),
+                                1
+                            )
+
+                            if (!city.isNullOrEmpty() && city[0].adminArea != "서울특별시") {
+                                continue
+                            }
+
+                            // 데이터 입력
+                            theData.add(
+                                BusStopData.MsgBody.BusStop(
+                                    data.arsId,
+                                    LocationToDistance().distance(
+                                        location.longitude, location.latitude,
+                                        data.tmX.toDouble(), data.tmY.toDouble(),
+                                        "meter"
+                                    ),
+                                    data.stNm
+                                )
+                            )
+                        }
+
+                        theData.sortBy { data -> data.dist }
+
+                        busStopsLiveData.postValue(theData)
+                        loadingLiveData.postValue(false)  // 로딩 끝
+                    } else {
+                        busStopsLiveData.postValue(listOf())
+                        loadingLiveData.postValue(false)  // 로딩 끝
+                    }
+                } else {
+                    busStopsLiveData.postValue(listOf())
+                    loadingLiveData.postValue(false)  // 로딩 끝
+                }
             }
 
             override fun onFailure(call: Call<SearchedBusStopData>, t: Throwable) {
-
+                busStopsLiveData.postValue(listOf())
+                loadingLiveData.postValue(false)  // 로딩 끝
             }
         })
     }
-
-     */
 }

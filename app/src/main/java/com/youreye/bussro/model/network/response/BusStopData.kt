@@ -35,20 +35,8 @@ data class BusStopData(
             val arsId: String,
             @SerializedName("dist")
             val dist: Double,
-            @SerializedName("gpsX")
-            val gpsX: String,
-            @SerializedName("gpsY")
-            val gpsY: String,
-            @SerializedName("posX")
-            val posX: String,
-            @SerializedName("posY")
-            val posY: String,
-            @SerializedName("stationId")
-            val stationId: String,
             @SerializedName("stationNm")
-            val stationNm: String,
-            @SerializedName("stationTp")
-            val stationTp: String
+            val stationNm: String
         )
     }
 
