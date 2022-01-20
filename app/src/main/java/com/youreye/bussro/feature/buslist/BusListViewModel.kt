@@ -26,7 +26,7 @@ class BusListViewModel(
     var busListLiveData = MutableLiveData<List<BusListData>>()  // recyclerview data
     var loadingLiveData = MutableLiveData<Boolean>()  // 로딩바
 
-    /* 정류장 버스 도착 정보 목록 요청 메서드 */
+    /* 정류장 경유 노선 정보 요청 메서드 */
     fun requestBusList() {
         loadingLiveData.value = true
         viewModelScope.launch {

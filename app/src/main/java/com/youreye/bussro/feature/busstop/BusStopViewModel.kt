@@ -189,6 +189,7 @@ class BusStopViewModel @Inject constructor(
                             )
                         }
 
+                        // CHECK: 정렬 제공?
                         // 거리순으로 정렬
                         data.sortBy { data -> data.dist }
 

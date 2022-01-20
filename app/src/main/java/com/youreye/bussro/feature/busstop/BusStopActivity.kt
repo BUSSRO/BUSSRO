@@ -19,11 +19,12 @@ import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityBusStopBinding
 import com.youreye.bussro.feature.search.SearchActivity
+import com.youreye.bussro.model.network.response.BusStopData
 import com.youreye.bussro.util.logd
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -91,11 +92,28 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         binding.rvNearbyBusStop.apply {
             adapter = rvAdapter
             layoutManager = LinearLayoutManager(this@BusStopActivity)
-//            addItemDecoration(CustomItemDecoration(60))
         }
+
+        binding.rvNearbyBusStop.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val lastVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+                val itemTotalCount = recyclerView.adapter?.itemCount!! - 1
+
+                // 스크롤이 끝에 도달했는지 확인
+                if (!binding.rvNearbyBusStop.canScrollVertically(1) && lastVisibleItemPosition == itemTotalCount) {
+                    rvAdapter.deleteLoading()
+                }
+            }
+        })
 
         // TTS 객체
         tts = TextToSpeech(this, this)
+    }
+
+    private fun requestMovie() {
+        TODO("Not yet implemented")
     }
 
     private fun initClickListener() {
@@ -147,12 +165,21 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         viewModel.busStopsLiveData.observe(this, { busStopList ->
             rvAdapter.updateData(busStopList)
 
-            tts.speak(
-                "불러오기 완료",
-                TextToSpeech.QUEUE_FLUSH,
-                null,
-                TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
-            )
+            if (busStopList.isNotEmpty()) {
+                tts.speak(
+                    "불러오기 완료",
+                    TextToSpeech.QUEUE_FLUSH,
+                    null,
+                    TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
+                )
+            } else {
+                tts.speak(
+                    "불러오기 실패",
+                    TextToSpeech.QUEUE_FLUSH,
+                    null,
+                    TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
+                )
+            }
 
             /* 안내문구 갱신 */
             val text = "${busStopList.size}개의 정류장이 나왔습니다."

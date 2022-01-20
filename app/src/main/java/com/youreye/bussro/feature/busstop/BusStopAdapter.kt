@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.RvBusStopItemBinding
+import com.youreye.bussro.databinding.RvLoadingItemBinding
 import com.youreye.bussro.feature.buslist.BusListActivity
 import com.youreye.bussro.model.network.response.BusStopData
 
@@ -22,33 +23,43 @@ import com.youreye.bussro.model.network.response.BusStopData
 
 class BusStopAdapter(
     private val application: Application
-) : RecyclerView.Adapter<BusStopAdapter.BusStopViewHolder>() {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var data = listOf<BusStopData.MsgBody.BusStop>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BusStopViewHolder {
-        val binding: RvBusStopItemBinding = DataBindingUtil.inflate(
-            LayoutInflater.from(parent.context),
-            R.layout.rv_bus_stop_item,
-            parent,
-            false
-        )
-        return BusStopViewHolder(binding)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+        when (viewType) {
+            VIEW_TYPE_ITEM -> {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = RvBusStopItemBinding.inflate(layoutInflater, parent, false)
+                BusStopViewHolder(binding)
+            }
+            else -> {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = RvLoadingItemBinding.inflate(layoutInflater, parent, false)
+                LoadingViewHolder(binding)
+            }
+        }
 
-    override fun onBindViewHolder(holder: BusStopViewHolder, position: Int) {
-        /* ViewBinding data input */
-        holder.binding.busStop = data[position]
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder is BusStopViewHolder) {
+            /* ViewBinding data input */
+            holder.binding.busStop = data[position]
 
-        /* 항목 click listener */
-        holder.binding.apply {
-            root.setOnClickListener { view ->
-                val intent = Intent(view.context, BusListActivity::class.java)
-                    .putExtra("stationNm", busStop?.stationNm)
-                    .putExtra("arsId", busStop?.arsId)
-                view.context.startActivity(intent)
+            /* 항목 click listener */
+            holder.binding.apply {
+                root.setOnClickListener { view ->
+                    val intent = Intent(view.context, BusListActivity::class.java)
+                        .putExtra("stationNm", busStop?.stationNm)
+                        .putExtra("arsId", busStop?.arsId)
+                    view.context.startActivity(intent)
+                }
             }
         }
     }
+
+    /* view type 지정 */
+    override fun getItemViewType(position: Int): Int =
+        if (data[position].arsId == "") VIEW_TYPE_LOADING else VIEW_TYPE_ITEM
 
     override fun getItemCount(): Int = data.size
 
@@ -58,9 +69,34 @@ class BusStopAdapter(
         notifyDataSetChanged()
     }
 
-    /* ViewHolder */
+    /* 데이터 추가 */
+    fun addData(apiData: List<BusStopData.MsgBody.BusStop>) {
+//        data.addAll(apiData)
+        // progress bar 를 위한 데이터
+//        data.add(BusStopData.MsgBody.BusStop(
+//            "",
+//            0.0,
+//            ""
+//        ))
+    }
+
+    /* 로딩바 제거 */
+    fun deleteLoading() {
+//        data.removeAt(data.lastIndex)
+    }
+
+    /* item ViewHolder */
     inner class BusStopViewHolder(@NonNull val binding: RvBusStopItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+        RecyclerView.ViewHolder(binding.root)
+
+    /* loading ViewHolder */
+    inner class LoadingViewHolder(@NonNull val binding: RvLoadingItemBinding) :
+        RecyclerView.ViewHolder(binding.root)
+
+
+    companion object {
+        private const val VIEW_TYPE_ITEM = 0
+        private const val VIEW_TYPE_LOADING = 1
     }
 }
 
