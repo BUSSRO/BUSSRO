@@ -25,6 +25,9 @@ class OnBoardingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_on_boarding)
+        // 상태바 색상 변경
+        this.window.statusBarColor = resources.getColor(R.color.black)
+
         initViewPager()
         setOnClickListener()
     }

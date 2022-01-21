@@ -5,9 +5,6 @@ import android.location.Geocoder
 import android.location.Location
 import androidx.lifecycle.*
 import com.youreye.bussro.BuildConfig
-import com.youreye.bussro.model.network.api.BusAPI
-import com.youreye.bussro.model.network.response.NearbyBusStopData
-import com.youreye.bussro.model.network.response.SearchStopData
 import com.youreye.bussro.util.LocationToDistance
 import com.youreye.bussro.util.logd
 import com.google.android.gms.location.FusedLocationProviderClient

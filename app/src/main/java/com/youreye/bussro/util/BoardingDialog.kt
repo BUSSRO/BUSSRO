@@ -51,7 +51,7 @@ class BoardingDialog(
 
     private fun initVar() {
         /* 뒤로가기 */
-        binding.ibDialogBack.setOnClickListener {
+        binding.ivDialogBack.setOnClickListener {
             dismiss()
         }
 

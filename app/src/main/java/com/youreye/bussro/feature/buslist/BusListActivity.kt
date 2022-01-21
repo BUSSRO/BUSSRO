@@ -4,8 +4,12 @@ import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,6 +33,7 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private lateinit var binding: ActivityBusListBinding
     private lateinit var tts: TextToSpeech
     var rtNm: String = ""  // 사용자가 선택한 버스번호
+    private lateinit var rvAdapter: BusListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,48 +44,98 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
         initSetOnClickListener()
         initTTS()
+        initObserver()
 
-        if (savedInstanceState == null) {
-            viewModel.requestBusList()
-        }
+        viewModel.requestBusList()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initVar() {
+        // 뒤로가기
+        binding.ibBusListBack.setOnClickListener {
+            finish()
+        }
+
+        // 새로고침
+        binding.ivBusListRefresh.setOnClickListener {
+            viewModel.requestBusList()
+        }
+
         // TextView 초기화
         val stationNm = intent.getStringExtra("stationNm")!!
-        binding.txtBusListLocation.text = stationNm
+        binding.txtBusListLocation.text = "정류장 : $stationNm"
 
         // ViewModel 객체 초기화
         intent.getStringExtra("arsId")?.apply {
             viewModel = ViewModelProvider(this@BusListActivity, ViewModelFactory(this, stationNm))
                 .get(BusListViewModel::class.java)
-            logd("정류장고유번호 : arsId: ${intent.getStringExtra("arsId")}")
         }
 
-        val rvAdapter = BusListAdapter(this)
+        rvAdapter = BusListAdapter(this, supportFragmentManager)
         binding.rvBusList.apply {
             adapter = rvAdapter
             layoutManager = LinearLayoutManager(applicationContext)
-//            addItemDecoration(
-//                CustomItemDecoration(60)
-//            )
         }
+    }
 
-        // LiveData 관찰
-        viewModel.apply {
-            busListLiveData.observe(this@BusListActivity, { data ->
-                rvAdapter.updateData(data)
+    private fun initObserver() {
+        // 로딩바
+        viewModel.loadingLiveData.observe(this, { isLoading ->
+            binding.progressBusList.visibility = if (isLoading) View.VISIBLE else View.GONE
+        })
+
+        // 버스 정류장
+        viewModel.busListLiveData.observe(this, { busStopList ->
+            rvAdapter.updateData(busStopList)
+
+            if (busStopList.isNotEmpty()) {
                 tts.speak(
                     "불러오기 완료",
                     TextToSpeech.QUEUE_FLUSH,
                     null,
                     TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
                 )
-            })
-            loadingLiveData.observe(this@BusListActivity, { flag ->
-                binding.progressBusList.visibility = if (flag) View.VISIBLE else View.GONE
-            })
-        }
+            } else {
+                tts.speak(
+                    "불러오기 실패",
+                    TextToSpeech.QUEUE_FLUSH,
+                    null,
+                    TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
+                )
+            }
+
+            /* PlaceHolder 숨기기 */
+            if (binding.ivBusListPlaceholderImage.isVisible) {
+                hidePlaceHolder()
+            }
+        })
+
+        // 데이터 로드 실패 이유
+        viewModel.failReason.observe(this, { reason ->
+            when(reason) {
+                "network" -> {
+                    showPlaceHolder(R.drawable.ic_baseline_wifi_off_24, "네트워크 연결이 없어요")
+                }
+                "no_result" -> {
+                    showPlaceHolder(R.drawable.ic_baseline_warning_24, "주변 정류장이 없어요.\n(서울특별시 지역만 서비스 가능합니다)")
+                }
+            }
+        })
+    }
+
+    /* PlaceHolder 띄우기 */
+    private fun showPlaceHolder(src: Int, text: String) {
+        binding.ivBusListPlaceholderImage.setBackgroundResource(src)
+        binding.txtBusListPlaceholderDesc.text = text
+
+        binding.ivBusListPlaceholderImage.visibility = View.VISIBLE
+        binding.txtBusListPlaceholderDesc.visibility = View.VISIBLE
+    }
+
+    /* PlaceHolder 숨기기 */
+    private fun hidePlaceHolder() {
+        binding.ivBusListPlaceholderImage.visibility = View.GONE
+        binding.txtBusListPlaceholderDesc.visibility = View.GONE
     }
 
     private fun initTTS() {
@@ -122,6 +177,7 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         }
     }
 
+    /*
     private fun whenTTSdone() {
         binding.apply {
             // TTS 관련된 view 없애기
@@ -132,6 +188,8 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             // background view 선택 가능하도록
         }
     }
+
+     */
 
     private fun initSetOnClickListener() {
         /* 전광판 or 카메라 인식 */
@@ -169,7 +227,7 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     override fun onBackPressed() {
         if (tts.isSpeaking) {
             tts.stop()
-            whenTTSdone()
+            // whenTTSdone()
         } else {
             super.onBackPressed()
         }

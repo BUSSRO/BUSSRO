@@ -19,6 +19,9 @@ class LaunchScreenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_launch_screen)
 
+        // 상태바 색상 변경
+        this.window.statusBarColor = resources.getColor(R.color.black)
+
         Handler().postDelayed({
             // OnBoardingActivity 와 MainActivity 로 갈 사용자 구분하기
             val intent = when (SharedPrefManager.isFirst(this)) {

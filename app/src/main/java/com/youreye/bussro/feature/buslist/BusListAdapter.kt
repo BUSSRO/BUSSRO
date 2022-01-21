@@ -8,10 +8,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.youreye.bussro.model.network.response.BusListData
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.RvBusListItemBinding
+import com.youreye.bussro.util.BoardingDialog
 
 /**
  * [BusListAdapter]
@@ -21,9 +23,10 @@ import com.youreye.bussro.databinding.RvBusListItemBinding
  */
 
 class BusListAdapter(
-    private val activity: BusListActivity
+    private val activity: BusListActivity,
+    private val supportFragmentManager: FragmentManager
 ) : RecyclerView.Adapter<BusListAdapter.BusListViewHolder>() {
-    private var data = listOf<BusListData>()
+    private var data = listOf<BusListData.MsgBody.BusList>()
 
     private var lastSelectedItem: View? = null
     private var lastSelectedPosition: Int = -1
@@ -42,6 +45,19 @@ class BusListAdapter(
         /* ViewBinding 에 data insert */
         holder.binding.busList = data[position]
 
+        /* 항목 click listener */
+        // CHECK: 임시
+        holder.binding.root.setOnClickListener {
+            val dialog = BoardingDialog(
+                data[position].rtNm,
+                data[position].stNm,
+                data[position].arsId
+            )
+
+            dialog.show(supportFragmentManager, "FromBusListActivity")
+        }
+
+        /*
         /* 항목 click listener */
         holder.binding.root.setOnClickListener {
             /*
@@ -74,20 +90,20 @@ class BusListAdapter(
 
             activity.setVisible()
         }
+         */
     }
 
     override fun getItemCount(): Int = data.size
 
     /* 데이터 갱신 */
-    fun updateData(apiData: List<BusListData>) {
+    fun updateData(apiData: List<BusListData.MsgBody.BusList>) {
         data = apiData
         notifyDataSetChanged()
     }
 
     /* ViewHolder */
     inner class BusListViewHolder(@NonNull val binding: RvBusListItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-    }
+        RecyclerView.ViewHolder(binding.root)
 }
 
 

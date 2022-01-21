@@ -25,6 +25,9 @@ class SignActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_sign)
+        // 상태바 색상 변경
+        this.window.statusBarColor = resources.getColor(R.color.black)
+
 
         // 노선명
         rtNm = intent.getStringExtra("rtNm") ?: ""

@@ -25,21 +25,15 @@ data class SearchedBusStopData(
         val itemList: List<searchedBusStop>
     ) {
         /**
+         * @param arsId 정류소고유번호
          * @param stNm 정류소명
          * @param tmX 경도
          * @param tmY 위도
-         * @param arsId 정류소고유번호
          */
 
         data class searchedBusStop(
             @SerializedName("arsId")
             val arsId: String,
-            @SerializedName("posX")
-            val posX: String,
-            @SerializedName("posY")
-            val posY: String,
-            @SerializedName("stId")
-            val stId: String,
             @SerializedName("stNm")
             val stNm: String,
             @SerializedName("tmX")

@@ -1,5 +1,6 @@
 package com.youreye.bussro.model.network.api
 
+import com.youreye.bussro.model.network.response.BusListData
 import com.youreye.bussro.model.network.response.BusStopData
 import com.youreye.bussro.model.network.response.SearchedBusStopData
 import retrofit2.Call
@@ -35,6 +36,15 @@ interface StationInfoAPI {
         @Query("stSrch") stSrch: String,
         @Query("resultType") resultType: String = "json"
     ): Call<SearchedBusStopData>
+
+    /* 노선 고유번호에 해당하는 정류소 정보를 조회
+    * 인증키(serviceKey), 정류소 고유번호(arsId), 응답유형(resultType) */
+    @GET("getStationByUid")
+    fun getBusList(
+        @Query("serviceKey") serviceKey: String,
+        @Query("arsId") arsId: String,
+        @Query("resultType") resultType: String = "json"
+    ): Call<BusListData>
 
     companion object ServiceImpl {
         private const val BASE_URL = "http://ws.bus.go.kr/api/rest/stationinfo/"
