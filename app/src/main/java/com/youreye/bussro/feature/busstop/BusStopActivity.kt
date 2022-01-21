@@ -24,7 +24,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityBusStopBinding
 import com.youreye.bussro.feature.search.SearchActivity
-import com.youreye.bussro.model.network.response.BusStopData
 import com.youreye.bussro.util.logd
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -166,15 +165,19 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             rvAdapter.updateData(busStopList)
 
             if (busStopList.isNotEmpty()) {
+                val text = if (viewModel.searchTerm.isNotEmpty()) "${viewModel.searchTerm} 검색 완료" else "불러오기 완료"
+
                 tts.speak(
-                    "불러오기 완료",
+                    text,
                     TextToSpeech.QUEUE_FLUSH,
                     null,
                     TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
                 )
             } else {
+                val text = if (viewModel.searchTerm.isNotEmpty()) "${viewModel.searchTerm} 검색 실패" else "불러오기 실패"
+
                 tts.speak(
-                    "불러오기 실패",
+                    text,
                     TextToSpeech.QUEUE_FLUSH,
                     null,
                     TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED

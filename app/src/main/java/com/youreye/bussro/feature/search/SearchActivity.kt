@@ -1,33 +1,50 @@
 package com.youreye.bussro.feature.search
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.speech.RecognizerIntent
+import android.speech.tts.TextToSpeech
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivitySearchBinding
 import com.youreye.bussro.util.SharedPrefManager
 import com.youreye.bussro.util.logd
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.collections.ArrayList
 
-class SearchActivity : AppCompatActivity(), ISearchRecyclerView {
+
+class SearchActivity : AppCompatActivity(), ISearchRecyclerView, TextToSpeech.OnInitListener  {
+    private val viewModel: SearchViewModel by viewModels()
     private lateinit var binding: ActivitySearchBinding
     private var searchHistory = ArrayList<String>()
     private lateinit var searchAdapter: SearchAdapter
+    private lateinit var tts: TextToSpeech
+    private var isTtsSettingDone = false
+    private lateinit var startActivityForResult: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search)
         binding.activity = this
         binding.lifecycleOwner = this
+
+        // 음성인식 옵저빙
+        viewModel.searchedStationByVoice.observe(this, {
+            insertSearchHistory(it)
+        })
+
 
         initVar()
         handleUI()
@@ -42,9 +59,40 @@ class SearchActivity : AppCompatActivity(), ISearchRecyclerView {
             finish()
         }
 
+        /* TextToSpeech 객체 */
+        tts = TextToSpeech(this, this)
+
+        startActivityForResult =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+                if (result.resultCode == Activity.RESULT_OK && result.data != null) {
+                    val data = result.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+
+                    if (!data.isNullOrEmpty() && data[0].toString().length > 1) {
+                        // 음성인식 결과 확인
+                        val searchTerm = data[0].toString()
+
+                        insertSearchHistory(searchTerm)
+
+                        // result 설정
+                        val intent = Intent().putExtra("station", searchTerm)
+                        setResult(Activity.RESULT_OK, intent)
+
+                        finish()
+
+                    } else {
+                        Toast.makeText(this, "검색어는 두 글자 이상 말해주세요.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+
+        /* SpeechToText 객체 */
+        val sttIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+            .putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, packageName)
+            .putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR")
+
         /* 음성인식 */
         binding.ivSearchVoice.setOnClickListener {
-            // TODO: 구현
+            VoiceDialog().show(supportFragmentManager, "VoiceDialog")
         }
 
         /* RecyclerView 초기화 */
@@ -75,14 +123,6 @@ class SearchActivity : AppCompatActivity(), ISearchRecyclerView {
                     // 키보드 동작 제어
                     val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(binding.edtSearch.windowToken, 0)
-
-                    // result 설정
-                    val intent = Intent().putExtra("station", term)
-                    setResult(Activity.RESULT_OK, intent)
-
-                    logd("setResult 설정, station : $term")
-
-                    finish()
                 } else {
                     // 검색어를 입력하지 않은 경우
                     Toast.makeText(this, "검색어는 두 글자 이상 입력하세요.", Toast.LENGTH_SHORT).show()
@@ -130,7 +170,16 @@ class SearchActivity : AppCompatActivity(), ISearchRecyclerView {
         SharedPrefManager.setSearchHistory(this, searchHistory)
         searchAdapter.updateData(searchHistory)
 
+        // CHECK: handleUI() 필요한가?
         handleUI()
+
+        // result 설정
+        val intent = Intent().putExtra("station", term)
+        setResult(Activity.RESULT_OK, intent)
+
+        logd("setResult 설정, station : $term")
+
+        finish()
     }
 
     /* 특정 검색어 삭제 */
@@ -155,7 +204,7 @@ class SearchActivity : AppCompatActivity(), ISearchRecyclerView {
 
         logd("setResult 설정, station : $queryString")
 
-        finish()
+//        finish()
     }
 
     /* 최근검색어 유무에 따라 UI 바꿔서 보여주기 */
@@ -171,5 +220,58 @@ class SearchActivity : AppCompatActivity(), ISearchRecyclerView {
             binding.ivSearchPlaceholder.visibility = View.VISIBLE
             binding.txtSearchPlaceholder.visibility = View.VISIBLE
         }
+    }
+
+    override fun onInit(status: Int) {
+        if (status == TextToSpeech.SUCCESS) {
+            // 언어 설정
+            val locale = Locale("ko", "KR")
+            val result = tts.setLanguage(locale)
+
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Toast.makeText(this, "지원하지 않는 언어입니다.", Toast.LENGTH_SHORT).show()
+            } else {
+                // TTS 사용 가능
+                isTtsSettingDone = true
+            }
+        } else {
+            Toast.makeText(this, "TTS를 사용할 수 없습니다.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun requestSTT() {
+        try {
+            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+                putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+                putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+                putExtra(RecognizerIntent.EXTRA_PROMPT, "찾는 정류장을 말해주세요.")  // 예시로 보여지는 텍스트
+            }
+
+            startActivityForResult.launch(intent)
+
+        } catch (e: ActivityNotFoundException) {
+            e.printStackTrace()
+            Toast.makeText(this, "STT를 사용할 수 없습니다.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onStop() {
+        tts.stop()
+
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        tts.shutdown()
+
+        super.onDestroy()
+    }
+
+    override fun onBackPressed() {
+        if (tts.isSpeaking) {
+            tts.stop()
+        }
+
+        super.onBackPressed()
     }
 }

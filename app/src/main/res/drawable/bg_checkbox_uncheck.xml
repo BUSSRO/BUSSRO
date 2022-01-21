@@ -6,15 +6,6 @@
         android:width="28dp"
         android:height="28dp" />
 
-    <solid
-        android:color="@color/black"/>
-
-<!--    <padding-->
-<!--        android:right="@dimen/dp_2"-->
-<!--        android:left="@dimen/dp_2"-->
-<!--        android:bottom="@dimen/dp_2"-->
-<!--        android:top="@dimen/dp_2"/>-->
-
     <stroke
         android:color="@color/yellow"
         android:width="1dp"/>

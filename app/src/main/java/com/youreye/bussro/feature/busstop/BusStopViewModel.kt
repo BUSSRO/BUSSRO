@@ -32,6 +32,7 @@ class BusStopViewModel @Inject constructor(
     var busStopsLiveData = MutableLiveData<List<BusStopData.MsgBody.BusStop>>()
     var loadingLiveData = MutableLiveData<Boolean>()
     var failReason = MutableLiveData<String>()
+    var searchTerm = ""
 
     /* 사용자 주변 버스 정류장 요청 메서드 */
     @SuppressLint("MissingPermission")
@@ -43,6 +44,9 @@ class BusStopViewModel @Inject constructor(
             loadFail("network")
             return
         }
+
+        // 검색어 초기화
+        searchTerm = ""
 
         // 사용자 위치 받기
         fusedLocationClient.lastLocation
@@ -121,6 +125,9 @@ class BusStopViewModel @Inject constructor(
             return
         }
 
+        // 검색어 저장
+        searchTerm = stSrch
+
         // 사용자 위치 받기
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location ->
@@ -190,8 +197,12 @@ class BusStopViewModel @Inject constructor(
                         // 거리순으로 정렬
                         data.sortBy { data -> data.dist }
 
-                        busStopsLiveData.postValue(data)
-                        loadingLiveData.postValue(false)
+                        if (data.isNotEmpty()) {
+                            busStopsLiveData.postValue(data)
+                            loadingLiveData.postValue(false)
+                        } else {
+                            loadFail("no_search_result")
+                        }
                     } else {
                         loadFail("no_search_result")
                     }
