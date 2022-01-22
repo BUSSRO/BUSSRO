@@ -3,8 +3,10 @@ package com.youreye.bussro.feature.buslist
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.youreye.bussro.model.network.response.BusListData
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.RvBusListItemBinding
+import com.youreye.bussro.di.App
 import com.youreye.bussro.feature.dialog.BoardingDialog
 import com.youreye.bussro.util.ToggleAnimation
 import de.hdodenhof.circleimageview.CircleImageView
@@ -45,6 +48,20 @@ class BusListAdapter(
     }
 
     override fun onBindViewHolder(holder: BusListViewHolder, position: Int) {
+        /* CheckBox 초기화 */
+        holder.binding.cbBusListItem.isChecked = lastSelectedPosition == position
+
+        holder.binding.cbBusListItem.setOnClickListener {
+            lastSelectedPosition = position
+            notifyDataSetChanged()
+        }
+
+        holder.binding.cbBusListItem.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                Toast.makeText(activity.applicationContext, "${data[position].rtNm} 선택", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         /* ViewBinding 에 data insert */
         holder.binding.busList = data[position]
 
