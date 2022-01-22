@@ -85,8 +85,8 @@ class BussroExceptionHandler(
         crashlyticsExceptionHandler.uncaughtException(t, e)
 
         // 프로세스 종료
-        Process.killProcess(Process.myPid())
-        exitProcess(-1)
+//        Process.killProcess(Process.myPid())
+//        exitProcess(-1)
     }
 
     /* 오류 화면 실행 (+ 오류 내용 전달) */
