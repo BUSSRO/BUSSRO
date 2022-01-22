@@ -1,11 +1,8 @@
 package com.youreye.bussro.feature.buslist
 
-import android.graphics.Color
-import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentManager
@@ -13,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.youreye.bussro.model.network.response.BusListData
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.RvBusListItemBinding
-import com.youreye.bussro.util.BoardingDialog
+import com.youreye.bussro.feature.dialog.BoardingDialog
 
 /**
  * [BusListAdapter]

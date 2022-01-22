@@ -17,6 +17,7 @@ import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.stream.Collectors
 import javax.inject.Inject
 
 /**
@@ -96,7 +97,12 @@ class BusStopViewModel @Inject constructor(
                     val busStopList = response.body()?.msgBody?.busStopList
 
                     if (busStopList != null) {
-                        busStopsLiveData.postValue(busStopList!!)
+                        // arsId == 0 인 정류장 거르기
+                        val data = busStopList.stream().filter {
+                            it.arsId.toInt() != 0
+                        }.collect(Collectors.toList())
+
+                        busStopsLiveData.postValue(data)
                         loadingLiveData.postValue(false)
                     } else {
                         loadFail("no_result")
@@ -171,6 +177,11 @@ class BusStopViewModel @Inject constructor(
                                 searchedBusStop.tmX.toDouble(),
                                 1
                             )
+
+                            // arsId == 0 인지 확인
+                            if (searchedBusStop.arsId.toInt() == 0) {
+                                continue
+                            }
 
                             if (!city.isNullOrEmpty() && city[0].adminArea != "서울특별시") {
                                 continue

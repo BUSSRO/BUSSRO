@@ -4,21 +4,16 @@ import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
-import android.text.SpannableStringBuilder
-import android.text.Spanned
-import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.youreye.bussro.util.CustomItemDecoration
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityBusListBinding
-import com.youreye.bussro.util.BoardingDialog
+import com.youreye.bussro.feature.dialog.BoardingDialog
 import com.youreye.bussro.util.ErrorHandlerManager
-import com.youreye.bussro.util.logd
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 

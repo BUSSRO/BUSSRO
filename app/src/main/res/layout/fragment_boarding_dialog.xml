@@ -6,14 +6,14 @@
     <data>
         <variable
             name="activity"
-            type="com.youreye.bussro.util.BoardingDialog" />
+            type="com.youreye.bussro.feature.dialog.BoardingDialog" />
     </data>
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:cardCornerRadius="6dp"
-        tools:context=".util.BoardingDialog">
+        tools:context=".feature.dialog.BoardingDialog">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="330dp"

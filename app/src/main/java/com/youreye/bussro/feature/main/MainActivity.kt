@@ -4,15 +4,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.accessibility.AccessibilityNodeInfo
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityMainBinding
-import com.youreye.bussro.util.BackPressDialog
-import com.youreye.bussro.util.BussroExceptionHandler
+import com.youreye.bussro.feature.dialog.BackPressDialog
 import com.youreye.bussro.util.ErrorHandlerManager
-import java.lang.IllegalStateException
 import java.lang.RuntimeException
 
 /**

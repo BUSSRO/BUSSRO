@@ -1,4 +1,4 @@
-package com.youreye.bussro.util
+package com.youreye.bussro.feature.dialog
 
 import android.content.Intent
 import android.graphics.Color
