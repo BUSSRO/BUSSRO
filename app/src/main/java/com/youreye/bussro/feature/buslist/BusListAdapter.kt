@@ -1,5 +1,6 @@
 package com.youreye.bussro.feature.buslist
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,9 +35,6 @@ class BusListAdapter(
 ) : RecyclerView.Adapter<BusListAdapter.BusListViewHolder>() {
     private var data = listOf<BusListData.MsgBody.BusList>()
 
-    private var lastSelectedItem: View? = null
-    private var lastSelectedPosition: Int = -1
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BusListViewHolder {
         val binding: RvBusListItemBinding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
@@ -47,32 +45,18 @@ class BusListAdapter(
         return BusListViewHolder(binding)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: BusListViewHolder, position: Int) {
-        /* CheckBox 초기화 */
-        holder.binding.cbBusListItem.isChecked = lastSelectedPosition == position
-
-        holder.binding.cbBusListItem.setOnClickListener {
-            lastSelectedPosition = position
-            notifyDataSetChanged()
-        }
-
-        holder.binding.cbBusListItem.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                Toast.makeText(activity.applicationContext, "${data[position].rtNm} 선택", Toast.LENGTH_SHORT).show()
-            }
-        }
-
         /* ViewBinding 에 data insert */
         holder.binding.busList = data[position]
 
-        /* expand / collapse click listener */
+        /* expand & collapse click listener */
         holder.binding.ivBusListItemExpand.setOnClickListener {
             val show = toggleLayout(!data[position].isExpanded, it, holder.binding.clBottom)
             data[position].isExpanded = show
         }
 
         /* 항목 click listener */
-        // CHECK: 임시
         holder.binding.root.setOnClickListener {
             val dialog = BoardingDialog(
                 data[position].rtNm,
@@ -83,40 +67,10 @@ class BusListAdapter(
             dialog.show(supportFragmentManager, "FromBusListActivity")
         }
 
-        /*
-        /* 항목 click listener */
-        holder.binding.root.setOnClickListener {
-            /*
-             * 다른것 선택시)
-             * 이전에 선택되었던 아이템 해제 및 새로운 아이템 등록
-             *
-             * 같은것 선택시)
-             * 이전에 선택되었던 아이템 해제
-             */
-
-            // 이전에 선택되었던 아이템 해제
-            lastSelectedItem?.setBackgroundColor(Color.parseColor("#ECEBFF"))
-            lastSelectedItem?.findViewById<TextView>(R.id.txt_bus_list_item_number)?.typeface = Typeface.DEFAULT
-            lastSelectedItem?.findViewById<TextView>(R.id.txt_bus_list_item_info)?.typeface = Typeface.DEFAULT
-
-            // 새로운 아이템 등록
-            if (lastSelectedPosition != position) {
-                holder.binding.root.setBackgroundColor(Color.parseColor("#FFCC00"))
-                holder.binding.txtBusListItemNumber.typeface = Typeface.DEFAULT_BOLD
-                holder.binding.txtBusListItemInfo.typeface = Typeface.DEFAULT_BOLD
-
-                activity.rtNm = data[position].rtNm!!
-                lastSelectedItem = holder.binding.root
-                lastSelectedPosition = position
-            } else {
-                activity.rtNm = ""
-                lastSelectedItem = null
-                lastSelectedPosition = -1
-            }
-
-            activity.setVisible()
-        }
-         */
+        /* 운행시간 */
+        val firstTm = data[position].firstTm.substring(0, 2) + ":" + data[position].firstTm.subSequence(2, 4)
+        val lastTm = data[position].lastTm.substring(0, 2) + ":" + data[position].lastTm.subSequence(2, 4)
+        holder.binding.txtBusListTime.text = "첫차 $firstTm, 막차 $lastTm"
     }
 
     /* 레이아웃 확장 or 숨기기 */

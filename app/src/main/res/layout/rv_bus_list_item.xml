@@ -20,19 +20,20 @@
             android:id="@+id/cl_top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="16dp"
             android:orientation="horizontal">
 
             <!-- CheckBox -->
-            <CheckBox
-                android:id="@+id/cb_bus_list_item"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_margin="16dp"
-                android:background="@drawable/cb_selector"
-                android:button="@null"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+<!--            <CheckBox-->
+<!--                android:id="@+id/cb_bus_list_item"-->
+<!--                android:layout_width="28dp"-->
+<!--                android:layout_height="28dp"-->
+<!--                android:layout_margin="16dp"-->
+<!--                android:background="@drawable/cb_selector"-->
+<!--                android:button="@null"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"/>-->
 
             <!-- 버스 번호 -->
             <TextView
@@ -42,10 +43,9 @@
                 android:textColor="@color/white"
                 android:textSize="20dp"
                 app:rtNm="@{busList.rtNm}"
-                android:layout_marginStart="16dp"
                 tools:text="3317"
-                app:layout_constraintTop_toTopOf="@+id/cb_bus_list_item"
-                app:layout_constraintStart_toEndOf="@+id/cb_bus_list_item"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/txt_bus_list_dir"/>
 
             <!-- 색상 -->
@@ -74,62 +74,82 @@
             <!-- 방향 -->
             <TextView
                 android:id="@+id/txt_bus_list_dir"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:textColor="@color/light_gray"
                 android:textSize="14dp"
                 app:adirection="@{busList.adirection}"
-                android:layout_marginStart="16dp"
-                tools:text="어느 방향으로 가는지"
+                android:layout_marginEnd="6dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/gl_bus_list"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txt_bus_list_item_number"
-                app:layout_constraintStart_toEndOf="@id/cb_bus_list_item"
-                app:layout_constraintBottom_toBottomOf="@id/cb_bus_list_item"/>
+                tools:text="어느 방향으로 가는지" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_bus_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5"/>
 
             <!-- 남은 정류장 & 시간 -->
             <TextView
                 android:id="@+id/txt_bus_list_item_info_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
                 android:textColor="@color/yellow"
                 android:textSize="14dp"
                 android:textStyle="bold"
                 app:arrmsg1="@{busList.arrmsg1}"
                 app:layout_constraintBottom_toTopOf="@id/txt_bus_list_item_info_2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/cb_bus_list_item"
+                app:layout_constraintStart_toStartOf="@id/gl_bus_list"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginEnd="6dp"
                 tools:text="5분 38초 후[전 정류장]" />
 
             <TextView
                 android:id="@+id/txt_bus_list_item_info_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
                 android:textColor="@color/yellow"
                 android:textSize="14dp"
                 android:textStyle="bold"
                 app:arrmsg1="@{busList.arrmsg2}"
-                app:layout_constraintBottom_toBottomOf="@+id/cb_bus_list_item"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@id/gl_bus_list"
                 app:layout_constraintTop_toBottomOf="@id/txt_bus_list_item_info_1"
                 app:layout_constraintVertical_chainStyle="packed"
+                android:layout_marginEnd="6dp"
                 tools:text="5분 38초 후[전 정류장]" />
+
+            <!-- 더보기 -->
+            <ImageView
+                android:id="@+id/iv_bus_list_item_expand"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_gravity="end"
+                android:src="@drawable/ic_baseline_expand_more_24"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:tint="@color/light_gray" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- 더보기 -->
-        <ImageView
-            android:id="@+id/iv_bus_list_item_expand"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_gravity="end"
-            android:layout_marginEnd="16dp"
-            android:src="@drawable/ic_baseline_expand_more_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:tint="@color/light_gray" />
+<!--        &lt;!&ndash; 더보기 &ndash;&gt;-->
+<!--        <ImageView-->
+<!--            android:id="@+id/iv_bus_list_item_expand"-->
+<!--            android:layout_width="36dp"-->
+<!--            android:layout_height="36dp"-->
+<!--            android:layout_gravity="end"-->
+<!--            android:layout_marginEnd="16dp"-->
+<!--            android:src="@drawable/ic_baseline_expand_more_24"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:tint="@color/light_gray" />-->
 
         <!-- expand layout -->
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -184,7 +204,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:text="첫차 00:00, 막차 00:00"
+                tools:text="첫차 00:00, 막차 00:00"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="@id/txt_bus_list_time_title"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -211,12 +231,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:text="평일 0분, 주말 0분"
+                app:term="@{busList.term}"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="@id/txt_bus_list_interval_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/txt_bus_list_interval_title"
-                app:layout_constraintTop_toTopOf="@id/txt_bus_list_interval_title" />
+                app:layout_constraintTop_toTopOf="@id/txt_bus_list_interval_title"
+                tools:text="평일 9분, 주말 10분"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

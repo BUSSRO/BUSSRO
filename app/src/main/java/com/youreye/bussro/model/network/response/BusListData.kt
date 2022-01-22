@@ -30,7 +30,11 @@ data class BusListData(
          * @param sectNm 구간명
          * @param nxtStn 다음정류장순번
          * @param stNm 정류소명
+         * @param arsId 정류소고유번호
          * @param routeType 노선유형
+         * @param firstTm 첫차시간
+         * @param lastTm 막차시간
+         * @param term 배차간격
          *
          * @property isExpanded RecyclerView expand or collapse
          */
@@ -54,6 +58,12 @@ data class BusListData(
             val arsId: String,
             @SerializedName("routeType")
             val routeType: Int,
+            @SerializedName("firstTm")
+            val firstTm: String,
+            @SerializedName("lastTm")
+            val lastTm: String,
+            @SerializedName("term")
+            val term: String,
         ) {
             var isExpanded: Boolean = false
         }
@@ -100,5 +110,12 @@ fun setBusInfo(txt: TextView, arrmsg1: String) {
 @SuppressLint("SetTextI18n")
 @BindingAdapter("adirection")
 fun setAdirection(txt: TextView, adirection: String) {
-    txt.text = adirection + " 방향"
+    txt.text = "$adirection 방향"
+}
+
+/* DataBinding_배차간격 */
+@SuppressLint("SetTextI18n")
+@BindingAdapter("term")
+fun setTerm(txt: TextView, term: String) {
+    txt.text = "${term}분"
 }
