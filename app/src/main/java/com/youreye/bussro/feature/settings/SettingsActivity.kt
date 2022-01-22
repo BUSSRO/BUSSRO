@@ -21,6 +21,7 @@ class SettingsActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_settings)
+        overridePendingTransition(R.anim.enter_from_right, R.anim.fade_out)
 
 //        if (savedInstanceState == null) {
 //            supportFragmentManager
@@ -38,6 +39,7 @@ class SettingsActivity : AppCompatActivity(){
         /* 뒤로가기 */
         binding.ivSettingBack.setOnClickListener {
             finish()
+            overridePendingTransition(R.anim.fade_in, R.anim.exit_to_right)
         }
 
         /* 공지사항 */
@@ -70,6 +72,13 @@ class SettingsActivity : AppCompatActivity(){
             val intent = Intent(this, WebViewActivity::class.java)
                 .putExtra("addr", LICENSE_PAGE)
             startActivity(intent)
+        }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (isFinishing) {
+            overridePendingTransition(R.anim.fade_in, R.anim.exit_to_right)
         }
     }
 

@@ -41,6 +41,7 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         initVar()
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+        overridePendingTransition(R.anim.enter_from_right, R.anim.fade_out)
 
         initSetOnClickListener()
         initTTS()
@@ -54,6 +55,7 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         // 뒤로가기
         binding.ibBusListBack.setOnClickListener {
             finish()
+            overridePendingTransition(R.anim.fade_in, R.anim.exit_to_right)
         }
 
         // 새로고침
@@ -225,11 +227,16 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     }
 
     override fun onBackPressed() {
-        if (tts.isSpeaking) {
-            tts.stop()
-            // whenTTSdone()
-        } else {
-            super.onBackPressed()
+//        if (tts.isSpeaking) {
+//            tts.stop()
+//            // whenTTSdone()
+//        } else {
+//            super.onBackPressed()
+//        }
+
+        super.onBackPressed()
+        if (isFinishing) {
+            overridePendingTransition(R.anim.fade_in, R.anim.exit_to_right)
         }
     }
 }

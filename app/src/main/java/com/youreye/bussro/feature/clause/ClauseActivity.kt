@@ -22,6 +22,7 @@ class ClauseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_clause)
+        overridePendingTransition(R.anim.enter_from_right, R.anim.fade_out)
 
         initVar()
     }
@@ -41,6 +42,7 @@ class ClauseActivity : AppCompatActivity() {
         /* 뒤로가기 */
         binding.ibClauseBack.setOnClickListener {
             finish()
+            overridePendingTransition(R.anim.fade_in, R.anim.exit_to_right)
         }
 
         /* 앱 시작하기 */
@@ -95,6 +97,13 @@ class ClauseActivity : AppCompatActivity() {
             binding.txtClauseStart.setBackgroundColor(resources.getColor(R.color.yellow))
         } else {
             binding.txtClauseStart.setBackgroundColor(resources.getColor(R.color.light_gray))
+        }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (isFinishing) {
+            overridePendingTransition(R.anim.fade_in, R.anim.exit_to_right)
         }
     }
 }

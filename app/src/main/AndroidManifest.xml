@@ -48,10 +48,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/PreferenceScreen" />
         <activity
-            android:name=".feature.findstation.FindStationActivity"
-            android:label="@string/empty_label"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".feature.buslist.BusListActivity"
             android:label="@string/empty_label"
             android:screenOrientation="portrait" />

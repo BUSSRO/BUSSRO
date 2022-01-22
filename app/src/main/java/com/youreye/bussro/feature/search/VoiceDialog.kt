@@ -150,7 +150,15 @@ class VoiceDialog : DialogFragment() {
     }
 
     private fun playStt(play: Boolean, text: String) {
-        if (play) binding.lottieVoice.playAnimation() else binding.lottieVoice.pauseAnimation()
+        // lottie 애니메이션 제어
+        if (play) {
+            binding.lottieVoice.playAnimation()
+        } else {
+            binding.lottieVoice.pauseAnimation()
+            binding.lottieVoice.progress = 0F
+        }
+
+        // 텍스트 수정
         binding.txtVoice.text = text
     }
 

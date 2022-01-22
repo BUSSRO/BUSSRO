@@ -62,6 +62,7 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         binding.activity = this@BusStopActivity
+        overridePendingTransition(R.anim.enter_from_right, R.anim.fade_out)
 
         initVar()
         initClickListener()
@@ -119,6 +120,7 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         /* 뒤로가기 */
         binding.ibSearchBack.setOnClickListener {
             finish()
+            overridePendingTransition(R.anim.fade_in, R.anim.exit_to_right)
         }
 
         /* 검색 */
@@ -260,5 +262,12 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     override fun onDestroy() {
         tts.shutdown()
         super.onDestroy()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (isFinishing) {
+            overridePendingTransition(R.anim.fade_in, R.anim.exit_to_right)
+        }
     }
 }

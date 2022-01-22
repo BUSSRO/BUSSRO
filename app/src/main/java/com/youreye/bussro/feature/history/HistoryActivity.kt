@@ -37,6 +37,8 @@ class HistoryActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_history)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+        overridePendingTransition(R.anim.enter_from_right, R.anim.fade_out)
+
         initVar()
 //        viewModel.deleteAll()
     }
@@ -81,5 +83,12 @@ class HistoryActivity : AppCompatActivity() {
 
         val dateFormat = SimpleDateFormat("yy.MM.dd", Locale.getDefault())
         return dateFormat.format(cal.time)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (isFinishing) {
+            overridePendingTransition(R.anim.fade_in, R.anim.exit_to_right)
+        }
     }
 }

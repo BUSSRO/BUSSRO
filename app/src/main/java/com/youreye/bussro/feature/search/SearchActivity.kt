@@ -39,6 +39,7 @@ class SearchActivity : AppCompatActivity(), ISearchRecyclerView, TextToSpeech.On
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search)
         binding.activity = this
         binding.lifecycleOwner = this
+        overridePendingTransition(R.anim.enter_from_right, R.anim.fade_out)
 
         // 음성인식 옵저빙
         viewModel.searchedStationByVoice.observe(this, {
@@ -57,6 +58,7 @@ class SearchActivity : AppCompatActivity(), ISearchRecyclerView, TextToSpeech.On
         /* 뒤로가기 */
         binding.ibSearchBack.setOnClickListener {
             finish()
+            overridePendingTransition(R.anim.fade_in, R.anim.exit_to_right)
         }
 
         /* TextToSpeech 객체 */
@@ -273,5 +275,8 @@ class SearchActivity : AppCompatActivity(), ISearchRecyclerView, TextToSpeech.On
         }
 
         super.onBackPressed()
+        if (isFinishing) {
+            overridePendingTransition(R.anim.fade_in, R.anim.exit_to_right)
+        }
     }
 }
