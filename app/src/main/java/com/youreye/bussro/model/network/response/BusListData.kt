@@ -30,6 +30,9 @@ data class BusListData(
          * @param sectNm 구간명
          * @param nxtStn 다음정류장순번
          * @param stNm 정류소명
+         * @param routeType 노선유형
+         *
+         * @property isExpanded RecyclerView expand or collapse
          */
 
         data class BusList (
@@ -48,8 +51,12 @@ data class BusListData(
             @SerializedName("stNm")
             val stNm: String,
             @SerializedName("arsId")
-            val arsId: String
-        )
+            val arsId: String,
+            @SerializedName("routeType")
+            val routeType: Int,
+        ) {
+            var isExpanded: Boolean = false
+        }
     }
 
     data class ComMsgHeader(

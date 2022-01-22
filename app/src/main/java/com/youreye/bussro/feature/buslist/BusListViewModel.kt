@@ -2,15 +2,11 @@ package com.youreye.bussro.feature.buslist
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.youreye.bussro.BuildConfig
 import com.youreye.bussro.model.network.api.StationInfoAPI
 import com.youreye.bussro.model.network.response.BusListData
 import com.youreye.bussro.util.NetworkConnection
 import com.youreye.bussro.util.logd
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -82,10 +78,5 @@ class BusListViewModel(
         busListLiveData.postValue(listOf())
         loadingLiveData.postValue(false)
         failReason.postValue(reason)
-    }
-
-    companion object {
-        private const val BASE_URL = "http://ws.bus.go.kr/api/rest/stationinfo/getStationByUid?"
-        private const val SERVICE_KEY = BuildConfig.API_KEY
     }
 }

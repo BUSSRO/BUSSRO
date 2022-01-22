@@ -49,17 +49,27 @@
                 app:layout_constraintBottom_toTopOf="@+id/txt_bus_list_dir"/>
 
             <!-- 색상 -->
-            <ImageView
-                android:id="@+id/iv_bus_list"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/civ_bus_list"
                 android:layout_width="10dp"
                 android:layout_height="10dp"
-                android:layout_gravity="center"
                 android:layout_marginStart="16dp"
-                android:src="@drawable/ic_circle"
                 app:layout_constraintBottom_toBottomOf="@id/txt_bus_list_item_number"
                 app:layout_constraintStart_toEndOf="@id/txt_bus_list_item_number"
                 app:layout_constraintTop_toTopOf="@id/txt_bus_list_item_number"
-                app:tint="#4181FF" />
+                app:color="@{busList.routeType}"/>
+
+<!--            <ImageView-->
+<!--                android:id="@+id/iv_bus_list"-->
+<!--                android:layout_width="10dp"-->
+<!--                android:layout_height="10dp"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:layout_marginStart="16dp"-->
+<!--                android:src="@drawable/ic_circle"-->
+<!--                app:layout_constraintBottom_toBottomOf="@id/txt_bus_list_item_number"-->
+<!--                app:layout_constraintStart_toEndOf="@id/txt_bus_list_item_number"-->
+<!--                app:layout_constraintTop_toTopOf="@id/txt_bus_list_item_number"-->
+<!--                app:tint="#4181FF" />-->
 
             <!-- 방향 -->
             <TextView
@@ -124,6 +134,7 @@
         <!-- expand layout -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_bottom"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

@@ -3,7 +3,11 @@ package com.youreye.bussro.feature.buslist
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.annotation.NonNull
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
@@ -11,6 +15,8 @@ import com.youreye.bussro.model.network.response.BusListData
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.RvBusListItemBinding
 import com.youreye.bussro.feature.dialog.BoardingDialog
+import com.youreye.bussro.util.ToggleAnimation
+import de.hdodenhof.circleimageview.CircleImageView
 
 /**
  * [BusListAdapter]
@@ -41,6 +47,12 @@ class BusListAdapter(
     override fun onBindViewHolder(holder: BusListViewHolder, position: Int) {
         /* ViewBinding 에 data insert */
         holder.binding.busList = data[position]
+
+        /* expand / collapse click listener */
+        holder.binding.ivBusListItemExpand.setOnClickListener {
+            val show = toggleLayout(!data[position].isExpanded, it, holder.binding.clBottom)
+            data[position].isExpanded = show
+        }
 
         /* 항목 click listener */
         // CHECK: 임시
@@ -90,6 +102,21 @@ class BusListAdapter(
          */
     }
 
+    /* 레이아웃 확장 or 숨기기 */
+    private fun toggleLayout(isExpanded: Boolean, view: View, layoutExpand: ConstraintLayout): Boolean {
+        // 이미지 제어
+        ToggleAnimation.toggleArrow(view, isExpanded)
+
+        // 레이아웃 제어
+        if (isExpanded) {
+            ToggleAnimation.expand(layoutExpand)
+        } else {
+            ToggleAnimation.collapse(layoutExpand)
+        }
+
+        return isExpanded
+    }
+
     override fun getItemCount(): Int = data.size
 
     /* 데이터 갱신 */
@@ -101,6 +128,19 @@ class BusListAdapter(
     /* ViewHolder */
     inner class BusListViewHolder(@NonNull val binding: RvBusListItemBinding) :
         RecyclerView.ViewHolder(binding.root)
+}
+
+@BindingAdapter("color")
+fun setColor(civ: CircleImageView, routeType: Int) {
+    when(routeType) {
+        6 -> R.drawable.red
+        3 -> R.drawable.blue
+        4 -> R.drawable.green
+        5 -> R.drawable.yellow
+        else -> R.drawable.light_gray
+    }.apply {
+        civ.setImageResource(this)
+    }
 }
 
 
