@@ -8,6 +8,7 @@ import android.os.Looper
 import androidx.databinding.DataBindingUtil
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivitySignBinding
+import com.youreye.bussro.util.ErrorHandlerManager
 
 /**
  * [SignActivity]
@@ -24,6 +25,7 @@ class SignActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ErrorHandlerManager.setCrashHandler(application)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_sign)
         // 상태바 색상 변경
         this.window.statusBarColor = resources.getColor(R.color.black)

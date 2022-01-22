@@ -17,6 +17,7 @@ import com.youreye.bussro.util.CustomItemDecoration
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityBusListBinding
 import com.youreye.bussro.util.BoardingDialog
+import com.youreye.bussro.util.ErrorHandlerManager
 import com.youreye.bussro.util.logd
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -37,6 +38,7 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ErrorHandlerManager.setCrashHandler(application)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_bus_list)
         initVar()
         binding.lifecycleOwner = this

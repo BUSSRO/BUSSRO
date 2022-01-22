@@ -10,6 +10,7 @@ import android.webkit.WebViewClient
 import androidx.databinding.DataBindingUtil
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityWebViewBinding
+import com.youreye.bussro.util.ErrorHandlerManager
 
 /**
  * [WebViewActivity]
@@ -21,6 +22,7 @@ class WebViewActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ErrorHandlerManager.setCrashHandler(application)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_web_view)
         overridePendingTransition(R.anim.enter_from_right, R.anim.fade_out)
 

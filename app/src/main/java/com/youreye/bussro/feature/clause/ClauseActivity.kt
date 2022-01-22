@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityClauseBinding
 import com.youreye.bussro.feature.main.MainActivity
+import com.youreye.bussro.util.ErrorHandlerManager
 import com.youreye.bussro.util.SharedPrefManager
 
 class ClauseActivity : AppCompatActivity() {
@@ -21,6 +22,7 @@ class ClauseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ErrorHandlerManager.setCrashHandler(application)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_clause)
         overridePendingTransition(R.anim.enter_from_right, R.anim.fade_out)
 

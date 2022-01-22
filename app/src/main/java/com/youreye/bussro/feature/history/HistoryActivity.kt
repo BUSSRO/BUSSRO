@@ -15,6 +15,7 @@ import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityHistoryBinding
 import com.youreye.bussro.model.repository.HistoryRepository
 import com.youreye.bussro.util.CustomItemDecoration
+import com.youreye.bussro.util.ErrorHandlerManager
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
@@ -34,6 +35,7 @@ class HistoryActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ErrorHandlerManager.setCrashHandler(application)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_history)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel

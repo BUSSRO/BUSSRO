@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityBusStopBinding
 import com.youreye.bussro.feature.search.SearchActivity
+import com.youreye.bussro.util.ErrorHandlerManager
 import com.youreye.bussro.util.logd
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -58,6 +59,7 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ErrorHandlerManager.setCrashHandler(application)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_bus_stop)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel

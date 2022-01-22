@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "672085452101",
+    "project_id": "bussro",
+    "storage_bucket": "bussro.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:672085452101:android:1a0fb337582f2f39f14a2c",
+        "android_client_info": {
+          "package_name": "com.youreye.bussro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "672085452101-5g61p6mmvdk4vlm4kh5ct7eufs4ti2ud.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.youreye.bussro",
+            "certificate_hash": "c7393af5a2f740f2963297c6b9440239edfa4d74"
+          }
+        },
+        {
+          "client_id": "672085452101-oovidd2mlo0anp5ljg63pe2pacd1v4uk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcYmD8i8LVEjhh8nc6TpY3ApCOciSZm2M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "672085452101-oovidd2mlo0anp5ljg63pe2pacd1v4uk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

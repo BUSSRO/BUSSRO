@@ -102,6 +102,17 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:onClick="@{(v) -> model.onClick(v, 3)}"/>
 
+            <!-- 에러 테스트 버튼 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_error_test"
+                android:text="에러 테스트 버튼"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/txt_main_third"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="16dp"/>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
