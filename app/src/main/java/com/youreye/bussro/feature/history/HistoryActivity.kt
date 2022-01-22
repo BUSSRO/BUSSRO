@@ -47,6 +47,11 @@ class HistoryActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun initVar() {
+        /* 뒤로가기 */
+        binding.ibHistoryBack.setOnClickListener {
+            finish()
+        }
+
         /* RecyclerView */
         val rvAdapter = HistoryAdapter(supportFragmentManager, application, historyRepository)
         binding.rvHistory.apply {
