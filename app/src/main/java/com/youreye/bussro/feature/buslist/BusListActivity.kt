@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityBusListBinding
 import com.youreye.bussro.feature.dialog.BoardingDialog
-import com.youreye.bussro.util.ErrorHandlerManager
+import com.youreye.bussro.util.BussroExceptionHandler
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -33,7 +33,7 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ErrorHandlerManager.setCrashHandler(application)
+        BussroExceptionHandler.setCrashHandler(application)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_bus_list)
         initVar()
         binding.lifecycleOwner = this

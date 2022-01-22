@@ -9,7 +9,7 @@ import androidx.databinding.DataBindingUtil
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityMainBinding
 import com.youreye.bussro.feature.dialog.BackPressDialog
-import com.youreye.bussro.util.ErrorHandlerManager
+import com.youreye.bussro.util.BussroExceptionHandler
 import java.lang.RuntimeException
 
 /**
@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ErrorHandlerManager.setCrashHandler(application)
+        BussroExceptionHandler.setCrashHandler(application)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.model = model
 
@@ -32,7 +32,6 @@ class MainActivity : AppCompatActivity() {
         binding.btnErrorTest.setOnClickListener {
             throw RuntimeException("BussroExceptionHandler 테스트용 에러")
         }
-
         if (savedInstanceState == null) {
             removeAction()
         }

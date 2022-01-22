@@ -19,7 +19,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivitySearchBinding
-import com.youreye.bussro.util.ErrorHandlerManager
+import com.youreye.bussro.util.BussroExceptionHandler
 import com.youreye.bussro.util.SharedPrefManager
 import com.youreye.bussro.util.logd
 import java.util.*
@@ -37,7 +37,7 @@ class SearchActivity : AppCompatActivity(), ISearchRecyclerView, TextToSpeech.On
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ErrorHandlerManager.setCrashHandler(application)
+        BussroExceptionHandler.setCrashHandler(application)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search)
         binding.activity = this
         binding.lifecycleOwner = this

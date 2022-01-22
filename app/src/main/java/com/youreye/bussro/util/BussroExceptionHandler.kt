@@ -100,5 +100,17 @@ class BussroExceptionHandler(
         startActivity(errorActivityIntent)
         finish()
     }
+
+    companion object {
+        fun setCrashHandler(application: Application) {
+            val crashlyticsExceptionHandler = Thread.getDefaultUncaughtExceptionHandler() ?: return
+            Thread.setDefaultUncaughtExceptionHandler(
+                BussroExceptionHandler(
+                    application,
+                    crashlyticsExceptionHandler
+                )
+            )
+        }
+    }
 }
 

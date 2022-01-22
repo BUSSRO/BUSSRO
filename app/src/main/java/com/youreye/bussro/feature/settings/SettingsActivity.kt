@@ -2,14 +2,13 @@ package com.youreye.bussro.feature.settings
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivitySettingsBinding
 import com.youreye.bussro.feature.dialog.SuggestionsDialog
-import com.youreye.bussro.util.ErrorHandlerManager
+import com.youreye.bussro.util.BussroExceptionHandler
 
 /**
  * [SettingsActivity]
@@ -22,7 +21,7 @@ class SettingsActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ErrorHandlerManager.setCrashHandler(application)
+        BussroExceptionHandler.setCrashHandler(application)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_settings)
         overridePendingTransition(R.anim.enter_from_right, R.anim.fade_out)
 

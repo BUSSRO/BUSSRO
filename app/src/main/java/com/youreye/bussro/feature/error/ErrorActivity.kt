@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import com.youreye.bussro.R
+import com.youreye.bussro.feature.dialog.SuggestionsDialog
 import com.youreye.bussro.feature.main.MainActivity
 import com.youreye.bussro.feature.onboarding.OnBoardingActivity
 import com.youreye.bussro.util.SharedPrefManager
@@ -34,6 +35,11 @@ class ErrorActivity : AppCompatActivity() {
 //            startActivity(lastActivityIntent)
             finish()
             overridePendingTransition(R.anim.fade_in, R.anim.exit_to_right)
+        }
+
+        // 문의하기 click listener
+        findViewById<AppCompatButton>(R.id.btn_error_suggestions).setOnClickListener {
+            SuggestionsDialog().show(supportFragmentManager, "SuggestionsDialog")
         }
     }
 

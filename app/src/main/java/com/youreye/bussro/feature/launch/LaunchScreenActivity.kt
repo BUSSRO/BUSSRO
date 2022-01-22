@@ -7,7 +7,7 @@ import android.os.Handler
 import com.youreye.bussro.R
 import com.youreye.bussro.feature.main.MainActivity
 import com.youreye.bussro.feature.onboarding.OnBoardingActivity
-import com.youreye.bussro.util.ErrorHandlerManager
+import com.youreye.bussro.util.BussroExceptionHandler
 import com.youreye.bussro.util.SharedPrefManager
 
 /**
@@ -18,7 +18,7 @@ import com.youreye.bussro.util.SharedPrefManager
 class LaunchScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ErrorHandlerManager.setCrashHandler(application)
+        BussroExceptionHandler.setCrashHandler(application)
         setContentView(R.layout.activity_launch_screen)
 
         // 상태바 색상 변경
