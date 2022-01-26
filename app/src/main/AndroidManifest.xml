@@ -17,7 +17,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BUSSRO"
         android:usesCleartextTraffic="true">
-        <activity android:name=".feature.search.SearchActivity"></activity>
+        <activity android:name=".feature.error.ErrorActivity"></activity>
+        <activity
+            android:name=".feature.search.SearchActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".feature.settings.WebViewActivity"
             android:screenOrientation="portrait" />
@@ -36,7 +40,7 @@
             android:label="전광판 화면입니다. 버스기사에게 보여주세요."
             android:screenOrientation="landscape" />
         <activity
-            android:name=".feature.nearbybusstop.NearbyBusStopActivity"
+            android:name=".feature.busstop.BusStopActivity"
             android:label="@string/empty_label"
             android:screenOrientation="portrait" />
         <activity
@@ -44,10 +48,6 @@
             android:label="@string/settings_activity_label"
             android:screenOrientation="portrait"
             android:theme="@style/PreferenceScreen" />
-        <activity
-            android:name=".feature.findstation.FindStationActivity"
-            android:label="@string/empty_label"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".feature.buslist.BusListActivity"
             android:label="@string/empty_label"

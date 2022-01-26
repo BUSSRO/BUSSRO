@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityHistoryBinding
 import com.youreye.bussro.model.repository.HistoryRepository
-import com.youreye.bussro.util.CustomItemDecoration
+import com.youreye.bussro.util.BussroExceptionHandler
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
@@ -34,15 +34,23 @@ class HistoryActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        BussroExceptionHandler.setCrashHandler(application)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_history)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+        overridePendingTransition(R.anim.enter_from_right, R.anim.fade_out)
+
         initVar()
 //        viewModel.deleteAll()
     }
 
     @SuppressLint("SetTextI18n")
     private fun initVar() {
+        /* 뒤로가기 */
+        binding.ibHistoryBack.setOnClickListener {
+            finish()
+        }
+
         /* RecyclerView */
         val rvAdapter = HistoryAdapter(supportFragmentManager, application, historyRepository)
         binding.rvHistory.apply {
@@ -58,7 +66,7 @@ class HistoryActivity : AppCompatActivity() {
             val text = "이번 달 버스 이용은 ${it.size} 번 입니다."
             val builder = SpannableStringBuilder(text)
             val colorSpan = ForegroundColorSpan(resources.getColor(R.color.yellow))
-            val end = 12 + (it.size / 10) + 3  // 시작점 + 숫자 자릿수
+            val end = 12 + (it.size.toString().length) + 2
             builder.setSpan(colorSpan, 12, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             binding.txtHistoryDescription.text = builder
 
@@ -81,5 +89,12 @@ class HistoryActivity : AppCompatActivity() {
 
         val dateFormat = SimpleDateFormat("yy.MM.dd", Locale.getDefault())
         return dateFormat.format(cal.time)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (isFinishing) {
+            overridePendingTransition(R.anim.fade_in, R.anim.exit_to_right)
+        }
     }
 }

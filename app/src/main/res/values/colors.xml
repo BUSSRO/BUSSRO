@@ -13,4 +13,15 @@
     <color name="gray">#787878</color>
     <color name="red">#FF1100</color>
     <color name="orange">#FD9B3B</color>
+    <color name="background">#222222</color>
+    <color name="blue">#2196F3</color>
+    <color name="green">#4CAF50</color>
+
+    <!-- color drawable -->
+    <drawable name="red">#FF1100</drawable>
+    <drawable name="yellow">#FFFFCC00</drawable>
+    <drawable name="green">#4CAF50</drawable>
+    <drawable name="blue">#2196F3</drawable>
+    <drawable name="light_gray">#AAAAAA</drawable>
+
 </resources>

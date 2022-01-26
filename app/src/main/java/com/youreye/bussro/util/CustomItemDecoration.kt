@@ -43,10 +43,10 @@ class CustomItemDecoration(
 
     /* Item 간의 divider 설정 */
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
-        val left = parent.paddingStart + divPadding
-        val right = parent.width - parent.paddingEnd - divPadding
+        val left = parent.paddingStart + divPadding + 30
+        val right = parent.width - parent.paddingEnd - divPadding - 30
 
-        for (i in 0 until parent.childCount) {
+        for (i in 0 until parent.childCount - 1) {
             val child = parent.getChildAt(i)
             val params = child.layoutParams as RecyclerView.LayoutParams
 

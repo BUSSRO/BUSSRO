@@ -4,12 +4,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.accessibility.AccessibilityNodeInfo
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityMainBinding
-import com.youreye.bussro.util.BackPressDialog
+import com.youreye.bussro.feature.dialog.BackPressDialog
+import com.youreye.bussro.util.BussroExceptionHandler
+import java.lang.RuntimeException
 
 /**
  * [MainActivity]
@@ -18,15 +19,19 @@ import com.youreye.bussro.util.BackPressDialog
  */
 
 class MainActivity : AppCompatActivity() {
-    private var backKeyPressed: Long = 0
     private val model by viewModels<MainViewModel>()
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        BussroExceptionHandler.setCrashHandler(application)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.model = model
 
+        // 에러 테스트 버튼 click listener
+        binding.btnErrorTest.setOnClickListener {
+            throw RuntimeException("BussroExceptionHandler 테스트용 에러")
+        }
         if (savedInstanceState == null) {
             removeAction()
         }
@@ -53,15 +58,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-//        val toast = Toast.makeText(this, "종료하시려면 뒤로가기를 한 번 더 누르세요.", Toast.LENGTH_SHORT)
-//
-//        if (System.currentTimeMillis() > backKeyPressed + 2000) {
-//            backKeyPressed = System.currentTimeMillis()
-//            toast.show()
-//        } else if (System.currentTimeMillis() <= backKeyPressed + 2000) {
-//            finish()
-//            toast.cancel()
-//        }
 
         val dialog = BackPressDialog()
         dialog.show(supportFragmentManager, "BackPressDialog")

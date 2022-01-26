@@ -1,33 +1,30 @@
 package com.youreye.bussro.feature.clause
 
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
-import android.view.View
 import android.widget.CheckBox
 import android.widget.CompoundButton
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityClauseBinding
 import com.youreye.bussro.feature.main.MainActivity
-import com.youreye.bussro.util.BackPressDialog
-import com.youreye.bussro.util.User
+import com.youreye.bussro.util.BussroExceptionHandler
+import com.youreye.bussro.util.SharedPrefManager
 
 class ClauseActivity : AppCompatActivity() {
     private lateinit var binding: ActivityClauseBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        BussroExceptionHandler.setCrashHandler(application)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_clause)
+        overridePendingTransition(R.anim.enter_from_right, R.anim.fade_out)
 
         initVar()
     }
@@ -47,13 +44,14 @@ class ClauseActivity : AppCompatActivity() {
         /* 뒤로가기 */
         binding.ibClauseBack.setOnClickListener {
             finish()
+            overridePendingTransition(R.anim.fade_in, R.anim.exit_to_right)
         }
 
         /* 앱 시작하기 */
         binding.txtClauseStart.setOnClickListener {
             if (binding.cbClauseFirst.isChecked && binding.cbClauseSecond.isChecked) {
                 /* 앱 최초 실행여부 저장 */
-                User.setFirst(this, false)
+                SharedPrefManager.setFirst(this, false)
 
                 startActivity(Intent(this, MainActivity::class.java))
                 ActivityCompat.finishAffinity(this)
@@ -101,6 +99,13 @@ class ClauseActivity : AppCompatActivity() {
             binding.txtClauseStart.setBackgroundColor(resources.getColor(R.color.yellow))
         } else {
             binding.txtClauseStart.setBackgroundColor(resources.getColor(R.color.light_gray))
+        }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (isFinishing) {
+            overridePendingTransition(R.anim.fade_in, R.anim.exit_to_right)
         }
     }
 }

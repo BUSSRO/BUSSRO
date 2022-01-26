@@ -17,7 +17,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black"
+        android:background="@color/background"
         android:overScrollMode="never"
         android:fillViewport="true"
         tools:context=".feature.main.MainActivity">
@@ -101,6 +101,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:onClick="@{(v) -> model.onClick(v, 3)}"/>
+
+            <!-- 에러 테스트 버튼 -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_error_test"
+                android:text="에러 테스트 버튼"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/txt_main_third"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="16dp"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

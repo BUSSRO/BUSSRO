@@ -10,6 +10,7 @@ import android.webkit.WebViewClient
 import androidx.databinding.DataBindingUtil
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityWebViewBinding
+import com.youreye.bussro.util.BussroExceptionHandler
 
 /**
  * [WebViewActivity]
@@ -21,7 +22,9 @@ class WebViewActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        BussroExceptionHandler.setCrashHandler(application)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_web_view)
+        overridePendingTransition(R.anim.enter_from_right, R.anim.fade_out)
 
         initVar()
     }
@@ -59,6 +62,9 @@ class WebViewActivity : AppCompatActivity() {
             binding.wvWebView.goBack()
         } else {
             super.onBackPressed()
+            if (isFinishing) {
+                overridePendingTransition(R.anim.fade_in, R.anim.exit_to_right)
+            }
         }
     }
 }

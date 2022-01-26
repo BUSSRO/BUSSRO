@@ -2,12 +2,13 @@ package com.youreye.bussro.feature.settings
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivitySettingsBinding
+import com.youreye.bussro.feature.dialog.SuggestionsDialog
+import com.youreye.bussro.util.BussroExceptionHandler
 
 /**
  * [SettingsActivity]
@@ -20,15 +21,9 @@ class SettingsActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        BussroExceptionHandler.setCrashHandler(application)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_settings)
-
-//        if (savedInstanceState == null) {
-//            supportFragmentManager
-//                .beginTransaction()
-//                .replace(R.id.frame_settings, SettingsFragment())
-//                .commit()
-//        }
-//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        overridePendingTransition(R.anim.enter_from_right, R.anim.fade_out)
 
         initVar()
     }
@@ -38,6 +33,7 @@ class SettingsActivity : AppCompatActivity(){
         /* 뒤로가기 */
         binding.ivSettingBack.setOnClickListener {
             finish()
+            overridePendingTransition(R.anim.fade_in, R.anim.exit_to_right)
         }
 
         /* 공지사항 */
@@ -49,13 +45,15 @@ class SettingsActivity : AppCompatActivity(){
 
         /* 문의하기 (이메일로 연결) */
         binding.ivSettingInquiryDetail.setOnClickListener {
-            val intent = Intent(Intent.ACTION_SENDTO)
-            intent.data = Uri.parse("mailto:${getString(R.string.email)}")
-            intent.putExtra(Intent.EXTRA_SUBJECT, "[버스스로] 사용자 건의사항")
+//            val intent = Intent(Intent.ACTION_SENDTO)
+//            intent.data = Uri.parse("mailto:${getString(R.string.email)}")
+//            intent.putExtra(Intent.EXTRA_SUBJECT, "[버스스로] 사용자 건의사항")
+//
+//            if (intent.resolveActivity(packageManager) != null) {
+//                startActivity(intent)
+//            }
 
-            if (intent.resolveActivity(packageManager) != null) {
-                startActivity(intent)
-            }
+            SuggestionsDialog().show(supportFragmentManager, "SuggestionsDialog")
         }
 
         /* 개인정보처리방침 */
@@ -70,6 +68,13 @@ class SettingsActivity : AppCompatActivity(){
             val intent = Intent(this, WebViewActivity::class.java)
                 .putExtra("addr", LICENSE_PAGE)
             startActivity(intent)
+        }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (isFinishing) {
+            overridePendingTransition(R.anim.fade_in, R.anim.exit_to_right)
         }
     }
 
