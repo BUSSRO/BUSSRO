@@ -31,7 +31,7 @@ android {
         }
 
         // API KEY
-        buildConfigField("String", "API_KEY", properties['API_KEY'])
+         buildConfigField("String", "API_KEY", properties['API_KEY'])
     }
     kapt {
         javacOptions {

@@ -360,7 +360,8 @@ public abstract class CameraActivity extends AppCompatActivity
       if (allPermissionsGranted(grantResults)) {
         setFragment();
       } else {
-        requestPermission();
+//        requestPermission();
+        onBackPressed();
       }
     }
   }
