@@ -29,12 +29,12 @@ class MainActivity : AppCompatActivity() {
         binding.model = model
 
         // 에러 테스트 버튼 click listener
-        binding.btnErrorTest.setOnClickListener {
-            throw RuntimeException("BussroExceptionHandler 테스트용 에러")
-        }
-        if (savedInstanceState == null) {
-            removeAction()
-        }
+//        binding.btnErrorTest.setOnClickListener {
+//            throw RuntimeException("BussroExceptionHandler 테스트용 에러")
+//        }
+//        if (savedInstanceState == null) {
+//            removeAction()
+//        }
     }
 
     /* disable message "실행하려면 두 번 누르세요" */
