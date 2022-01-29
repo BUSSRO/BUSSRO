@@ -14,108 +14,224 @@
             type="com.youreye.bussro.feature.main.MainViewModel" />
     </data>
 
-    <androidx.core.widget.NestedScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background"
-        android:overScrollMode="never"
-        android:fillViewport="true"
         tools:context=".feature.main.MainActivity">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/txt_main"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="홈화면"
+            android:textColor="@color/yellow"
+            android:textStyle="bold"
+            android:gravity="center"
+            style="@style/TextAppearance.MaterialComponents.Headline5"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="16dp"/>
 
-            <TextView
-                android:id="@+id/txt_main"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="홈화면"
-                android:textColor="@color/yellow"
-                android:textStyle="bold"
-                android:gravity="center"
-                style="@style/TextAppearance.MaterialComponents.Headline5"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_margin="16dp"/>
+        <!-- 설정 -->
+        <ImageView
+            android:id="@+id/img_main_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_setting_34"
+            android:focusable="true"
+            android:nextFocusDown="@id/txt_main_first"
+            app:layout_constraintTop_toTopOf="@+id/txt_main"
+            app:layout_constraintBottom_toBottomOf="@+id/txt_main"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="16dp"
+            android:contentDescription="@string/main_setting_txt"
+            android:onClick="@{(v) -> model.onClick(v, 0)}"/>
 
-            <!-- 설정 -->
-            <ImageView
-                android:id="@+id/img_main_setting"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_baseline_settings_24"
-                android:focusable="true"
-                android:nextFocusDown="@id/txt_main_first"
-                app:layout_constraintTop_toTopOf="@+id/txt_main"
-                app:layout_constraintBottom_toBottomOf="@+id/txt_main"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_margin="16dp"
-                android:contentDescription="@string/main_setting_txt"
-                android:onClick="@{(v) -> model.onClick(v, 0)}"/>
+        <!-- 앱 사용설명서 -->
+        <TextView
+            android:id="@+id/txt_main_info"
+            android:layout_width="0dp"
+            android:layout_height="140dp"
+            android:background="@drawable/txt_bg"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/txt_main_first"
+            app:layout_constraintVertical_chainStyle="packed"
+            android:layout_marginBottom="25dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"/>
 
-            <!-- 1. 내 주변 정류장 -->
-            <TextView
-                android:id="@+id/txt_main_first"
-                android:text="@string/main_first_txt"
-                style="@style/MainTextViewStyle"
-                android:background="@drawable/main_text_first_background"
-                android:focusable="true"
-                android:nextFocusUp="@id/img_main_setting"
-                android:nextFocusDown="@id/txt_main_second"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/txt_main_second"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintVertical_chainStyle="packed"
-                android:onClick="@{(v) -> model.onClick(v, 1)}"/>
+        <TextView
+            android:id="@+id/txt_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="앱 사용설명서"
+            android:textStyle="bold"
+            android:textSize="21dp"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toTopOf="@id/txt_main_info"
+            app:layout_constraintStart_toStartOf="@id/txt_main_info"
+            app:layout_constraintEnd_toStartOf="@id/iv_main_bus"
+            app:layout_constraintBottom_toTopOf="@id/txt_desc"
+            app:layout_constraintVertical_chainStyle="packed"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="6dp"/>
 
-            <!-- 2. 하차벨 위치 -->
-            <TextView
-                android:id="@+id/txt_main_second"
-                android:text="@string/main_second_txt"
-                style="@style/MainTextViewStyle"
-                android:layout_marginTop="25dp"
-                android:layout_marginBottom="25dp"
-                android:background="@drawable/main_text_second_background"
-                android:focusable="true"
-                android:nextFocusUp="@id/txt_main_first"
-                android:nextFocusDown="@id/txt_main_third"
-                app:layout_constraintBottom_toTopOf="@id/txt_main_third"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txt_main_first"
-                android:onClick="@{(v) -> model.onClick(v, 2)}"/>
+        <TextView
+            android:id="@+id/txt_desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="앱에 대한 상세 기능을 설명해드립니다."
+            android:textSize="17dp"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toBottomOf="@id/txt_title"
+            app:layout_constraintStart_toStartOf="@id/txt_main_info"
+            app:layout_constraintEnd_toStartOf="@id/iv_main_bus"
+            app:layout_constraintBottom_toBottomOf="@id/txt_main_info"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"/>
 
-            <!-- 3. 히스토리 -->
-            <TextView
-                android:id="@+id/txt_main_third"
-                android:text="@string/main_third_txt"
-                style="@style/MainTextViewStyle"
-                android:focusable="true"
-                android:nextFocusUp="@id/txt_main_second"
-                android:background="@drawable/main_text_third_background"
-                app:layout_constraintTop_toBottomOf="@id/txt_main_second"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:onClick="@{(v) -> model.onClick(v, 3)}"/>
+        <ImageView
+            android:id="@+id/iv_main_bus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_bus"
+            app:layout_constraintTop_toTopOf="@id/txt_main_info"
+            app:layout_constraintEnd_toEndOf="@id/txt_main_info"
+            app:layout_constraintBottom_toBottomOf="@id/txt_main_info"
+            android:layout_marginEnd="36dp"/>
 
-            <!-- 에러 테스트 버튼 -->
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_error_test"
-                android:text="에러 테스트 버튼"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/txt_main_third"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="16dp"/>
+        <!-- 1. 내 주변 정류장 -->
+        <TextView
+            android:id="@+id/txt_main_first"
+            style="@style/MainTextViewStyle"
+            android:background="@drawable/txt_bg_2"
+            android:focusable="true"
+            android:nextFocusUp="@id/img_main_setting"
+            android:nextFocusDown="@id/txt_main_second"
+            app:layout_constraintTop_toBottomOf="@id/txt_main_info"
+            app:layout_constraintBottom_toTopOf="@id/txt_main_second"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:onClick="@{(v) -> model.onClick(v, 1)}" />
+
+        <ImageView
+            android:id="@+id/iv_main_first"
+            android:layout_width="58dp"
+            android:layout_height="58dp"
+            android:src="@drawable/ic_first"
+            app:layout_constraintTop_toTopOf="@id/txt_main_first"
+            app:layout_constraintBottom_toBottomOf="@id/txt_main_first"
+            app:layout_constraintStart_toStartOf="@id/txt_main_first"
+            app:layout_constraintEnd_toEndOf="@id/txt_main_first"
+            app:layout_constraintHorizontal_bias="0.15"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/iv_main_first"
+            app:layout_constraintBottom_toBottomOf="@id/iv_main_first"
+            app:layout_constraintStart_toEndOf="@id/iv_main_first"
+            app:layout_constraintEnd_toEndOf="@id/txt_main_first"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:text="@string/main_first_txt"
+            android:layout_marginStart="24dp"/>
+
+        <!-- 2. 하차벨 위치 -->
+        <TextView
+            android:id="@+id/txt_main_second"
+            style="@style/MainTextViewStyle"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="25dp"
+            android:background="@drawable/txt_bg_2"
+            android:focusable="true"
+            android:nextFocusUp="@id/txt_main_first"
+            android:nextFocusDown="@id/txt_main_third"
+            app:layout_constraintBottom_toTopOf="@id/txt_main_third"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_main_first"
+            android:onClick="@{(v) -> model.onClick(v, 2)}"/>
+
+        <ImageView
+            android:id="@+id/iv_main_second"
+            android:layout_width="58dp"
+            android:layout_height="58dp"
+            android:src="@drawable/ic_second"
+            app:layout_constraintTop_toTopOf="@id/txt_main_second"
+            app:layout_constraintBottom_toBottomOf="@id/txt_main_second"
+            app:layout_constraintStart_toStartOf="@id/txt_main_second"
+            app:layout_constraintEnd_toEndOf="@id/txt_main_second"
+            app:layout_constraintHorizontal_bias="0.15"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/iv_main_second"
+            app:layout_constraintBottom_toBottomOf="@id/iv_main_second"
+            app:layout_constraintStart_toEndOf="@id/iv_main_second"
+            app:layout_constraintEnd_toEndOf="@id/txt_main_second"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:text="@string/main_second_txt"
+            android:layout_marginStart="24dp"/>
+
+        <!-- 3. 히스토리 -->
+        <TextView
+            android:id="@+id/txt_main_third"
+            style="@style/MainTextViewStyle"
+            android:focusable="true"
+            android:nextFocusUp="@id/txt_main_second"
+            android:background="@drawable/txt_bg_2"
+            app:layout_constraintTop_toBottomOf="@id/txt_main_second"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:onClick="@{(v) -> model.onClick(v, 3)}"/>
+
+        <ImageView
+            android:id="@+id/iv_main_third"
+            android:layout_width="58dp"
+            android:layout_height="58dp"
+            android:src="@drawable/ic_third"
+            app:layout_constraintTop_toTopOf="@id/txt_main_third"
+            app:layout_constraintBottom_toBottomOf="@id/txt_main_third"
+            app:layout_constraintStart_toStartOf="@id/txt_main_third"
+            app:layout_constraintEnd_toEndOf="@id/txt_main_third"
+            app:layout_constraintHorizontal_bias="0.15"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/iv_main_third"
+            app:layout_constraintBottom_toBottomOf="@id/iv_main_third"
+            app:layout_constraintStart_toEndOf="@id/iv_main_third"
+            app:layout_constraintEnd_toEndOf="@id/txt_main_third"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:text="@string/main_third_txt"
+            android:layout_marginStart="24dp"/>
+
+        <!-- 에러 테스트 버튼 -->
+<!--        <androidx.appcompat.widget.AppCompatButton-->
+<!--            android:id="@+id/btn_error_test"-->
+<!--            android:text="에러 테스트 버튼"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/txt_main_third"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            android:layout_marginTop="16dp"/>-->
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

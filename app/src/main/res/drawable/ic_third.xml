@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 배경(원) -->
+    <item
+        android:width="46dp"
+        android:height="46dp"
+        android:gravity="center">
+
+        <shape
+            android:shape="oval">
+
+            <solid
+                android:color="#FFCC00"/>
+
+        </shape>
+    </item>
+
+    <!-- 아이콘 -->
+    <item
+        android:width="29dp"
+        android:height="29dp"
+        android:drawable="@drawable/ic_main_third"
+        android:gravity="center">
+    </item>
+</layer-list>
