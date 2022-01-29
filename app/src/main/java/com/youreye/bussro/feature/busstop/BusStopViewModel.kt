@@ -52,6 +52,7 @@ class BusStopViewModel @Inject constructor(
         // 사용자 위치 받기
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location ->
+                logd("location : $location")
                 // 위치가 있다면 (위도 : location.latitude, 경도 : location.longitude)
                 if (location != null) {
                     viewModelScope.launch {

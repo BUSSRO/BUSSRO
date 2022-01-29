@@ -388,7 +388,7 @@ public abstract class CameraActivity extends AppCompatActivity
       if (shouldShowRequestPermissionRationale(PERMISSION_CAMERA)) {
         Toast.makeText(
                 CameraActivity.this,
-                "Camera permission is required for this demo",
+                "카메라 기능을 이용하려면 권한을 허용해주세요.",
                 Toast.LENGTH_LONG)
             .show();
       }
