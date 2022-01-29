@@ -47,7 +47,7 @@ import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.text.Text;
 import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.TextRecognizer;
-import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
+import com.google.mlkit.vision.text.korean.KoreanTextRecognizerOptions;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -85,6 +85,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     private Integer sensorOrientation;
 
     private Detector detector;
+    private TextRecognizer recognizer;
 
     private long lastProcessingTimeMs;
     private Bitmap rgbFrameBitmap = null;
@@ -127,6 +128,9 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                             TF_OD_API_INPUT_SIZE,
                             TF_OD_API_IS_QUANTIZED);
             cropSize = TF_OD_API_INPUT_SIZE;
+
+            recognizer = TextRecognition.getClient(new KoreanTextRecognizerOptions.Builder().build());
+
         } catch (final IOException e) {
             e.printStackTrace();
             LOGGER.e(e, "Exception initializing Detector!");
@@ -196,6 +200,9 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
             ImageUtils.saveBitmap(croppedBitmap);
         }
 
+        InputImage image = InputImage.fromBitmap(croppedBitmap, 0);
+
+
         runInBackground(
                 new Runnable() {
                     @Override
@@ -211,9 +218,6 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                         paint.setColor(Color.RED);
                         paint.setStyle(Style.STROKE);
                         paint.setStrokeWidth(2.0f);
-
-                        TextRecognizer recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
-                        InputImage image = InputImage.fromBitmap(croppedBitmap, 0);
 
                         recognizer.process(image)
                                 .addOnSuccessListener(new OnSuccessListener<Text>() {
