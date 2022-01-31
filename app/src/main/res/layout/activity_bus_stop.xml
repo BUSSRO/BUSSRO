@@ -26,6 +26,8 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_marginStart="16dp"
+            android:contentDescription="뒤로가기"
+            android:nextFocusUp="@id/txt_nearby_bus_stop_title"
             android:background="@drawable/ic_baseline_keyboard_backspace_24"
             app:layout_constraintBottom_toBottomOf="@id/txt_nearby_bus_stop_title"
             app:layout_constraintStart_toStartOf="parent"
@@ -41,6 +43,8 @@
             android:textStyle="bold"
             style="@style/TextAppearance.MaterialComponents.Headline5"
             android:gravity="center"
+            android:nextFocusUp="@id/ib_search_back"
+            android:nextFocusDown="@id/iv_bus_stop_refresh"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -55,6 +59,9 @@
             app:layout_constraintTop_toTopOf="@id/txt_nearby_bus_stop_title"
             app:layout_constraintBottom_toBottomOf="@id/txt_nearby_bus_stop_title"
             app:layout_constraintEnd_toEndOf="parent"
+            android:nextFocusUp="@id/txt_nearby_bus_stop_title"
+            android:nextFocusDown="@id/txt_bus_stop_search"
+            android:contentDescription="새로고침"
             android:layout_margin="16dp"/>
 
         <!-- 검색 -->
@@ -67,6 +74,8 @@
             android:layout_height="wrap_content"
             android:padding="12dp"
             android:background="@drawable/bg_edt"
+            android:nextFocusUp="@id/iv_bus_stop_refresh"
+            android:nextFocusDown="@id/txt_bus_stop_desc"
             app:layout_constraintTop_toBottomOf="@id/txt_nearby_bus_stop_title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -81,10 +90,11 @@
             tools:text="1개의 정류장이 나왔습니다."
             android:textColor="@color/white"
             android:textSize="20dp"
+            android:nextFocusUp="@id/txt_bus_stop_search"
             app:layout_constraintTop_toBottomOf="@+id/txt_bus_stop_search"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/rv_nearby_bus_stop"
+            android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"/>
@@ -112,7 +122,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:contentDescription="문제가 있습니다."/>
 
         <TextView
             android:id="@+id/txt_nearby_placeholder_desc"
@@ -136,7 +147,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:contentDescription="로딩중"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

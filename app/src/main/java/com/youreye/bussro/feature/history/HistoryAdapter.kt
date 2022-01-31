@@ -58,6 +58,10 @@ class HistoryAdapter(
 
         holder.binding.txtHistoryRtNmAndDate.text = builder
 
+        /* 항목 content description */
+        val contentDescription = "${data[position].stationNm} 정류장의 ${data[position].rtNm}번 버스"
+        holder.binding.root.contentDescription = contentDescription
+
         /* 항목 click listener */
         holder.binding.root.setOnClickListener {
             // 버스 탑승 dialog 띄우기

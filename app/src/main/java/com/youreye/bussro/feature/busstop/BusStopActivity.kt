@@ -230,6 +230,8 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         binding.ivNearbyPlaceholderImage.setBackgroundResource(src)
         binding.txtNearbyPlaceholderDesc.text = text
 
+        binding.rvNearbyBusStop.visibility = View.GONE
+
         binding.ivNearbyPlaceholderImage.visibility = View.VISIBLE
         binding.txtNearbyPlaceholderDesc.visibility = View.VISIBLE
     }
@@ -238,6 +240,8 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private fun hidePlaceHolder() {
         binding.ivNearbyPlaceholderImage.visibility = View.GONE
         binding.txtNearbyPlaceholderDesc.visibility = View.GONE
+
+        binding.rvNearbyBusStop.visibility = View.VISIBLE
     }
 
     override fun onInit(status: Int) {

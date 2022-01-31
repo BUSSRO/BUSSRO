@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="activity"
             type="com.youreye.bussro.feature.main.MainActivity" />
@@ -28,6 +27,7 @@
             android:textColor="@color/yellow"
             android:textStyle="bold"
             android:gravity="center"
+            android:nextFocusDown="@id/img_main_setting"
             style="@style/TextAppearance.MaterialComponents.Headline5"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -41,7 +41,8 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_setting_34"
             android:focusable="true"
-            android:nextFocusDown="@id/txt_main_first"
+            android:nextFocusUp="@id/txt_main"
+            android:nextFocusDown="@id/txt_main_info"
             app:layout_constraintTop_toTopOf="@+id/txt_main"
             app:layout_constraintBottom_toBottomOf="@+id/txt_main"
             app:layout_constraintEnd_toEndOf="parent"
@@ -55,6 +56,8 @@
             android:layout_width="0dp"
             android:layout_height="140dp"
             android:background="@drawable/txt_bg"
+            android:nextFocusUp="@id/img_main_setting"
+            android:nextFocusDown="@id/txt_main_first"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -62,7 +65,8 @@
             app:layout_constraintVertical_chainStyle="packed"
             android:layout_marginBottom="25dp"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"/>
+            android:layout_marginEnd="16dp"
+            android:contentDescription="앱 사용설명서. 앱에 대한 상세 기능을 설명해드립니다. 실행하려면 두 번 누르세요."/>
 
         <TextView
             android:id="@+id/txt_title"
@@ -71,6 +75,7 @@
             android:text="앱 사용설명서"
             android:textStyle="bold"
             android:textSize="21dp"
+            android:importantForAccessibility="no"
             android:textColor="@color/black"
             app:layout_constraintTop_toTopOf="@id/txt_main_info"
             app:layout_constraintStart_toStartOf="@id/txt_main_info"
@@ -85,21 +90,24 @@
             android:id="@+id/txt_desc"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="앱에 대한 상세 기능을 설명해드립니다."
-            android:textSize="17dp"
-            android:textColor="@color/black"
-            app:layout_constraintTop_toBottomOf="@id/txt_title"
-            app:layout_constraintStart_toStartOf="@id/txt_main_info"
-            app:layout_constraintEnd_toStartOf="@id/iv_main_bus"
-            app:layout_constraintBottom_toBottomOf="@id/txt_main_info"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"/>
+            android:layout_marginEnd="16dp"
+            android:importantForAccessibility="no"
+            android:text="앱에 대한 상세 기능을 설명해드립니다."
+            android:textColor="@color/black"
+            android:textSize="17dp"
+            app:layout_constraintBottom_toBottomOf="@id/txt_main_info"
+            app:layout_constraintEnd_toStartOf="@id/iv_main_bus"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/txt_main_info"
+            app:layout_constraintTop_toBottomOf="@id/txt_title" />
 
         <ImageView
             android:id="@+id/iv_main_bus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_bus"
+            android:focusable="false"
             app:layout_constraintTop_toTopOf="@id/txt_main_info"
             app:layout_constraintEnd_toEndOf="@id/txt_main_info"
             app:layout_constraintBottom_toBottomOf="@id/txt_main_info"
@@ -111,8 +119,9 @@
             style="@style/MainTextViewStyle"
             android:background="@drawable/txt_bg_2"
             android:focusable="true"
-            android:nextFocusUp="@id/img_main_setting"
+            android:nextFocusUp="@id/txt_main_info"
             android:nextFocusDown="@id/txt_main_second"
+            android:contentDescription="버스 탑승 도우미"
             app:layout_constraintTop_toBottomOf="@id/txt_main_info"
             app:layout_constraintBottom_toTopOf="@id/txt_main_second"
             app:layout_constraintStart_toStartOf="parent"
@@ -124,6 +133,7 @@
             android:layout_width="58dp"
             android:layout_height="58dp"
             android:src="@drawable/ic_first"
+            android:focusable="false"
             app:layout_constraintTop_toTopOf="@id/txt_main_first"
             app:layout_constraintBottom_toBottomOf="@id/txt_main_first"
             app:layout_constraintStart_toStartOf="@id/txt_main_first"
@@ -141,6 +151,7 @@
             android:textSize="25dp"
             android:textStyle="bold"
             android:text="@string/main_first_txt"
+            android:importantForAccessibility="no"
             android:layout_marginStart="24dp"/>
 
         <!-- 2. 하차벨 위치 -->
@@ -156,6 +167,7 @@
             app:layout_constraintBottom_toTopOf="@id/txt_main_third"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:contentDescription="하차벨 위치"
             app:layout_constraintTop_toBottomOf="@id/txt_main_first"
             android:onClick="@{(v) -> model.onClick(v, 2)}"/>
 
@@ -164,6 +176,7 @@
             android:layout_width="58dp"
             android:layout_height="58dp"
             android:src="@drawable/ic_second"
+            android:focusable="false"
             app:layout_constraintTop_toTopOf="@id/txt_main_second"
             app:layout_constraintBottom_toBottomOf="@id/txt_main_second"
             app:layout_constraintStart_toStartOf="@id/txt_main_second"
@@ -180,6 +193,7 @@
             android:textColor="@color/white"
             android:textSize="25dp"
             android:textStyle="bold"
+            android:importantForAccessibility="no"
             android:text="@string/main_second_txt"
             android:layout_marginStart="24dp"/>
 
@@ -188,6 +202,7 @@
             android:id="@+id/txt_main_third"
             style="@style/MainTextViewStyle"
             android:focusable="true"
+            android:contentDescription="버스 탑승 기록"
             android:nextFocusUp="@id/txt_main_second"
             android:background="@drawable/txt_bg_2"
             app:layout_constraintTop_toBottomOf="@id/txt_main_second"
@@ -201,6 +216,7 @@
             android:layout_width="58dp"
             android:layout_height="58dp"
             android:src="@drawable/ic_third"
+            android:focusable="false"
             app:layout_constraintTop_toTopOf="@id/txt_main_third"
             app:layout_constraintBottom_toBottomOf="@id/txt_main_third"
             app:layout_constraintStart_toStartOf="@id/txt_main_third"
@@ -210,6 +226,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:importantForAccessibility="no"
             app:layout_constraintTop_toTopOf="@id/iv_main_third"
             app:layout_constraintBottom_toBottomOf="@id/iv_main_third"
             app:layout_constraintStart_toEndOf="@id/iv_main_third"
@@ -219,18 +236,6 @@
             android:textStyle="bold"
             android:text="@string/main_third_txt"
             android:layout_marginStart="24dp"/>
-
-        <!-- 에러 테스트 버튼 -->
-<!--        <androidx.appcompat.widget.AppCompatButton-->
-<!--            android:id="@+id/btn_error_test"-->
-<!--            android:text="에러 테스트 버튼"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/txt_main_third"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            android:layout_marginTop="16dp"/>-->
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

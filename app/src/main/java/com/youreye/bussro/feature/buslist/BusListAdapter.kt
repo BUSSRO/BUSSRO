@@ -54,7 +54,12 @@ class BusListAdapter(
         holder.binding.ivBusListItemExpand.setOnClickListener {
             val show = toggleLayout(!data[position].isExpanded, it, holder.binding.clBottom)
             data[position].isExpanded = show
+
+            setContentDescription(holder, position)
         }
+
+        /* expand & collapse content description */
+        setContentDescription(holder, position)
 
         /* 항목 click listener */
         holder.binding.root.setOnClickListener {
@@ -68,13 +73,31 @@ class BusListAdapter(
         }
 
         /* 운행시간 */
-        val firstTm = data[position].firstTm.substring(0, 2) + ":" + data[position].firstTm.subSequence(2, 4)
-        val lastTm = data[position].lastTm.substring(0, 2) + ":" + data[position].lastTm.subSequence(2, 4)
+        val firstTm =
+            data[position].firstTm.substring(0, 2) + ":" + data[position].firstTm.subSequence(2, 4)
+        val lastTm =
+            data[position].lastTm.substring(0, 2) + ":" + data[position].lastTm.subSequence(2, 4)
         holder.binding.txtBusListTime.text = "첫차 $firstTm, 막차 $lastTm"
     }
 
+    /* 확장 레이아웃 content description 설정 */
+    private fun setContentDescription(holder: BusListViewHolder, position: Int) {
+        holder.binding.ivBusListItemExpand.contentDescription = when(data[position].isExpanded) {
+            true -> {
+                "${data[position].rtNm}번 버스 상세정보 닫기"
+            }
+            false -> {
+                "${data[position].rtNm}번 버스 상세정보 보기"
+            }
+        }
+    }
+
     /* 레이아웃 확장 or 숨기기 */
-    private fun toggleLayout(isExpanded: Boolean, view: View, layoutExpand: ConstraintLayout): Boolean {
+    private fun toggleLayout(
+        isExpanded: Boolean,
+        view: View,
+        layoutExpand: ConstraintLayout
+    ): Boolean {
         // 이미지 제어
         ToggleAnimation.toggleArrow(view, isExpanded)
 
@@ -103,12 +126,31 @@ class BusListAdapter(
 
 @BindingAdapter("color")
 fun setColor(civ: CircleImageView, routeType: Int) {
-    when(routeType) {
-        6 -> R.drawable.red
-        3 -> R.drawable.blue
-        4 -> R.drawable.green
-        5 -> R.drawable.yellow
-        else -> R.drawable.light_gray
+    when (routeType) {
+        6 -> {
+            civ.contentDescription = "광역버스"
+            R.drawable.red
+        }
+        3 -> {
+            civ.contentDescription = "간선버스"
+            R.drawable.blue
+        }
+        4 -> {
+            civ.contentDescription = "지선버스"
+            R.drawable.green
+        }
+        5 -> {
+            civ.contentDescription = "순환버스"
+            R.drawable.yellow
+        }
+        2 -> {
+            civ.contentDescription = "마을버스"
+            R.drawable.white
+        }
+        else -> {
+            civ.contentDescription = "기타버스"
+            R.drawable.light_gray
+        }
     }.apply {
         civ.setImageResource(this)
     }

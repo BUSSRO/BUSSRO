@@ -27,14 +27,6 @@ class MainActivity : AppCompatActivity() {
         BussroExceptionHandler.setCrashHandler(application)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.model = model
-
-        // 에러 테스트 버튼 click listener
-//        binding.btnErrorTest.setOnClickListener {
-//            throw RuntimeException("BussroExceptionHandler 테스트용 에러")
-//        }
-//        if (savedInstanceState == null) {
-//            removeAction()
-//        }
     }
 
     /* disable message "실행하려면 두 번 누르세요" */

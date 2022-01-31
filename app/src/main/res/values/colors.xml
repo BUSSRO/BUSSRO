@@ -18,6 +18,7 @@
     <color name="green">#4CAF50</color>
 
     <!-- color drawable -->
+    <drawable name="white">#FFFFFFFF</drawable>
     <drawable name="red">#FF1100</drawable>
     <drawable name="yellow">#FFFFCC00</drawable>
     <drawable name="green">#4CAF50</drawable>

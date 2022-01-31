@@ -44,6 +44,7 @@
                 android:textSize="20dp"
                 app:rtNm="@{busList.rtNm}"
                 tools:text="3317"
+                android:nextFocusDown="@id/civ_bus_list"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/txt_bus_list_dir"/>
@@ -54,6 +55,8 @@
                 android:layout_width="10dp"
                 android:layout_height="10dp"
                 android:layout_marginStart="16dp"
+                android:nextFocusUp="@id/txt_bus_list_item_number"
+                android:nextFocusDown="@id/txt_bus_list_dir"
                 app:layout_constraintBottom_toBottomOf="@id/txt_bus_list_item_number"
                 app:layout_constraintStart_toEndOf="@id/txt_bus_list_item_number"
                 app:layout_constraintTop_toTopOf="@id/txt_bus_list_item_number"
@@ -82,6 +85,8 @@
                 android:textSize="14dp"
                 app:adirection="@{busList.adirection}"
                 android:layout_marginEnd="6dp"
+                android:nextFocusUp="@id/civ_bus_list"
+                android:nextFocusDown="@id/txt_bus_list_item_info_1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/gl_bus_list"
                 app:layout_constraintStart_toStartOf="parent"
@@ -104,6 +109,8 @@
                 android:textSize="14dp"
                 android:textStyle="bold"
                 app:arrmsg1="@{busList.arrmsg1}"
+                android:nextFocusUp="@id/txt_bus_list_dir"
+                android:nextFocusDown="@id/txt_bus_list_item_info_2"
                 app:layout_constraintBottom_toTopOf="@id/txt_bus_list_item_info_2"
                 app:layout_constraintStart_toStartOf="@id/gl_bus_list"
                 app:layout_constraintTop_toTopOf="parent"
@@ -118,6 +125,8 @@
                 android:textSize="14dp"
                 android:textStyle="bold"
                 app:arrmsg1="@{busList.arrmsg2}"
+                android:nextFocusUp="@id/txt_bus_list_item_info_1"
+                android:nextFocusDown="@id/iv_bus_list_item_expand"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@id/gl_bus_list"
                 app:layout_constraintTop_toBottomOf="@id/txt_bus_list_item_info_1"
@@ -131,25 +140,15 @@
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_gravity="end"
+                android:nextFocusUp="@id/txt_bus_list_item_info_2"
+                android:nextFocusDown="@id/cl_bottom"
                 android:src="@drawable/ic_baseline_expand_more_24"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:tint="@color/light_gray" />
+                app:tint="@color/light_gray"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-<!--        &lt;!&ndash; 더보기 &ndash;&gt;-->
-<!--        <ImageView-->
-<!--            android:id="@+id/iv_bus_list_item_expand"-->
-<!--            android:layout_width="36dp"-->
-<!--            android:layout_height="36dp"-->
-<!--            android:layout_gravity="end"-->
-<!--            android:layout_marginEnd="16dp"-->
-<!--            android:src="@drawable/ic_baseline_expand_more_24"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:tint="@color/light_gray" />-->
 
         <!-- expand layout -->
         <androidx.constraintlayout.widget.ConstraintLayout
