@@ -28,7 +28,9 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.media.AudioManager;
 import android.media.ImageReader.OnImageAvailableListener;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.os.Vibrator;
@@ -176,7 +178,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     }
 
     @Override
-    protected void processImage(TextView view, String rtNm, Vibrator vibrator) {
+    protected void processImage(TextView view, String rtNm, Vibrator vibrator, SoundPool soundPool, int beep) {
         ++timestamp;
         final long currTimestamp = timestamp;
         trackingOverlay.postInvalidate();
@@ -235,6 +237,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                                                         /* 텍스트에 사용자가 탑승하려는 번호가 있는지 확인 */
                                                         if (resultText.contains(rtNm)) {
                                                             view.setText(rtNm + "번 버스를 찾았습니다.");
+                                                            soundPool.play(beep, 1, 1, 0, 0, 1);
                                                             vibrator.vibrate(100);
                                                         } else {
                                                             view.setText(rtNm + "번 버스가 없습니다.");

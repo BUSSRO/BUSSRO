@@ -25,10 +25,12 @@ import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.params.StreamConfigurationMap;
+import android.media.AudioManager;
 import android.media.Image;
 import android.media.Image.Plane;
 import android.media.ImageReader;
 import android.media.ImageReader.OnImageAvailableListener;
+import android.media.SoundPool;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -90,6 +92,11 @@ public abstract class CameraActivity extends AppCompatActivity
   private TextView threadsTextView;
   private String rtNm; // 사용자가 탑승하려는 버스 번호
   private Vibrator vibrator;  // 진동
+
+  // for beep sound
+  private SoundPool soundPool;
+  private int beep;
+  private AudioManager audioManager;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -174,6 +181,10 @@ public abstract class CameraActivity extends AppCompatActivity
     cropValueTextView = findViewById(R.id.crop_info);
     inferenceTimeTextView = findViewById(R.id.inference_info);
 
+    soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
+    beep = soundPool.load(this, R.raw.beep, 1);
+    audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+
 //    apiSwitchCompat.setOnCheckedChangeListener(this);
 
 //    plusImageView.setOnClickListener(this);
@@ -235,7 +246,7 @@ public abstract class CameraActivity extends AppCompatActivity
             isProcessingFrame = false;
           }
         };
-    processImage(txtCameraInfo, rtNm, vibrator);
+    processImage(txtCameraInfo, rtNm, vibrator, soundPool, beep);
   }
 
   /** Callback for Camera2 API */
@@ -293,7 +304,7 @@ public abstract class CameraActivity extends AppCompatActivity
             }
           };
 
-      processImage(txtCameraInfo, rtNm, vibrator);
+      processImage(txtCameraInfo, rtNm, vibrator, soundPool, beep);
     } catch (final Exception e) {
       LOGGER.e(e, "Exception!");
       Trace.endSection();
@@ -548,7 +559,7 @@ public abstract class CameraActivity extends AppCompatActivity
     inferenceTimeTextView.setText(inferenceTime);
   }
 
-  protected abstract void processImage(TextView view, String rtNm, Vibrator vibrator);
+  protected abstract void processImage(TextView view, String rtNm, Vibrator vibrator, SoundPool soundPool, int beep);
 
   protected abstract void onPreviewSizeChosen(final Size size, final int rotation);
 

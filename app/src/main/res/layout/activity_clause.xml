@@ -23,7 +23,8 @@
             android:layout_margin="16dp"
             android:background="@drawable/ic_baseline_keyboard_backspace_24"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="뒤로가기"/>
 
         <!-- 헤드라인 -->
         <TextView
@@ -123,6 +124,7 @@
             android:text="@string/cb_clause_desc_1"
             android:textColor="@color/gray"
             android:textSize="14dp"
+            android:contentDescription="@string/cb_clause_desc_1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cb_clause_third" />
@@ -139,6 +141,7 @@
             android:enabled="false"
             android:padding="12dp"
             android:text="@string/cb_clause_desc_2"
+            android:contentDescription="@string/cb_clause_desc_2"
             android:textColor="@color/gray"
             android:textSize="14dp"
             app:layout_constraintEnd_toEndOf="parent"
