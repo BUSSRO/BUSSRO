@@ -16,8 +16,11 @@ class HistoryViewModel @Inject constructor(
     private val repository: HistoryRepository
 ) : ViewModel() {
     private val histories = repository.getAll()
+    private val bookmarks = repository.getBookMark()
 
     fun getAll() = histories
+
+    fun getBookmarks() = bookmarks
 
     fun insert(history: History) = repository.insert(history)
 

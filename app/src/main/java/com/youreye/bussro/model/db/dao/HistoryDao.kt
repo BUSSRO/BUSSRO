@@ -15,6 +15,10 @@ interface HistoryDao {
     @Query("SELECT * FROM history ORDER BY scrap DESC, date DESC")
     fun getAll(): LiveData<List<History>>
 
+    /* 히스토리 중 즐겨찾기 조회 */
+    @Query("SELECT * FROM history WHERE scrap")
+    fun getBookMark(): LiveData<List<History>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(history: History)
 

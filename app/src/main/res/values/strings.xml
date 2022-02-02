@@ -57,6 +57,11 @@
     <string name="txt_history_description">이번 달 버스 이용은 0번 입니다.</string>
     <string name="txt_history_off_desc">지금 버스스로를 이용해보세요</string>
 
+    <string-array name="history_category">
+        <item>히스토리</item>
+        <item>즐겨찾기</item>
+    </string-array>
+
     <!-- activity_settings -->
     <string name="txt_setting_title">설정</string>
     <string name="iv_setting_back_cd">뒤로가기</string>
@@ -70,7 +75,5 @@
     <string name="iv_setting_os_detail_cd">오픈소스 및 라이센스로 이동하기</string>
     <string name="txt_setting_version">버전정보 1.0.0</string>
     <string name="email">otu1650@gmail.com</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

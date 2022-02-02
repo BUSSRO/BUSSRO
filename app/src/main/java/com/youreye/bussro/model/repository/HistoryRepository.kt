@@ -20,6 +20,9 @@ class HistoryRepository @Inject constructor(
     /* History DB 에 저장된 모든 데이터 불러오기 */
     fun getAll() = historyDao.getAll()
 
+    /* History DB 에 저장된 즐겨찾기 불러오기 */
+    fun getBookMark() = historyDao.getBookMark()
+
     /* 새로운 히스토리 입력 */
     fun insert(history: History) {
         CoroutineScope(Dispatchers.IO).launch {

@@ -9,63 +9,92 @@
             type="com.youreye.bussro.feature.history.HistoryViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context=".feature.history.HistoryActivity"
         android:background="@color/background">
 
-        <!-- 뒤로가기 -->
-        <ImageButton
-            android:id="@+id/ib_history_back"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginStart="16dp"
-            android:background="@drawable/ic_baseline_keyboard_backspace_24"
-            app:layout_constraintBottom_toBottomOf="@id/txt_history"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/txt_history"
-            android:contentDescription="뒤로가기"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <!-- 타이틀 -->
-        <TextView
-            android:id="@+id/txt_history"
-            android:layout_width="0dp"
+            <!-- 뒤로가기 -->
+            <ImageButton
+                android:id="@+id/ib_history_back"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/ic_baseline_keyboard_backspace_24"
+                app:layout_constraintBottom_toBottomOf="@id/txt_history"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/txt_history"
+                android:contentDescription="뒤로가기"/>
+
+            <!-- 타이틀 -->
+            <TextView
+                android:id="@+id/txt_history"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_history"
+                android:textColor="@color/yellow"
+                android:textStyle="bold"
+                style="@style/TextAppearance.MaterialComponents.Headline5"
+                android:gravity="center"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="16dp"/>
+
+            <TextView
+                android:id="@+id/txt_history_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_history_description"
+                android:textColor="@color/white"
+                android:gravity="center"
+                style="@style/TextAppearance.MaterialComponents.Headline5"
+                app:layout_constraintTop_toBottomOf="@+id/txt_history"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="16dp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 히스토리 -->
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl_history"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/txt_history"
-            android:textColor="@color/yellow"
-            android:textStyle="bold"
-            style="@style/TextAppearance.MaterialComponents.Headline5"
-            android:gravity="center"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="16dp"/>
+            android:layout_marginTop="16dp"
+            android:textSize="20dp"
+            app:tabTextColor="@color/white"
+            app:tabSelectedTextColor="@color/yellow"
+            app:tabIndicatorColor="@color/yellow"
+            android:background="@color/background" />
 
-        <TextView
-            android:id="@+id/txt_history_description"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/txt_history_description"
-            android:textColor="@color/white"
-            android:gravity="center"
-            style="@style/TextAppearance.MaterialComponents.Headline5"
-            app:layout_constraintTop_toBottomOf="@+id/txt_history"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/rv_history"
-            android:layout_margin="16dp"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:background="@color/light_gray"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_history"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:overScrollMode="never"
-            app:layout_constraintTop_toBottomOf="@id/txt_history_description"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:listitem="@layout/rv_history_item"/>
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp_history"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never" />
+
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/rv_history"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:overScrollMode="never"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/txt_history_description"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            tools:listitem="@layout/rv_history_item"/>-->
 
         <!-- 히스토리가 없는 경우 -->
         <ImageView
@@ -92,5 +121,5 @@
             android:text="@string/txt_history_off_desc"
             android:visibility="gone"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>
