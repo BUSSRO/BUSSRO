@@ -68,6 +68,7 @@ class BoardingDialog(
         binding.txtDialogUseCamera.setOnClickListener {
             val intent = Intent(view?.context, DetectorActivity::class.java)
                 .putExtra("rtNm", rtNm)
+                .putExtra("from", "BoardingDialog")  // 어디에서 넘어갔는지
             startActivity(intent)
             insertHistory()
             dismiss()

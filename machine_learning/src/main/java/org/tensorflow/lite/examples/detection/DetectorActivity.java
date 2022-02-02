@@ -16,6 +16,9 @@
 
 package org.tensorflow.lite.examples.detection;
 
+import static android.os.VibrationEffect.EFFECT_HEAVY_CLICK;
+import static android.os.VibrationEffect.EFFECT_TICK;
+
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -28,11 +31,14 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.location.Location;
 import android.media.AudioManager;
 import android.media.ImageReader.OnImageAvailableListener;
 import android.media.SoundPool;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Log;
 import android.util.Size;
@@ -41,6 +47,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -80,8 +87,8 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     private static final boolean TF_OD_API_IS_QUANTIZED = true;
     private static final String TF_OD_API_MODEL_FILE_BUS = "detect"; // bus_detect_0
     private static final String TF_OD_API_LABELS_FILE_BUS = "labelmap.txt";
-    private static final String TF_OD_API_MODEL_FILE_BELL = "detect";
-    private static final String TF_OD_API_LABELS_FILE_BELL = "labelmap.txt";
+    private static final String TF_OD_API_MODEL_FILE_BELL = "model"; // bell_detect
+    private static final String TF_OD_API_LABELS_FILE_BELL = "labelmap2.txt";
     private static final DetectorMode MODE = DetectorMode.TF_OD_API;
     // Minimum detection confidence to track a detection.
     private static final float MINIMUM_CONFIDENCE_TF_OD_API = 0.5f;
@@ -128,14 +135,29 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
         final int[] cropSize = {TF_OD_API_INPUT_SIZE};
 
         try {
-            detector =
-                    TFLiteObjectDetectionAPIModel.create(
-                            getApplicationContext(),
-                            TF_OD_API_MODEL_FILE_BUS+".tflite",
+            if (fromWhere.equals("BoardingDialog")) {
+                // 카메라 기능
+                detector =
+                        TFLiteObjectDetectionAPIModel.create(
+                                getApplicationContext(),
+                                TF_OD_API_MODEL_FILE_BUS + ".tflite",
 //                                            model.getFile().getPath(),
-                            TF_OD_API_LABELS_FILE_BUS,
-                            TF_OD_API_INPUT_SIZE,
-                            TF_OD_API_IS_QUANTIZED);
+                                TF_OD_API_LABELS_FILE_BUS,
+                                TF_OD_API_INPUT_SIZE,
+                                TF_OD_API_IS_QUANTIZED);
+            } else {
+                // 하차벨 기능
+                detector =
+                        TFLiteObjectDetectionAPIModel.create(
+                                getApplicationContext(),
+                                TF_OD_API_MODEL_FILE_BELL + ".tflite",
+//                                            model.getFile().getPath(),
+                                TF_OD_API_LABELS_FILE_BELL,
+                                TF_OD_API_INPUT_SIZE,
+                                TF_OD_API_IS_QUANTIZED);
+            }
+
+
         } catch (IOException e) {
             e.printStackTrace();
             LOGGER.e(e, "Exception initializing Detector!");
@@ -255,7 +277,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     }
 
     @Override
-    protected void processImage(TextView view, String rtNm, Vibrator vibrator, SoundPool soundPool, int beep) {
+    protected void processImage(TextView view, String rtNm, Vibrator vibrator, SoundPool soundPool, int beep, String fromWhere) {
         ++timestamp;
         final long currTimestamp = timestamp;
         trackingOverlay.postInvalidate();
@@ -283,161 +305,167 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
 
         runInBackground(
-            new Runnable() {
-                @Override
-                public void run() {
-                    LOGGER.i("Running detection on image " + currTimestamp);
-                    final long startTime = SystemClock.uptimeMillis();
-                    final List<Detector.Recognition> results = detector.recognizeImage(croppedBitmap);
-                    lastProcessingTimeMs = SystemClock.uptimeMillis() - startTime;
+                new Runnable() {
+                    @RequiresApi(api = Build.VERSION_CODES.Q)
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void run() {
+                        LOGGER.i("Running detection on image " + currTimestamp);
+                        final long startTime = SystemClock.uptimeMillis();
+                        final List<Detector.Recognition> results = detector.recognizeImage(croppedBitmap);
+                        lastProcessingTimeMs = SystemClock.uptimeMillis() - startTime;
 
-                    cropCopyBitmap = Bitmap.createBitmap(croppedBitmap);
+                        cropCopyBitmap = Bitmap.createBitmap(croppedBitmap);
 //                    InputImage image = InputImage.fromBitmap(cropCopyBitmap, 0);
 
-                    final Canvas canvas = new Canvas(cropCopyBitmap);
-                    final Paint paint = new Paint();
-                    paint.setColor(Color.RED);
-                    paint.setStyle(Style.STROKE);
-                    paint.setStrokeWidth(2.0f);
+                        final Canvas canvas = new Canvas(cropCopyBitmap);
+                        final Paint paint = new Paint();
+                        paint.setColor(Color.RED);
+                        paint.setStyle(Style.STROKE);
+                        paint.setStrokeWidth(2.0f);
 
-//                    recognizer.process(image)
-//                        .addOnSuccessListener(new OnSuccessListener<Text>() {
-//                            @Override
-//                            public void onSuccess(Text visionText) {
-//                                runOnUiThread(
-//                                        new Runnable() {
-//                                            @SuppressLint("SetTextI18n")
-//                                            @Override
-//                                            public void run() {
-//                                                // 카메라로 인식한 텍스트
-//                                                String resultText = visionText.getText();
-//                                                Log.d("VisionText", visionText.getText());
-//
-//                                                /* 텍스트에 사용자가 탑승하려는 번호가 있는지 확인 */
-//                                                if (resultText.contains(rtNm)) {
-//                                                    view.setText(rtNm + "번 버스를 찾았습니다.");
-//                                                    vibrator.vibrate(100);
-//                                                } else {
-//                                                    view.setText(rtNm + "번 버스가 없습니다.");
-//                                                }
-//                                            }
-//                                        });
-//                            }
-//                        })
-//                        .addOnFailureListener(
-//                                new OnFailureListener() {
-//                                    @Override
-//                                    public void onFailure(@NonNull Exception e) {
-//                                        // Task failed with an exception
-//                                        // ...
-//                                        LOGGER.w("이미지 인식 실패");
-//
-//                                        runOnUiThread(new Runnable() {
-//                                            @Override
-//                                            public void run() {
-//                                                view.setText("[에러]\n버스를 찾을 수 없습니다.");
-//                                            }
-//                                        });
-//
-//                                    }
-//                        });
-
-                    float minimumConfidence = MINIMUM_CONFIDENCE_TF_OD_API;
-                    switch (MODE) {
-                        case TF_OD_API:
-                            minimumConfidence = MINIMUM_CONFIDENCE_TF_OD_API;
-                            break;
-                    }
-
-                    final List<Detector.Recognition> mappedRecognitions =
-                            new ArrayList<Detector.Recognition>();
-
-                    for (final Detector.Recognition result : results) {
-                        final RectF location = result.getLocation();
-                        if (location != null && result.getConfidence() >= minimumConfidence && result.getTitle().equals("bus")) {
-                            Rect tmp_location = new Rect();
-                            location.round(tmp_location); // 내림
-
-                            tmp_location.set(
-                                    tmp_location.left < 0 ? 0 : tmp_location.left,
-                                    tmp_location.top < 0 ? 0 : tmp_location.top,
-                                    tmp_location.right > cropCopyBitmap.getWidth() ? cropCopyBitmap.getWidth() : tmp_location.right,
-                                    tmp_location.bottom > cropCopyBitmap.getHeight() ? cropCopyBitmap.getHeight() : tmp_location.bottom
-                            );
-                            Log.d("cropObject", tmp_location.flattenToString());
-
-                            Bitmap cropObject = Bitmap.createBitmap(cropCopyBitmap, tmp_location.left, tmp_location.top, tmp_location.width(), tmp_location.height());
-                            InputImage image = InputImage.fromBitmap(cropObject, 0);
-                            recognizer.process(image)
-                                .addOnSuccessListener(new OnSuccessListener<Text>() {
-                                    @Override
-                                    public void onSuccess(Text visionText) {
-                                        runOnUiThread(
-                                                new Runnable() {
-                                                    @SuppressLint("SetTextI18n")
-                                                    @Override
-                                                    public void run() {
-                                                        // 카메라로 인식한 텍스트
-                                                        String resultText = visionText.getText();
-                                                        Log.d("VisionText", visionText.getText());
-
-                                                        /* 텍스트에 사용자가 탑승하려는 번호가 있는지 확인 */
-                                                        if (resultText.contains(rtNm)) {
-                                                            view.setText(rtNm + "번 버스를 찾았습니다.");
-                                                            soundPool.play(beep, 1, 1, 0, 0, 1);
-                                                            vibrator.vibrate(100);
-                                                        } else {
-                                                            view.setText(rtNm + "번 버스가 없습니다.");
-                                                        }
-
-                                                    }
-
-                                        });
-                                    }
-                                })
-                                .addOnFailureListener(
-                                    new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            // Task failed with an exception
-                                            // ...
-                                            LOGGER.w("이미지 인식 실패");
-
-                                            runOnUiThread(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    view.setText("[에러]\n버스를 찾을 수 없습니다.");
-                                                }
-                                            });
-
-                                        }
-                                    });
-
-                            canvas.drawRect(location, paint);
-
-                            cropToFrameTransform.mapRect(location);
-
-                            result.setLocation(location);
-                            mappedRecognitions.add(result);
+                        float minimumConfidence = MINIMUM_CONFIDENCE_TF_OD_API;
+                        switch (MODE) {
+                            case TF_OD_API:
+                                minimumConfidence = MINIMUM_CONFIDENCE_TF_OD_API;
+                                break;
                         }
+
+                        final List<Detector.Recognition> mappedRecognitions =
+                                new ArrayList<Detector.Recognition>();
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (results.size() < 1) {
+                                    if (fromWhere.equals("BoardingDialog")) {
+                                        view.setText(rtNm + "번 버스가 없습니다.");
+                                    } else {
+                                        view.setText("하차벨이 없습니다.");
+                                    }
+                                } else {
+                                    if (fromWhere.equals("MainActivity")) {
+                                        view.setText("하차벨이 있습니다.");
+                                    }
+                                }
+                            }
+                        });
+
+                        for (final Detector.Recognition result : results) {
+                            final RectF location = result.getLocation();
+                            // && result.getTitle().equals("bus")
+
+                            if (location != null && result.getConfidence() >= minimumConfidence) {
+                                if (fromWhere.equals("BoardingDialog")) {
+
+                                    Rect tmp_location = new Rect();
+                                    location.round(tmp_location); // 내림
+                                    tmp_location.set(
+                                            tmp_location.left < 0 ? 0 : tmp_location.left,
+                                            tmp_location.top < 0 ? 0 : tmp_location.top,
+                                            tmp_location.right > cropCopyBitmap.getWidth() ? cropCopyBitmap.getWidth() : tmp_location.right,
+                                            tmp_location.bottom > cropCopyBitmap.getHeight() ? cropCopyBitmap.getHeight() : tmp_location.bottom
+                                    );
+                                    Log.d("cropObject", tmp_location.flattenToString());
+
+                                    Bitmap cropObject = Bitmap.createBitmap(cropCopyBitmap, tmp_location.left, tmp_location.top, tmp_location.width(), tmp_location.height());
+                                    InputImage image = InputImage.fromBitmap(cropObject, 0);
+                                    recognizer.process(image)
+                                            .addOnSuccessListener(new OnSuccessListener<Text>() {
+                                                @Override
+                                                public void onSuccess(Text visionText) {
+                                                    runOnUiThread(
+                                                            new Runnable() {
+                                                                @SuppressLint("SetTextI18n")
+                                                                @Override
+                                                                public void run() {
+                                                                    // 카메라로 인식한 텍스트
+                                                                    String resultText = visionText.getText();
+                                                                    Log.d("VisionText", visionText.getText());
+
+                                                                    /* 텍스트에 사용자가 탑승하려는 번호가 있는지 확인 */
+                                                                    if (resultText.contains(rtNm)) {
+                                                                        view.setText(rtNm + "번 버스를 찾았습니다.");
+                                                                        soundPool.play(beep, 1, 1, 0, 0, 1);
+                                                                        vibrator.vibrate(100);
+                                                                    } else {
+                                                                        view.setText(rtNm + "번 버스가 없습니다.");
+                                                                    }
+
+                                                                }
+
+                                                            });
+                                                }
+                                            })
+                                            .addOnFailureListener(
+                                                    new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            // Task failed with an exception
+                                                            // ...
+                                                            LOGGER.w("이미지 인식 실패");
+
+                                                            runOnUiThread(new Runnable() {
+                                                                @Override
+                                                                public void run() {
+                                                                    view.setText("[에러]\n버스를 찾을 수 없습니다.");
+                                                                }
+                                                            });
+
+                                                        }
+                                                    });
+                                } else {
+                                    // 현동님 진동
+                                    float cx = location.centerX();
+                                    float cy = location.centerY();
+
+                                    if (previewWidth * 0.25 <= cx && cx <= previewWidth * 0.75 && previewHeight * 0.25 <= cy && cy <= previewHeight * 0.75) {
+                                        vibrator.vibrate(VibrationEffect.createPredefined(EFFECT_HEAVY_CLICK));
+                                        soundPool.play(beep, 1, 1, 0, 0, 1);
+
+                                    } else {
+                                        vibrator.vibrate(VibrationEffect.createPredefined(EFFECT_TICK));
+                                        soundPool.play(beep, 0.3F, 0.3F, 0, 0, 1);
+                                    }
+
+                                    Location loc1 = new Location("");
+                                    loc1.setLatitude(previewWidth / 2);
+                                    loc1.setLongitude(previewHeight / 2);
+
+                                    Location loc2 = new Location("");
+                                    loc2.setLatitude(cx);
+                                    loc2.setLongitude(cy);
+                                    float distanceInMeters = loc1.distanceTo(loc2);
+                                    loc2.setLatitude(previewWidth);
+                                    loc2.setLongitude(previewHeight);
+                                    float distanceMax = loc1.distanceTo(loc2);
+                                }
+
+                                canvas.drawRect(location, paint);
+
+                                cropToFrameTransform.mapRect(location);
+
+                                result.setLocation(location);
+                                mappedRecognitions.add(result);
+                            }
+                        }
+
+                        tracker.trackResults(mappedRecognitions, currTimestamp);
+                        trackingOverlay.postInvalidate();
+
+                        computingDetection = false;
+
+                        //            runOnUiThread(
+                        //                new Runnable() {
+                        //                  @Override
+                        //                  public void run() {
+                        //                    showFrameInfo(previewWidth + "x" + previewHeight);
+                        //                    showCropInfo(cropCopyBitmap.getWidth() + "x" + cropCopyBitmap.getHeight());
+                        //                    showInference(lastProcessingTimeMs + "ms");
+                        //                  }
+                        //                });
                     }
-
-                    tracker.trackResults(mappedRecognitions, currTimestamp);
-                    trackingOverlay.postInvalidate();
-
-                    computingDetection = false;
-
-    //            runOnUiThread(
-    //                new Runnable() {
-    //                  @Override
-    //                  public void run() {
-    //                    showFrameInfo(previewWidth + "x" + previewHeight);
-    //                    showCropInfo(cropCopyBitmap.getWidth() + "x" + cropCopyBitmap.getHeight());
-    //                    showInference(lastProcessingTimeMs + "ms");
-    //                  }
-    //                });
-                }
-            });
+                });
     }
 
     @Override

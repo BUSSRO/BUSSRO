@@ -92,12 +92,14 @@ public abstract class CameraActivity extends AppCompatActivity
   /* custom var */
   private TextView threadsTextView;
   private String rtNm; // 사용자가 탑승하려는 버스 번호
-  private Vibrator vibrator;  // 진동
 
   // for beep sound
   private SoundPool soundPool;
   private int beep;
   private AudioManager audioManager;
+
+  public String fromWhere;
+  protected Vibrator vibrator;  // 진동
 
   @SuppressLint("SetTextI18n")
   @Override
@@ -187,9 +189,16 @@ public abstract class CameraActivity extends AppCompatActivity
     beep = soundPool.load(this, R.raw.beep, 1);
     audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
 
+    fromWhere = getIntent().getStringExtra("from");
+
     TextView txt = findViewById(R.id.txt_camera_info);
-    String rtNm = getIntent().getStringExtra("rtNm");
-    txt.setText(rtNm + "번 버스가 없습니다.");
+
+    if (fromWhere.equals("BoardingDialog")) {
+      String rtNm = getIntent().getStringExtra("rtNm");
+      txt.setText(rtNm + "번 버스가 없습니다.");
+    } else {
+      txt.setText("하차벨이 없습니다.");
+    }
 
 //    apiSwitchCompat.setOnCheckedChangeListener(this);
 
@@ -252,7 +261,7 @@ public abstract class CameraActivity extends AppCompatActivity
             isProcessingFrame = false;
           }
         };
-    processImage(txtCameraInfo, rtNm, vibrator, soundPool, beep);
+    processImage(txtCameraInfo, rtNm, vibrator, soundPool, beep, fromWhere);
   }
 
   /** Callback for Camera2 API */
@@ -310,7 +319,7 @@ public abstract class CameraActivity extends AppCompatActivity
             }
           };
 
-      processImage(txtCameraInfo, rtNm, vibrator, soundPool, beep);
+      processImage(txtCameraInfo, rtNm, vibrator, soundPool, beep, fromWhere);
     } catch (final Exception e) {
       LOGGER.e(e, "Exception!");
       Trace.endSection();
@@ -565,7 +574,7 @@ public abstract class CameraActivity extends AppCompatActivity
     inferenceTimeTextView.setText(inferenceTime);
   }
 
-  protected abstract void processImage(TextView view, String rtNm, Vibrator vibrator, SoundPool soundPool, int beep);
+  protected abstract void processImage(TextView view, String rtNm, Vibrator vibrator, SoundPool soundPool, int beep, String fromWhere);
 
   protected abstract void onPreviewSizeChosen(final Size size, final int rotation);
 
