@@ -17,6 +17,7 @@
 package org.tensorflow.lite.examples.detection;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -98,6 +99,7 @@ public abstract class CameraActivity extends AppCompatActivity
   private int beep;
   private AudioManager audioManager;
 
+  @SuppressLint("SetTextI18n")
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     LOGGER.d("onCreate " + this);
@@ -184,6 +186,10 @@ public abstract class CameraActivity extends AppCompatActivity
     soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
     beep = soundPool.load(this, R.raw.beep, 1);
     audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+
+    TextView txt = findViewById(R.id.txt_camera_info);
+    String rtNm = getIntent().getStringExtra("rtNm");
+    txt.setText(rtNm + "번 버스가 없습니다.");
 
 //    apiSwitchCompat.setOnCheckedChangeListener(this);
 
