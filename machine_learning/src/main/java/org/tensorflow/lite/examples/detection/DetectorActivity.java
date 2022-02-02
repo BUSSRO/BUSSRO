@@ -277,7 +277,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     }
 
     @Override
-    protected void processImage(TextView view, String rtNm, Vibrator vibrator, SoundPool soundPool, int beep, String fromWhere) {
+    protected void processImage(TextView view, String rtNm) {
         ++timestamp;
         final long currTimestamp = timestamp;
         trackingOverlay.postInvalidate();

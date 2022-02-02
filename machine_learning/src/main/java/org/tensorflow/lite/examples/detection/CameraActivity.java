@@ -92,14 +92,12 @@ public abstract class CameraActivity extends AppCompatActivity
   /* custom var */
   private TextView threadsTextView;
   private String rtNm; // 사용자가 탑승하려는 버스 번호
+  protected Vibrator vibrator;  // 진동
 
   // for beep sound
-  private SoundPool soundPool;
-  private int beep;
-  private AudioManager audioManager;
-
-  public String fromWhere;
-  protected Vibrator vibrator;  // 진동
+  protected SoundPool soundPool;
+  protected int beep;
+  protected String fromWhere;
 
   @SuppressLint("SetTextI18n")
   @Override
@@ -187,7 +185,6 @@ public abstract class CameraActivity extends AppCompatActivity
 
     soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
     beep = soundPool.load(this, R.raw.beep, 1);
-    audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
 
     fromWhere = getIntent().getStringExtra("from");
 
@@ -261,7 +258,7 @@ public abstract class CameraActivity extends AppCompatActivity
             isProcessingFrame = false;
           }
         };
-    processImage(txtCameraInfo, rtNm, vibrator, soundPool, beep, fromWhere);
+    processImage(txtCameraInfo, rtNm);
   }
 
   /** Callback for Camera2 API */
@@ -319,7 +316,7 @@ public abstract class CameraActivity extends AppCompatActivity
             }
           };
 
-      processImage(txtCameraInfo, rtNm, vibrator, soundPool, beep, fromWhere);
+      processImage(txtCameraInfo, rtNm);
     } catch (final Exception e) {
       LOGGER.e(e, "Exception!");
       Trace.endSection();
@@ -574,7 +571,7 @@ public abstract class CameraActivity extends AppCompatActivity
     inferenceTimeTextView.setText(inferenceTime);
   }
 
-  protected abstract void processImage(TextView view, String rtNm, Vibrator vibrator, SoundPool soundPool, int beep, String fromWhere);
+  protected abstract void processImage(TextView view, String rtNm);
 
   protected abstract void onPreviewSizeChosen(final Size size, final int rotation);
 
