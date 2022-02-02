@@ -24,6 +24,7 @@ import android.graphics.Paint.Cap;
 import android.graphics.Paint.Join;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Pair;
 import android.util.TypedValue;
@@ -140,17 +141,28 @@ public class MultiBoxTracker {
       getFrameToCanvasMatrix().mapRect(trackedPos);
       boxPaint.setColor(recognition.color);
 
-      float cornerSize = Math.min(trackedPos.width(), trackedPos.height()) / 8.0f;
-      canvas.drawRoundRect(trackedPos, cornerSize, cornerSize, boxPaint);
+//      float cornerSize = Math.min(trackedPos.width(), trackedPos.height()) / 8.0f;
+//      canvas.drawRoundRect(trackedPos, cornerSize, cornerSize, boxPaint);
+      canvas.drawRect(trackedPos, boxPaint);
+
 
       final String labelString =
           !TextUtils.isEmpty(recognition.title)
-              ? String.format("[%s] %.2f [t:%s]", recognition.title, (100 * recognition.detectionConfidence), recognition.text)
+              ? String.format("[%s] %.2f", recognition.title, (100 * recognition.detectionConfidence))
               : String.format("%.2f", (100 * recognition.detectionConfidence));
-      //            borderedText.drawText(canvas, trackedPos.left + cornerSize, trackedPos.top,
-      // labelString);
+//      borderedText.drawText(
+//          canvas, trackedPos.left + cornerSize, trackedPos.top, labelString + "%", boxPaint);
       borderedText.drawText(
-          canvas, trackedPos.left + cornerSize, trackedPos.top, labelString + "%", boxPaint);
+              canvas, trackedPos.left, trackedPos.top, labelString + "%", boxPaint);
+
+
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        canvas.clipOutRect(trackedPos);
+      }
+      final Paint clipBg = new Paint();
+      clipBg.setColor(Color.DKGRAY);
+      clipBg.setAlpha(110);
+      canvas.drawRect(canvas.getClipBounds(), clipBg);
     }
   }
 
@@ -192,11 +204,10 @@ public class MultiBoxTracker {
       final TrackedRecognition trackedRecognition = new TrackedRecognition();
       trackedRecognition.detectionConfidence = potential.first;
       trackedRecognition.location = new RectF(potential.second.getLocation());
-//      trackedRecognition.title = potential.second.getTitle();
-      trackedRecognition.title = potential.second.getId();
+      trackedRecognition.title = potential.second.getTitle();
+//      trackedRecognition.title = potential.second.getId();
       trackedRecognition.color = COLORS[trackedObjects.size()];
 
-      trackedRecognition.text = potential.second.getRecognizedText();
 
       trackedObjects.add(trackedRecognition);
 
@@ -211,6 +222,5 @@ public class MultiBoxTracker {
     float detectionConfidence;
     int color;
     String title;
-    String text;
   }
 }

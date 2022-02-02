@@ -40,6 +40,8 @@ class BusStopViewModel @Inject constructor(
     fun requestBusStop() {
         loadingLiveData.value = true
 
+        logd("여기왔니")
+
         // 네트워크 확인
         if (!NetworkConnection.isConnected()) {
             loadFail("network")

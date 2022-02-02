@@ -52,8 +52,6 @@ public interface Detector {
     /** Optional location within the source image for the location of the recognized object. */
     private RectF location;
 
-    private String recognizedText;
-
     public Recognition(
         final String id, final String title, final Float confidence, final RectF location) {
       this.id = id;
@@ -78,34 +76,31 @@ public interface Detector {
       return new RectF(location);
     }
 
-    public String getRecognizedText(){ return recognizedText;}
 
     public void setLocation(RectF location) {
       this.location = location;
     }
 
-    public void setRecognizedText(String text){
-      this.recognizedText = text;
-    }
-
     @Override
     public String toString() {
       String resultString = "";
-      if (id != null) {
-        resultString += "[" + id + "] ";
-      }
+//      if (id != null) {
+//        resultString += "[" + id + "] ";
+//      }
 
-      if (title != null) {
-        resultString += "[" + title + "] ";
-      }
+//      if (title != null) {
+//        resultString += "[" + title + "] ";
+//      }
 
       if (confidence != null) {
-        resultString += String.format("(%.1f%%) ", confidence * 100.0f);
+        resultString += String.format("%.1f%%", confidence * 100.0f);
       }
 
-      if (location != null) {
-        resultString += location + " ";
-      }
+//      if (location != null) {
+//        resultString += location + " ";
+//      }
+
+
 
       return resultString.trim();
     }
