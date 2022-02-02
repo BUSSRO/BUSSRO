@@ -17,8 +17,10 @@ package org.tensorflow.lite.examples.detection.tflite;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.FileUtils;
 import android.os.Trace;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,9 +51,10 @@ public class TFLiteObjectDetectionAPIModel implements Detector {
   private static final String TAG = "TFLiteObjectDetectionAPIModelWithTaskApi";
 
   /** Only return this many results. */
-  private static final int NUM_DETECTIONS = 10;
+  private static final int NUM_DETECTIONS = 1;
 
-  private final MappedByteBuffer modelBuffer;
+   private final MappedByteBuffer modelBuffer; // -> createFromFileAndOptions
+  // https://firebase.google.com/docs/ml/android/detect-objects-with-automl?hl=en&authuser=1#create_an_object_detector_from_your_model
 
   /** An instance of the driver class to run model inference with Tensorflow Lite. */
   private ObjectDetector objectDetector;
@@ -66,19 +69,23 @@ public class TFLiteObjectDetectionAPIModel implements Detector {
    * keep consistency with the implementation using the TFLite Interpreter Java API. See <a
    * href="https://github.com/tensorflow/examples/blob/master/lite/examples/object_detection/android/lib_interpreter/src/main/java/org/tensorflow/lite/examples/detection/tflite/TFLiteObjectDetectionAPIModel.java">lib_interpreter</a>.
    *
-   * @param modelFilename The model file path relative to the assets folder
+//   * @param modelFilename The model file path relative to the assets folder
    * @param labelFilename The label file path relative to the assets folder
    * @param inputSize The size of image input
    * @param isQuantized Boolean representing model is quantized or not
    */
+
+//  private String modelFilePath = null;
+//  private final Context ctx;
+
   public static Detector create(
       final Context context,
-      final String modelFilename,
+      final String modelFilePath,
       final String labelFilename,
       final int inputSize,
       final boolean isQuantized)
       throws IOException {
-    return new TFLiteObjectDetectionAPIModel(context, modelFilename);
+    return new TFLiteObjectDetectionAPIModel(context, modelFilePath);
   }
 
   private TFLiteObjectDetectionAPIModel(Context context, String modelFilename) throws IOException {
@@ -86,6 +93,18 @@ public class TFLiteObjectDetectionAPIModel implements Detector {
     optionsBuilder = ObjectDetectorOptions.builder().setMaxResults(NUM_DETECTIONS);
     objectDetector = ObjectDetector.createFromBufferAndOptions(modelBuffer, optionsBuilder.build());
   }
+
+//  private TFLiteObjectDetectionAPIModel(Context context, String Path) throws IOException {
+//    modelFilePath = Path;
+////    ctx = context;
+//
+//    modelBuffer = FileUtil.loadMappedFile(context, modelFilePath);
+////    modelBuffer = (MappedByteBuffer) ByteBuffer.wrap(FileUtil.loadByteFromFile(ctx, modelFilePath));
+//    optionsBuilder = ObjectDetectorOptions.builder().setMaxResults(NUM_DETECTIONS);
+//    objectDetector = ObjectDetector.createFromBufferAndOptions(modelBuffer, optionsBuilder.build());
+////    objectDetector = ObjectDetector.createFromFileAndOptions(ctx, modelFilePath, optionsBuilder.build());
+//
+//  }
 
   @Override
   public List<Recognition> recognizeImage(final Bitmap bitmap) {
@@ -144,5 +163,10 @@ public class TFLiteObjectDetectionAPIModel implements Detector {
   private void recreateDetector() {
     objectDetector.close();
     objectDetector = ObjectDetector.createFromBufferAndOptions(modelBuffer, optionsBuilder.build());
+//    try {
+//      objectDetector = ObjectDetector.createFromFileAndOptions(ctx, modelFilePath, optionsBuilder.build());
+//    } catch (IOException e) {
+//      e.printStackTrace();
+//    }
   }
 }

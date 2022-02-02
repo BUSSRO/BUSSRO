@@ -66,4 +66,7 @@ dependencies {
     /* text recognition */
 //    implementation 'com.google.android.gms:play-services-mlkit-text-recognition:17.0.0'
     implementation 'com.google.mlkit:text-recognition-korean:16.0.0-beta3'
+
+    implementation 'com.google.firebase:firebase-ml-modeldownloader:24.0.1'
+
 }
