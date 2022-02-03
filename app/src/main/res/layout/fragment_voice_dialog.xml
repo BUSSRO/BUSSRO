@@ -25,6 +25,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:lottie_imageAssetsFolder="images" />
 
+
         <TextView
             android:id="@+id/txt_voice"
             android:layout_width="0dp"

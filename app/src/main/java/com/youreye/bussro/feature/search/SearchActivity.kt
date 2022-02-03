@@ -44,10 +44,9 @@ class SearchActivity : AppCompatActivity(), ISearchRecyclerView, TextToSpeech.On
         overridePendingTransition(R.anim.enter_from_right, R.anim.fade_out)
 
         // 음성인식 옵저빙
-        viewModel.searchedStationByVoice.observe(this, {
+        viewModel.searchedStationByVoice.observe(this) {
             insertSearchHistory(it)
-        })
-
+        }
 
         initVar()
         handleUI()

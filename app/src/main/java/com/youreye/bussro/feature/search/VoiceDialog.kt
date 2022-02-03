@@ -20,6 +20,7 @@ import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import com.bumptech.glide.Glide
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.FragmentVoiceDialogBinding
 import com.youreye.bussro.util.logd
@@ -55,6 +56,10 @@ class VoiceDialog : DialogFragment() {
                 1
             )
         }
+
+        // gif 넣기
+//        Glide.with(view).load(R.raw.gif_voice).into(binding.ivVoice)
+
 
         // SpeechToText 객체
         val sttIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)

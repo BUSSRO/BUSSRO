@@ -1,5 +1,7 @@
 package com.youreye.bussro.feature.dialog
 
+import android.annotation.SuppressLint
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -43,6 +45,11 @@ class SuggestionsDialog : DialogFragment() {
 
         /* 전송 */
         binding.txtSuggestionsSend.setOnClickListener {
+            if (binding.edtSuggestionsContent.length() < 20) {
+                Toast.makeText(requireContext(), "20자 이상 적어주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             // 문자열 hashMap 으로 변환
             val content = hashMapOf("content" to binding.edtSuggestionsContent.text.toString())
 
@@ -64,23 +71,37 @@ class SuggestionsDialog : DialogFragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
+            @SuppressLint("SetTextI18n")
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s != null) {
+                    // 글자수 안내
+                    binding.txtSuggestionsLength.text = "${s.length} / 200"
+
+                    // handle UI
                     if (s.length < 20) {
-                        binding.txtSuggestionsSend.setTextColor(resources.getColor(R.color.black))
-                        binding.txtSuggestionsSend.isClickable = false
+                        disable()
                     } else {
-                        binding.txtSuggestionsSend.setTextColor(resources.getColor(R.color.yellow))
-                        binding.txtSuggestionsSend.isClickable = true
+                        able()
                     }
                 } else {
-                    binding.txtSuggestionsSend.setTextColor(resources.getColor(R.color.black))
-                    binding.txtSuggestionsSend.isClickable = false
+                    disable()
                 }
             }
 
             override fun afterTextChanged(s: Editable?) {
             }
         })
+    }
+
+    @SuppressLint("ResourceAsColor")
+    private fun able() {
+        binding.txtSuggestionsSend.setTextColor(resources.getColor(R.color.black))
+        binding.txtSuggestionsSend.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFFFCC00"))
+    }
+
+    @SuppressLint("ResourceAsColor")
+    private fun disable() {
+        binding.txtSuggestionsSend.setTextColor(resources.getColor(R.color.white))
+        binding.txtSuggestionsSend.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#AAAAAA"))
     }
 }

@@ -12,7 +12,7 @@
     <application>
         <activity
             android:name=".DetectorActivity"
-            android:label="@string/tfe_od_app_name"
+            android:label="카메라가 켜졌습니다."
             android:screenOrientation="portrait"
             android:exported="true">
         </activity>
