@@ -3,6 +3,7 @@ package com.youreye.bussro.feature.error
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import com.youreye.bussro.R
@@ -21,10 +22,10 @@ class ErrorActivity : AppCompatActivity() {
         overridePendingTransition(R.anim.enter_from_right, R.anim.fade_out)
 
         // 에러 이유
-        findViewById<TextView>(R.id.txt_error_reason).text = errorText
+        Log.d("ErrorActivity", "onCreate: $errorText")
 
         // 새로고침 버튼 click listener
-        findViewById<AppCompatButton>(R.id.btn_error_refresh).setOnClickListener {
+        findViewById<AppCompatButton>(R.id.txt_error_refresh).setOnClickListener {
 
             if (SharedPrefManager.isFirst(this)) {
                 startActivity(Intent(this, OnBoardingActivity::class.java))
@@ -32,13 +33,12 @@ class ErrorActivity : AppCompatActivity() {
                 startActivity(Intent(this, MainActivity::class.java))
             }
 
-//            startActivity(lastActivityIntent)
             finish()
             overridePendingTransition(R.anim.fade_in, R.anim.exit_to_right)
         }
 
         // 문의하기 click listener
-        findViewById<AppCompatButton>(R.id.btn_error_suggestions).setOnClickListener {
+        findViewById<AppCompatButton>(R.id.txt_error_suggestions).setOnClickListener {
             SuggestionsDialog().show(supportFragmentManager, "SuggestionsDialog")
         }
     }

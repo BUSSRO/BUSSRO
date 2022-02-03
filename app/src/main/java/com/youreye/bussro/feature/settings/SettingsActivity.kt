@@ -45,14 +45,6 @@ class SettingsActivity : AppCompatActivity(){
 
         /* 문의하기 (이메일로 연결) */
         binding.ivSettingInquiryDetail.setOnClickListener {
-//            val intent = Intent(Intent.ACTION_SENDTO)
-//            intent.data = Uri.parse("mailto:${getString(R.string.email)}")
-//            intent.putExtra(Intent.EXTRA_SUBJECT, "[버스스로] 사용자 건의사항")
-//
-//            if (intent.resolveActivity(packageManager) != null) {
-//                startActivity(intent)
-//            }
-
             SuggestionsDialog().show(supportFragmentManager, "SuggestionsDialog")
         }
 

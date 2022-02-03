@@ -3,6 +3,7 @@ package com.youreye.bussro.feature.busstop
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Application
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
@@ -60,6 +61,7 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         BussroExceptionHandler.setCrashHandler(application)
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_bus_stop)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
@@ -92,7 +94,7 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         // RecyclerView 세팅
         rvAdapter = BusStopAdapter(application)
         binding.rvNearbyBusStop.apply {
-            adapter = rvAdapter
+//            adapter = rvAdapter
             layoutManager = LinearLayoutManager(this@BusStopActivity)
         }
 

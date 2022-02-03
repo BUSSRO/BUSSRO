@@ -337,7 +337,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                if (results.size() < 1) {
+                                if (results.size() == 0) {
                                     if (fromWhere.equals("BoardingDialog")) {
                                         view.setText(rtNm + "번 버스가 없습니다.");
                                     } else {

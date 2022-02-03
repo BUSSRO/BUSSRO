@@ -5,6 +5,8 @@ import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import android.os.Process
+import androidx.core.content.ContextCompat.startActivity
+import com.youreye.bussro.di.App
 import com.youreye.bussro.feature.error.ErrorActivity
 import java.io.PrintWriter
 import java.io.StringWriter
@@ -32,6 +34,7 @@ class BussroExceptionHandler(
                         return
                     }
                     lastActivity = activity
+                    logd("lastActivity : $lastActivity")
                 }
 
                 override fun onActivityStarted(activity: Activity) {
@@ -73,6 +76,9 @@ class BussroExceptionHandler(
 
     /* 오류 리포팅을 위해 Crashlytics 에 알림 */
     override fun uncaughtException(t: Thread, e: Throwable) {
+        // 오류 발생을 알리는 ErrorActivity 실행
+        logd("lastActivity: $lastActivity")
+
         lastActivity?.run {
             val stringWriter = StringWriter()
             e.printStackTrace(PrintWriter(stringWriter))

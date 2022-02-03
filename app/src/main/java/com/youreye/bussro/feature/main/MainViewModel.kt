@@ -9,6 +9,7 @@ import com.youreye.bussro.feature.history.HistoryActivity
 import com.youreye.bussro.feature.busstop.BusStopActivity
 import com.youreye.bussro.feature.settings.SettingsActivity
 import org.tensorflow.lite.examples.detection.DetectorActivity
+import java.lang.Exception
 
 /**
  * [MainViewModel]

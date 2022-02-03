@@ -56,7 +56,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-
         val dialog = BackPressDialog()
         dialog.show(supportFragmentManager, "BackPressDialog")
     }
