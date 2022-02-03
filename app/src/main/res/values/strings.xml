@@ -75,5 +75,7 @@
     <string name="iv_setting_os_detail_cd">오픈소스 및 라이센스로 이동하기</string>
     <string name="txt_setting_version">버전정보 1.0.0</string>
     <string name="email">otu1650@gmail.com</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

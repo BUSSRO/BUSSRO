@@ -79,12 +79,12 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     private fun initObserver() {
         // 로딩바
-        viewModel.loadingLiveData.observe(this, { isLoading ->
+        viewModel.loadingLiveData.observe(this) { isLoading ->
             binding.progressBusList.visibility = if (isLoading) View.VISIBLE else View.GONE
-        })
+        }
 
         // 버스 정류장
-        viewModel.busListLiveData.observe(this, { busStopList ->
+        viewModel.busListLiveData.observe(this) { busStopList ->
             rvAdapter.updateData(busStopList)
 
             if (busStopList.isNotEmpty()) {
@@ -107,19 +107,22 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             if (binding.ivBusListPlaceholderImage.isVisible) {
                 hidePlaceHolder()
             }
-        })
+        }
 
         // 데이터 로드 실패 이유
-        viewModel.failReason.observe(this, { reason ->
-            when(reason) {
+        viewModel.failReason.observe(this) { reason ->
+            when (reason) {
                 "network" -> {
-                    showPlaceHolder(R.drawable.ic_baseline_wifi_off_24, "네트워크 연결이 없어요")
+                    showPlaceHolder(R.drawable.ic_wifi, "네트워크 연결이 없어요")
                 }
                 "no_result" -> {
-                    showPlaceHolder(R.drawable.ic_baseline_warning_24, "주변 정류장이 없어요.\n(서울특별시 지역만 서비스 가능합니다)")
+                    showPlaceHolder(
+                        R.drawable.ic_error,
+                        "주변 정류장이 없어요.\n(서울특별시 지역만 서비스 가능합니다)"
+                    )
                 }
             }
-        })
+        }
     }
 
     /* PlaceHolder 띄우기 */

@@ -160,16 +160,17 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     private fun initObserver() {
         // 로딩바
-        viewModel.loadingLiveData.observe(this, { isLoading ->
+        viewModel.loadingLiveData.observe(this) { isLoading ->
             binding.progressNearbyBusStop.visibility = if (isLoading) View.VISIBLE else View.GONE
-        })
+        }
 
         // 버스 정류장
-        viewModel.busStopsLiveData.observe(this, { busStopList ->
+        viewModel.busStopsLiveData.observe(this) { busStopList ->
             rvAdapter.updateData(busStopList)
 
             if (busStopList.isNotEmpty()) {
-                val text = if (viewModel.searchTerm.isNotEmpty()) "${viewModel.searchTerm} 검색 완료" else "불러오기 완료"
+                val text =
+                    if (viewModel.searchTerm.isNotEmpty()) "${viewModel.searchTerm} 검색 완료" else "불러오기 완료"
 
                 tts.speak(
                     text,
@@ -178,7 +179,8 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                     TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
                 )
             } else {
-                val text = if (viewModel.searchTerm.isNotEmpty()) "${viewModel.searchTerm} 검색 실패" else "불러오기 실패"
+                val text =
+                    if (viewModel.searchTerm.isNotEmpty()) "${viewModel.searchTerm} 검색 실패" else "불러오기 실패"
 
                 tts.speak(
                     text,
@@ -204,25 +206,25 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             if (binding.ivNearbyPlaceholderImage.isVisible) {
                 hidePlaceHolder()
             }
-        })
+        }
 
         // 데이터 로드 실패 이유
-        viewModel.failReason.observe(this, { reason ->
-            when(reason) {
+        viewModel.failReason.observe(this) { reason ->
+            when (reason) {
                 "network" -> {
-                    showPlaceHolder(R.drawable.ic_baseline_wifi_off_24, "네트워크 연결이 없어요")
+                    showPlaceHolder(R.drawable.ic_wifi, "네트워크 연결이 없어요")
                 }
                 "location" -> {
-                    showPlaceHolder(R.drawable.ic_baseline_warning_24, "위치를 파악할 수 없어요")
+                    showPlaceHolder(R.drawable.ic_error, "위치를 파악할 수 없어요")
                 }
                 "no_result" -> {
-                    showPlaceHolder(R.drawable.ic_baseline_warning_24, "주변 정류장이 없어요.\n(서울특별시 지역만 서비스 가능합니다)")
+                    showPlaceHolder(R.drawable.ic_error, "주변 정류장이 없어요.\n(서울특별시 지역만 서비스 가능합니다)")
                 }
                 "no_search_result" -> {
-                    showPlaceHolder(R.drawable.ic_search_off, "검색 결과가 없어요.\n(서울특별시 소재 정류장만 검색 가능합니다)")
+                    showPlaceHolder(R.drawable.ic_search, "검색 결과가 없어요.\n(서울특별시 소재 정류장만 검색 가능합니다)")
                 }
             }
-        })
+        }
     }
 
     /* PlaceHolder 띄우기 */

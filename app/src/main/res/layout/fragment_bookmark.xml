@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".feature.history.BookmarkFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_history_vp_item"
+        android:id="@+id/rv_bookmark_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:overScrollMode="never"
@@ -14,7 +16,7 @@
 
     <!-- placeholder image & text -->
     <ImageView
-        android:id="@+id/iv_history_off"
+        android:id="@+id/iv_bookmark_fragment_off"
         android:layout_width="72dp"
         android:layout_height="72dp"
         android:src="@drawable/ic_baseline_directions_bus_24"
@@ -23,18 +25,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="해당 기록이 없어요."/>
+        android:contentDescription="기록이 없어요."/>
 
     <TextView
-        android:id="@+id/txt_history_off_desc"
+        android:id="@+id/txt_bookmark_fragment_off_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:textColor="@color/white"
+        android:text="즐겨찾기한 탑승 기록이 없어요."
         android:textSize="18dp"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@id/iv_history_off"
-        app:layout_constraintStart_toStartOf="@id/iv_history_off"
-        app:layout_constraintTop_toBottomOf="@id/iv_history_off" />
+        app:layout_constraintEnd_toEndOf="@id/iv_bookmark_fragment_off"
+        app:layout_constraintStart_toStartOf="@id/iv_bookmark_fragment_off"
+        app:layout_constraintTop_toBottomOf="@id/iv_bookmark_fragment_off" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,13 +12,14 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.RvHistoryItemBinding
+import com.youreye.bussro.di.App
 import com.youreye.bussro.feature.dialog.BoardingDialog
 import com.youreye.bussro.model.db.entity.History
 import com.youreye.bussro.model.repository.HistoryRepository
 
 /**
  * [HistoryAdapter]
- * HistoryActivity 의 RecyclerView 의 Adapter
+ * HistoryActivity 의 ViewPager2 의 RecyclerView 의 Adapter
  *
  * @param supportFragmentManager supportFragmentManager from HistoryActivity
  * @param application application from HistoryActivity
@@ -70,6 +71,7 @@ class HistoryAdapter(
                 data[position].stationNm,
                 data[position].arsId
             )
+
             dialog.show(supportFragmentManager, "FromHistoryActivity")
         }
 

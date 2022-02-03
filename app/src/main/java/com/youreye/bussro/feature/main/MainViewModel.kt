@@ -27,9 +27,8 @@ class MainViewModel : ViewModel() {
                 v.context.startActivity(Intent(v.context, BusStopActivity::class.java))
             }
             2 -> {  // 하차벨 위치
-//                Toast.makeText(v.context, "[하차벨 위치]\n다음 업데이트에 포함될 기능입니다.", Toast.LENGTH_SHORT).show()
                 val intent = Intent(v.context, DetectorActivity::class.java)
-                    .putExtra("from", "MainActivity")  // 어디에서 넘어갔는지
+                    .putExtra("from", "MainActivity")
                 v.context.startActivity(intent)
             }
             3 -> {  // 히스토리

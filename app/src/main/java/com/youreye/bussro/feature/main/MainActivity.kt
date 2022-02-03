@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.accessibility.AccessibilityNodeInfo
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import com.youreye.bussro.R
@@ -27,6 +28,11 @@ class MainActivity : AppCompatActivity() {
         BussroExceptionHandler.setCrashHandler(application)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.model = model
+
+        /* 앱 사용설명서 click listener */
+        binding.txtMainInfo.setOnClickListener {
+            Toast.makeText(this, "다음 업데이트에 포함될 기능입니다.", Toast.LENGTH_SHORT).show()
+        }
     }
 
     /* disable message "실행하려면 두 번 누르세요" */
