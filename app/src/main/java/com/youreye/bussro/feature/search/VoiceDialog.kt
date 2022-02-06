@@ -60,7 +60,6 @@ class VoiceDialog : DialogFragment() {
         // gif 넣기
 //        Glide.with(view).load(R.raw.gif_voice).into(binding.ivVoice)
 
-
         // SpeechToText 객체
         val sttIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
             .putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, requireActivity().packageName)
@@ -71,6 +70,8 @@ class VoiceDialog : DialogFragment() {
         recognizer = SpeechRecognizer.createSpeechRecognizer(requireContext())
         recognizer.setRecognitionListener(listener)
         recognizer.startListening(sttIntent)
+
+//        Glide.with(view).load(R.raw.g1).into(binding.ivVoice)
 
         /* 이미지 클릭 리스너 */
         binding.lottieVoice.setOnClickListener {

@@ -17,7 +17,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BUSSRO"
         android:usesCleartextTraffic="true">
-        <activity android:name=".feature.error.ErrorActivity"></activity>
+        <activity
+            android:name=".feature.info.DetailInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".feature.info.InfoActivity"
+            android:label="@string/empty_label"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".feature.error.ErrorActivity"
+            android:label="@string/empty_label"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".feature.search.SearchActivity"
             android:screenOrientation="portrait"

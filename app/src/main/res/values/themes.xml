@@ -23,4 +23,10 @@
         <item name="android:track">@drawable/switch_selector</item>
         <item name="android:thumb">@drawable/switch_thumb</item>
     </style>
+    <style name="Theme.BUSSRO.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.BUSSRO.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.BUSSRO.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

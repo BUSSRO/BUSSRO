@@ -357,6 +357,9 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
                             if (location != null && result.getConfidence() >= minimumConfidence) {
                                 if (fromWhere.equals("BoardingDialog")) {
+                                    if (!result.getTitle().equals("bus")) {
+                                        continue;
+                                    }
 
                                     Rect tmp_location = new Rect();
                                     location.round(tmp_location); // 내림

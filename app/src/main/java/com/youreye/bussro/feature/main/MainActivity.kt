@@ -1,5 +1,6 @@
 package com.youreye.bussro.feature.main
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityMainBinding
 import com.youreye.bussro.feature.dialog.BackPressDialog
+import com.youreye.bussro.feature.info.InfoActivity
 import com.youreye.bussro.util.BussroExceptionHandler
 import java.lang.RuntimeException
 
@@ -31,7 +33,10 @@ class MainActivity : AppCompatActivity() {
 
         /* 앱 사용설명서 click listener */
         binding.txtMainInfo.setOnClickListener {
-            Toast.makeText(this, "다음 업데이트에 포함될 기능입니다.", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, InfoActivity::class.java)
+            startActivity(intent)
+
+//            Toast.makeText(this, "다음 업데이트에 포함될 기능입니다.", Toast.LENGTH_SHORT).show()
         }
     }
 

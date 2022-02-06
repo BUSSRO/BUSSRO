@@ -94,7 +94,7 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         // RecyclerView 세팅
         rvAdapter = BusStopAdapter(application)
         binding.rvNearbyBusStop.apply {
-//            adapter = rvAdapter
+            adapter = rvAdapter
             layoutManager = LinearLayoutManager(this@BusStopActivity)
         }
 

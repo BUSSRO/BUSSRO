@@ -25,7 +25,7 @@ class ErrorActivity : AppCompatActivity() {
         Log.d("ErrorActivity", "onCreate: $errorText")
 
         // 새로고침 버튼 click listener
-        findViewById<AppCompatButton>(R.id.txt_error_refresh).setOnClickListener {
+        findViewById<TextView>(R.id.txt_error_refresh).setOnClickListener {
 
             if (SharedPrefManager.isFirst(this)) {
                 startActivity(Intent(this, OnBoardingActivity::class.java))
@@ -38,7 +38,7 @@ class ErrorActivity : AppCompatActivity() {
         }
 
         // 문의하기 click listener
-        findViewById<AppCompatButton>(R.id.txt_error_suggestions).setOnClickListener {
+        findViewById<TextView>(R.id.txt_error_suggestions).setOnClickListener {
             SuggestionsDialog().show(supportFragmentManager, "SuggestionsDialog")
         }
     }
