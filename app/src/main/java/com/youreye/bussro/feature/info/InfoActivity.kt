@@ -47,6 +47,7 @@ class InfoActivity : AppCompatActivity() {
         /* 뒤로가기 */
         binding.ivSettingInfoBack.setOnClickListener {
             this.finish()
+            overridePendingTransition(R.anim.fade_in, R.anim.exit_to_right)
         }
     }
 

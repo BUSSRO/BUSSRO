@@ -1,22 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".feature.info.DetailInfoActivity"
-    android:background="@color/background">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        style="@style/TextAppearance.MaterialComponents.Headline4"
-        android:text="앱 사용설명\n디테일하게 적어줄 페이지"
-        android:textColor="@color/white"
-        android:gravity="center"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".feature.info.DetailInfoActivity"
+        android:background="@color/background">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- 타이틀 -->
+        <TextView
+            android:id="@+id/txt_detail_info_back"
+            style="@style/TextAppearance.MaterialComponents.Headline5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:gravity="center"
+            android:text="앱 사용설명서"
+            android:textColor="@color/yellow"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_detail_info_title"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_margin="16dp"
+            android:contentDescription="@string/iv_setting_back_cd"
+            android:focusable="true"
+            android:src="@drawable/ic_baseline_keyboard_backspace_24"
+            app:layout_constraintBottom_toBottomOf="@+id/txt_detail_info_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/txt_detail_info_back" />
+
+        <!-- 선택한 항목 안내 -->
+        <TextView
+            android:id="@+id/txt_detail_info_category"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:textColor="@color/white"
+            android:textSize="19dp"
+            android:textStyle="bold"
+            tools:text="선택한 항목 안내"
+            app:layout_constraintTop_toBottomOf="@id/iv_detail_info_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- 설명서 -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="설명 들어갈 부분인데요\n설명을 어떻게 쓰면 좋냐?"
+            android:background="#3A3939"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            style="@style/TextAppearance.MaterialComponents.Headline5"
+            app:layout_constraintTop_toBottomOf="@id/txt_detail_info_category"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/ll_detail_info" />
+        
+        <!-- 문의하러가기 -->
+        <LinearLayout
+            android:id="@+id/ll_detail_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/txt_detail_info_error_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="설명이 부족하거나 사용이 어려우신가요?"
+                android:textSize="16dp"
+                android:textColor="@color/white"/>
+
+            <TextView
+                android:id="@+id/txt_detail_info_error_suggestions"
+                android:text="@string/help_2"
+                android:textSize="16dp"
+                android:padding="6dp"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

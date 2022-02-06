@@ -42,7 +42,9 @@ class InfoExpandedAdapter(
 
             /* click event */
             binding.root.setOnClickListener {
-                it.context.startActivity(Intent(it.context, DetailInfoActivity::class.java))
+                val intent = Intent(it.context, DetailInfoActivity::class.java)
+                    .putExtra("category", data)
+                it.context.startActivity(intent)
             }
         }
     }
