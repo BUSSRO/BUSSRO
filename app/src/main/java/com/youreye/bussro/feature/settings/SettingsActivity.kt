@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.youreye.bussro.BuildConfig
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivitySettingsBinding
 import com.youreye.bussro.feature.dialog.SuggestionsDialog
@@ -28,7 +29,7 @@ class SettingsActivity : AppCompatActivity(){
         initVar()
     }
 
-    @SuppressLint("QueryPermissionsNeeded")
+    @SuppressLint("QueryPermissionsNeeded", "SetTextI18n")
     private fun initVar() {
         /* 뒤로가기 */
         binding.ivSettingBack.setOnClickListener {
@@ -37,6 +38,10 @@ class SettingsActivity : AppCompatActivity(){
         }
 
         /* 공지사항 */
+        binding.txtSettingNotiDesc.setOnClickListener {
+            binding.ivSettingNotiDetail.callOnClick()
+        }
+
         binding.ivSettingNotiDetail.setOnClickListener {
             val intent = Intent(this, WebViewActivity::class.java)
                 .putExtra("addr", NOTIFICATION_PAGE)
@@ -44,11 +49,19 @@ class SettingsActivity : AppCompatActivity(){
         }
 
         /* 문의하기 (이메일로 연결) */
+        binding.txtSettingInquiryDesc.setOnClickListener {
+            binding.ivSettingInquiryDetail.callOnClick()
+        }
+
         binding.ivSettingInquiryDetail.setOnClickListener {
             SuggestionsDialog().show(supportFragmentManager, "SuggestionsDialog")
         }
 
         /* 개인정보처리방침 */
+        binding.txtSettingClDesc.setOnClickListener {
+            binding.ivSettingClDetail.callOnClick()
+        }
+
         binding.ivSettingClDetail.setOnClickListener {
             val intent = Intent(this, WebViewActivity::class.java)
                 .putExtra("addr", PERSONAL_PAGE)
@@ -56,11 +69,18 @@ class SettingsActivity : AppCompatActivity(){
         }
 
         /* 오픈소스 및 라이센스 */
+        binding.txtSettingOsDesc.setOnClickListener {
+            binding.ivSettingOsDetail.callOnClick()
+        }
+
         binding.ivSettingOsDetail.setOnClickListener {
             val intent = Intent(this, WebViewActivity::class.java)
                 .putExtra("addr", LICENSE_PAGE)
             startActivity(intent)
         }
+
+        /* 버전정보 */
+        binding.txtSettingVersion.text = "버전정보 ${BuildConfig.VERSION_NAME}"
     }
 
     override fun onBackPressed() {
@@ -75,11 +95,4 @@ class SettingsActivity : AppCompatActivity(){
         private const val PERSONAL_PAGE = "https://stitch-mandarin-baa.notion.site/bb0dd13476d64c01b820c673bac42602"
         private const val LICENSE_PAGE = "https://stitch-mandarin-baa.notion.site/daee86be24c14b3d8f50c66aafc753a1"
     }
-
-//    class SettingsFragment : PreferenceFragmentCompat() {
-//
-//        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-//            setPreferencesFromResource(R.xml.root_preferences, rootKey)
-//        }
-//    }
 }

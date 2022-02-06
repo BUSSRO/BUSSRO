@@ -42,6 +42,11 @@ class InfoAdapter(
             binding.txtInfoItemTitle.text = data.category
 
             /* 리스트 클릭 리스너 */
+            binding.root.setOnClickListener {
+                binding.ivInfoItemExpand.callOnClick()
+            }
+
+            /* 더보기 리스너 */
             binding.ivInfoItemExpand.setOnClickListener {
                 val show = toggleLayout(!data.isExpanded, it, binding.clInfoBottom)
                 data.isExpanded = show

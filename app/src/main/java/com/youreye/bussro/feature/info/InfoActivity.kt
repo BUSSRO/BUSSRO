@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.youreye.bussro.BuildConfig
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityInfoBinding
 import com.youreye.bussro.model.InfoData
