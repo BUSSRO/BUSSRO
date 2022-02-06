@@ -419,6 +419,10 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                                                     });
                                 } else {
                                     // 현동님 진동
+                                    if (!result.getTitle().equals("bell")) {
+                                        continue;
+                                    }
+
                                     float cx = location.centerX();
                                     float cy = location.centerY();
 

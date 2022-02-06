@@ -1,1 +1,6 @@
 bell
+Person
+Clothing
+Furniture
+Tool
+Vehicle
