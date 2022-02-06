@@ -67,11 +67,11 @@
 
     <ImageView
         android:id="@+id/iv_camera_camera"
-        android:layout_width="62dp"
-        android:layout_height="62dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/ic_camera"
+        android:background="@drawable/voice_changer"
         app:layout_constraintTop_toTopOf="@+id/iv_camera_background"
         app:layout_constraintBottom_toTopOf="@id/txt_camera_info"/>
 
