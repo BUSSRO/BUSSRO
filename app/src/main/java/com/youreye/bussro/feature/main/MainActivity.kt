@@ -33,10 +33,10 @@ class MainActivity : AppCompatActivity() {
 
         /* 앱 사용설명서 click listener */
         binding.txtMainInfo.setOnClickListener {
-            val intent = Intent(this, InfoActivity::class.java)
-            startActivity(intent)
+//            val intent = Intent(this, InfoActivity::class.java)
+//            startActivity(intent)
 
-//            Toast.makeText(this, "다음 업데이트에 포함될 기능입니다.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "다음 업데이트에 포함될 기능입니다.", Toast.LENGTH_SHORT).show()
         }
     }
 
