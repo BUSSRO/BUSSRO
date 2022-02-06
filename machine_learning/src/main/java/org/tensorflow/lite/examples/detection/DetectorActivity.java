@@ -419,19 +419,24 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                                                     });
                                 } else {
                                     // 현동님 진동
-                                    if (!result.getTitle().equals("bell")) {
+                                    if (result.getTitle().equals("bell") == false) {
                                         continue;
                                     }
+
+                                    Log.d(
+                                            "tt", "run: " + result.getTitle().equals("bell"));
 
                                     float cx = location.centerX();
                                     float cy = location.centerY();
 
                                     if (previewWidth * 0.25 <= cx && cx <= previewWidth * 0.75 && previewHeight * 0.25 <= cy && cy <= previewHeight * 0.75) {
-                                        vibrator.vibrate(VibrationEffect.createPredefined(EFFECT_HEAVY_CLICK));
+//                                        vibrator.vibrate(VibrationEffect.createPredefined(EFFECT_HEAVY_CLICK));
+                                        vibrator.vibrate(100);
                                         soundPool.play(beep, 1, 1, 0, 0, 1);
 
                                     } else {
-                                        vibrator.vibrate(VibrationEffect.createPredefined(EFFECT_TICK));
+                                        vibrator.vibrate(VibrationEffect.createPredefined(EFFECT_HEAVY_CLICK));
+//                                        vibrator.vibrate(VibrationEffect.createPredefined(EFFECT_TICK));
                                         soundPool.play(beep, 0.3F, 0.3F, 0, 0, 1);
                                     }
 

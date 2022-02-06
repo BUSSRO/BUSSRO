@@ -51,7 +51,7 @@ public class TFLiteObjectDetectionAPIModel implements Detector {
   private static final String TAG = "TFLiteObjectDetectionAPIModelWithTaskApi";
 
   /** Only return this many results. */
-  private static final int NUM_DETECTIONS = 1;
+  private static final int NUM_DETECTIONS = 10;
 
    private final MappedByteBuffer modelBuffer; // -> createFromFileAndOptions
   // https://firebase.google.com/docs/ml/android/detect-objects-with-automl?hl=en&authuser=1#create_an_object_detector_from_your_model
