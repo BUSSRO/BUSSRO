@@ -1,14 +1,21 @@
 package com.youreye.bussro.feature.busstop
 
 import android.annotation.SuppressLint
+import android.content.Context.LOCATION_SERVICE
 import android.location.Geocoder
 import android.location.Location
+import android.location.LocationManager
+import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.*
 import com.youreye.bussro.BuildConfig
 import com.youreye.bussro.util.LocationToDistance
 import com.youreye.bussro.util.logd
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.youreye.bussro.di.App
 import com.youreye.bussro.model.network.api.StationInfoAPI
 import com.youreye.bussro.model.network.response.BusStopData
 import com.youreye.bussro.model.network.response.SearchedBusStopData
@@ -55,7 +62,6 @@ class BusStopViewModel @Inject constructor(
         // 사용자 위치 받기
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location ->
-                logd("location : $location")
                 // 위치가 있다면 (위도 : location.latitude, 경도 : location.longitude)
                 if (location != null) {
                     viewModelScope.launch {
@@ -77,7 +83,24 @@ class BusStopViewModel @Inject constructor(
                         }
                     }
                 } else {
+                    // 위치 정보 받아올 수 없음
                     loadFail("location")
+
+                    val locationRequest = LocationRequest.create()
+                    locationRequest.interval = 20 * 1000
+                    locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+
+                    // 위치 정보 업데이트 요청
+                    fusedLocationClient.requestLocationUpdates(
+                        locationRequest,
+                        getLocationCallback(),
+                        Looper.getMainLooper()
+                    )
+
+                    // 위치 정보 수정
+                    fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                        Log.d("TEST", "Fail(1): Location\n수정된 위치 : ${location}")
+                    }
                 }
             }
             .addOnFailureListener {
@@ -122,6 +145,24 @@ class BusStopViewModel @Inject constructor(
                 loadFail("no_result")
             }
         })
+    }
+
+    /* 위치 테스트 */
+    private fun getLocationCallback(): LocationCallback {
+        val locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                for (location in locationResult.locations) {
+                    if (location != null) {
+                        val latitude = location.latitude
+                        val longitude = location.longitude
+                        Log.d("TEST", "onLocationResult, lat : ${latitude}, lon: $longitude")
+                        requestBusStop()
+                    }
+                }
+            }
+        }
+
+        return locationCallback
     }
 
     /* 사용자 검색 버스 정류장 요청 메서드 */
@@ -231,6 +272,7 @@ class BusStopViewModel @Inject constructor(
             }
         })
     }
+
 
     /* data == null 인 경우 처리 */
     private fun loadFail(reason: String) {

@@ -22,6 +22,8 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationResult
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityBusStopBinding
 import com.youreye.bussro.feature.search.SearchActivity
