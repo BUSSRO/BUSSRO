@@ -85,9 +85,9 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     // Configuration values for the prepackaged SSD model.
     private static final int TF_OD_API_INPUT_SIZE = 720;
     private static final boolean TF_OD_API_IS_QUANTIZED = true;
-    private static final String TF_OD_API_MODEL_FILE_BUS = "detect"; // bus_detect_0
+    private static final String TF_OD_API_MODEL_FILE_BUS = "bus_detect_0"; // bus_detect_0
     private static final String TF_OD_API_LABELS_FILE_BUS = "labelmap.txt";
-    private static final String TF_OD_API_MODEL_FILE_BELL = "model"; // bell_detect
+    private static final String TF_OD_API_MODEL_FILE_BELL = "bell_detector"; // bell_detect
     private static final String TF_OD_API_LABELS_FILE_BELL = "labelmap2.txt";
     private static final DetectorMode MODE = DetectorMode.TF_OD_API;
     // Minimum detection confidence to track a detection.
@@ -134,146 +134,153 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
         final int[] cropSize = {TF_OD_API_INPUT_SIZE};
 
-        try {
-            if (fromWhere.equals("BoardingDialog")) {
-                // 카메라 기능
-                detector =
-                        TFLiteObjectDetectionAPIModel.create(
-                                getApplicationContext(),
-                                TF_OD_API_MODEL_FILE_BUS + ".tflite",
-//                                            model.getFile().getPath(),
-                                TF_OD_API_LABELS_FILE_BUS,
-                                TF_OD_API_INPUT_SIZE,
-                                TF_OD_API_IS_QUANTIZED);
-            } else {
-                // 하차벨 기능
-                detector =
-                        TFLiteObjectDetectionAPIModel.create(
-                                getApplicationContext(),
-                                TF_OD_API_MODEL_FILE_BELL + ".tflite",
-//                                            model.getFile().getPath(),
-                                TF_OD_API_LABELS_FILE_BELL,
-                                TF_OD_API_INPUT_SIZE,
-                                TF_OD_API_IS_QUANTIZED);
-            }
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            LOGGER.e(e, "Exception initializing Detector!");
-            Toast toast =
-                    Toast.makeText(
-                            getApplicationContext(), "Detector could not be initialized", Toast.LENGTH_SHORT);
-            toast.show();
-//                            Log.d("fileCheck", model.getFile().getpath)
-            finish();
+//        try {
+//            if (fromWhere.equals("BoardingDialog")) {
+//                // 카메라 기능
+//                detector =
+//                        TFLiteObjectDetectionAPIModel.create(
+//                                getApplicationContext(),
+//                                TF_OD_API_MODEL_FILE_BUS + ".tflite",
+////                                            model.getFile().getPath(),
+//                                TF_OD_API_LABELS_FILE_BUS,
+//                                TF_OD_API_INPUT_SIZE,
+//                                TF_OD_API_IS_QUANTIZED);
+//            } else {
+//                // 하차벨 기능
+//                detector =
+//                        TFLiteObjectDetectionAPIModel.create(
+//                                getApplicationContext(),
+//                                TF_OD_API_MODEL_FILE_BELL + ".tflite",
+////                                            model.getFile().getPath(),
+//                                TF_OD_API_LABELS_FILE_BELL,
+//                                TF_OD_API_INPUT_SIZE,
+//                                TF_OD_API_IS_QUANTIZED);
+//            }
+//
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            LOGGER.e(e, "Exception initializing Detector!");
+//            Toast toast =
+//                    Toast.makeText(
+//                            getApplicationContext(), "Detector could not be initialized", Toast.LENGTH_SHORT);
+//            toast.show();
+////                            Log.d("fileCheck", model.getFile().getpath)
+//            finish();
+//        }
+//        cropSize[0] = TF_OD_API_INPUT_SIZE;
+//        recognizer = TextRecognition.getClient(new KoreanTextRecognizerOptions.Builder().build());
+//        previewWidth = size.getWidth();
+//        previewHeight = size.getHeight();
+//
+//        sensorOrientation = rotation - getScreenOrientation();
+//        LOGGER.i("Camera orientation relative to screen canvas: %d", sensorOrientation);
+//
+//        LOGGER.i("Initializing at size %dx%d", previewWidth, previewHeight);
+//        rgbFrameBitmap = Bitmap.createBitmap(previewWidth, previewHeight, Config.ARGB_8888);
+//        croppedBitmap = Bitmap.createBitmap(cropSize[0], cropSize[0], Config.ARGB_8888);
+//
+//        frameToCropTransform =
+//                ImageUtils.getTransformationMatrix(
+//                        previewWidth, previewHeight,
+//                        cropSize[0], cropSize[0],
+//                        sensorOrientation, MAINTAIN_ASPECT);
+//
+//        cropToFrameTransform = new Matrix();
+//        frameToCropTransform.invert(cropToFrameTransform);
+//
+//        trackingOverlay = (OverlayView) findViewById(R.id.tracking_overlay);
+//        trackingOverlay.addCallback(
+//                new DrawCallback() {
+//                    @Override
+//                    public void drawCallback(final Canvas canvas) {
+//                        tracker.draw(canvas);
+//                        if (isDebug()) {
+//                            tracker.drawDebug(canvas);
+//                        }
+//                    }
+//                });
+//
+//        tracker.setFrameConfiguration(previewWidth, previewHeight, sensorOrientation);
+        final String selectedModel;
+        final String selectedLabel;
+        if (fromWhere.equals("BoardingDialog")) {
+            selectedModel = TF_OD_API_MODEL_FILE_BUS;
+            selectedLabel = TF_OD_API_LABELS_FILE_BUS;
+        } else {
+            selectedModel = TF_OD_API_MODEL_FILE_BELL;
+            selectedLabel = TF_OD_API_LABELS_FILE_BELL;
         }
-        cropSize[0] = TF_OD_API_INPUT_SIZE;
-        recognizer = TextRecognition.getClient(new KoreanTextRecognizerOptions.Builder().build());
-        previewWidth = size.getWidth();
-        previewHeight = size.getHeight();
-
-        sensorOrientation = rotation - getScreenOrientation();
-        LOGGER.i("Camera orientation relative to screen canvas: %d", sensorOrientation);
-
-        LOGGER.i("Initializing at size %dx%d", previewWidth, previewHeight);
-        rgbFrameBitmap = Bitmap.createBitmap(previewWidth, previewHeight, Config.ARGB_8888);
-        croppedBitmap = Bitmap.createBitmap(cropSize[0], cropSize[0], Config.ARGB_8888);
-
-        frameToCropTransform =
-                ImageUtils.getTransformationMatrix(
-                        previewWidth, previewHeight,
-                        cropSize[0], cropSize[0],
-                        sensorOrientation, MAINTAIN_ASPECT);
-
-        cropToFrameTransform = new Matrix();
-        frameToCropTransform.invert(cropToFrameTransform);
-
-        trackingOverlay = (OverlayView) findViewById(R.id.tracking_overlay);
-        trackingOverlay.addCallback(
-                new DrawCallback() {
+        CustomModelDownloadConditions conditions = new CustomModelDownloadConditions.Builder()
+                .requireWifi()
+                .build();
+        FirebaseModelDownloader.getInstance()
+                .getModel(selectedModel, DownloadType.LOCAL_MODEL_UPDATE_IN_BACKGROUND, conditions)
+                .addOnFailureListener(new OnFailureListener() {
                     @Override
-                    public void drawCallback(final Canvas canvas) {
-                        tracker.draw(canvas);
-                        if (isDebug()) {
-                            tracker.drawDebug(canvas);
+                    public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
+                        Log.d("modelDownload", "실패했움..");
+                    }
+                })
+                .addOnSuccessListener(new OnSuccessListener<CustomModel>() {
+                    @Override
+                    public void onSuccess(CustomModel model) {
+                        try {
+                            detector =
+                                    TFLiteObjectDetectionAPIModel.create(
+                                            getApplicationContext(),
+//                                            TF_OD_API_MODEL_FILE_BUS+".tflite",
+                                            model.getFile(),
+                                            selectedLabel,
+                                            TF_OD_API_INPUT_SIZE,
+                                            TF_OD_API_IS_QUANTIZED);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            LOGGER.e(e, "Exception initializing Detector!");
+                            Toast toast =
+                                    Toast.makeText(
+                                            getApplicationContext(), "Detector could not be initialized", Toast.LENGTH_SHORT);
+                            toast.show();
+//                            Log.d("fileCheck", model.getFile().getpath)
+                            finish();
                         }
+                        cropSize[0] = TF_OD_API_INPUT_SIZE;
+                        recognizer = TextRecognition.getClient(new KoreanTextRecognizerOptions.Builder().build());
+                        previewWidth = size.getWidth();
+                        previewHeight = size.getHeight();
+
+                        sensorOrientation = rotation - getScreenOrientation();
+                        LOGGER.i("Camera orientation relative to screen canvas: %d", sensorOrientation);
+
+                        LOGGER.i("Initializing at size %dx%d", previewWidth, previewHeight);
+                        rgbFrameBitmap = Bitmap.createBitmap(previewWidth, previewHeight, Config.ARGB_8888);
+                        croppedBitmap = Bitmap.createBitmap(cropSize[0], cropSize[0], Config.ARGB_8888);
+
+                        frameToCropTransform =
+                                ImageUtils.getTransformationMatrix(
+                                        previewWidth, previewHeight,
+                                        cropSize[0], cropSize[0],
+                                        sensorOrientation, MAINTAIN_ASPECT);
+
+                        cropToFrameTransform = new Matrix();
+                        frameToCropTransform.invert(cropToFrameTransform);
+
+                        trackingOverlay = (OverlayView) findViewById(R.id.tracking_overlay);
+                        trackingOverlay.addCallback(
+                                new DrawCallback() {
+                                    @Override
+                                    public void drawCallback(final Canvas canvas) {
+                                        tracker.draw(canvas);
+                                        if (isDebug()) {
+                                            tracker.drawDebug(canvas);
+                                        }
+                                    }
+                                });
+
+                        tracker.setFrameConfiguration(previewWidth, previewHeight, sensorOrientation);
                     }
                 });
-
-        tracker.setFrameConfiguration(previewWidth, previewHeight, sensorOrientation);
-
-
-//        CustomModelDownloadConditions conditions = new CustomModelDownloadConditions.Builder()
-//                .requireWifi()
-//                .build();
-//        FirebaseModelDownloader.getInstance()
-//                .getModel(TF_OD_API_MODEL_FILE_BUS, DownloadType.LOCAL_MODEL_UPDATE_IN_BACKGROUND, conditions)
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        e.printStackTrace();
-//                        Log.d("modelDownload", "실패했움..");
-//                    }
-//                })
-//                .addOnSuccessListener(new OnSuccessListener<CustomModel>() {
-//                    @Override
-//                    public void onSuccess(CustomModel model) {
-//                        try {
-//                            detector =
-//                                    TFLiteObjectDetectionAPIModel.create(
-//                                            getApplicationContext(),
-//                                            TF_OD_API_MODEL_FILE_BUS+".tflite",
-////                                            model.getFile().getPath(),
-//                                            TF_OD_API_LABELS_FILE_BUS,
-//                                            TF_OD_API_INPUT_SIZE,
-//                                            TF_OD_API_IS_QUANTIZED);
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                            LOGGER.e(e, "Exception initializing Detector!");
-//                            Toast toast =
-//                                    Toast.makeText(
-//                                            getApplicationContext(), "Detector could not be initialized", Toast.LENGTH_SHORT);
-//                            toast.show();
-////                            Log.d("fileCheck", model.getFile().getpath)
-//                            finish();
-//                        }
-//                        cropSize[0] = TF_OD_API_INPUT_SIZE;
-//                        recognizer = TextRecognition.getClient(new KoreanTextRecognizerOptions.Builder().build());
-//                        previewWidth = size.getWidth();
-//                        previewHeight = size.getHeight();
-//
-//                        sensorOrientation = rotation - getScreenOrientation();
-//                        LOGGER.i("Camera orientation relative to screen canvas: %d", sensorOrientation);
-//
-//                        LOGGER.i("Initializing at size %dx%d", previewWidth, previewHeight);
-//                        rgbFrameBitmap = Bitmap.createBitmap(previewWidth, previewHeight, Config.ARGB_8888);
-//                        croppedBitmap = Bitmap.createBitmap(cropSize[0], cropSize[0], Config.ARGB_8888);
-//
-//                        frameToCropTransform =
-//                                ImageUtils.getTransformationMatrix(
-//                                        previewWidth, previewHeight,
-//                                        cropSize[0], cropSize[0],
-//                                        sensorOrientation, MAINTAIN_ASPECT);
-//
-//                        cropToFrameTransform = new Matrix();
-//                        frameToCropTransform.invert(cropToFrameTransform);
-//
-//                        trackingOverlay = (OverlayView) findViewById(R.id.tracking_overlay);
-//                        trackingOverlay.addCallback(
-//                                new DrawCallback() {
-//                                    @Override
-//                                    public void drawCallback(final Canvas canvas) {
-//                                        tracker.draw(canvas);
-//                                        if (isDebug()) {
-//                                            tracker.drawDebug(canvas);
-//                                        }
-//                                    }
-//                                });
-//
-//                        tracker.setFrameConfiguration(previewWidth, previewHeight, sensorOrientation);
-//                    }
-//        });
     }
 
     @Override
@@ -429,28 +436,59 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                                     float cx = location.centerX();
                                     float cy = location.centerY();
 
-                                    if (previewWidth * 0.25 <= cx && cx <= previewWidth * 0.75 && previewHeight * 0.25 <= cy && cy <= previewHeight * 0.75) {
+//                                    if (previewWidth * 0.25 <= cx && cx <= previewWidth * 0.75 && previewHeight * 0.25 <= cy && cy <= previewHeight * 0.75) {
+////                                        vibrator.vibrate(VibrationEffect.createPredefined(EFFECT_HEAVY_CLICK));
+//                                        vibrator.vibrate(100);
+//                                        soundPool.play(beep, 1, 1, 0, 0, 1);
+//
+//                                    } else {
+//                                        vibrator.vibrate(VibrationEffect.createPredefined(EFFECT_HEAVY_CLICK));
+////                                        vibrator.vibrate(VibrationEffect.createPredefined(EFFECT_TICK));
+//                                        soundPool.play(beep, 0.3F, 0.3F, 0, 0, 1);
+//                                    }
+                                    int R = cropCopyBitmap.getWidth() / 4;
+                                    float dx = Math.abs(cx - cropCopyBitmap.getWidth() / 2);
+                                    float dy = Math.abs(cy - cropCopyBitmap.getHeight() / 2);
+                                    if (dx * dx + dy * dy <= R * R) {
+                                        // 중앙
 //                                        vibrator.vibrate(VibrationEffect.createPredefined(EFFECT_HEAVY_CLICK));
                                         vibrator.vibrate(100);
                                         soundPool.play(beep, 1, 1, 0, 0, 1);
 
                                     } else {
-                                        vibrator.vibrate(VibrationEffect.createPredefined(EFFECT_HEAVY_CLICK));
-//                                        vibrator.vibrate(VibrationEffect.createPredefined(EFFECT_TICK));
+                                        vibrator.vibrate(VibrationEffect.createPredefined(EFFECT_TICK));
                                         soundPool.play(beep, 0.3F, 0.3F, 0, 0, 1);
                                     }
 
-                                    Location loc1 = new Location("");
-                                    loc1.setLatitude(previewWidth / 2);
-                                    loc1.setLongitude(previewHeight / 2);
 
-                                    Location loc2 = new Location("");
-                                    loc2.setLatitude(cx);
-                                    loc2.setLongitude(cy);
-                                    float distanceInMeters = loc1.distanceTo(loc2);
-                                    loc2.setLatitude(previewWidth);
-                                    loc2.setLongitude(previewHeight);
-                                    float distanceMax = loc1.distanceTo(loc2);
+                                    float leftTopToRightBottom = cropCopyBitmap.getHeight() / cropCopyBitmap.getWidth() * cx;
+                                    float rightTopToLeftBottom = -cropCopyBitmap.getHeight() / cropCopyBitmap.getWidth() * cx + cropCopyBitmap.getHeight();
+
+                                    boolean centerPositionLR = leftTopToRightBottom - cy >= 0;
+                                    boolean centerPositionRL = rightTopToLeftBottom - cy >= 0;
+
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (centerPositionLR && centerPositionRL) {
+                                                // 위
+                                                view.setText("위쪽에 " + view.getText());
+                                            } else if (!centerPositionLR && centerPositionRL) {
+                                                // 왼
+                                                view.setText("왼쪽에 " + view.getText());
+
+                                            } else if (!centerPositionLR && !centerPositionRL) {
+                                                // 아
+                                                view.setText("아래쪽에 " + view.getText());
+
+                                            } else if (centerPositionLR && !centerPositionRL) {
+                                                // 오
+                                                view.setText("오른쪽에 " + view.getText());
+                                            }
+                                        }
+                                    });
+
+
                                 }
 
                                 canvas.drawRect(location, paint);
