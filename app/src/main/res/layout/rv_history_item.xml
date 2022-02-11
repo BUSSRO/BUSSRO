@@ -24,6 +24,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:contentDescription="@string/empty_label"
+            android:importantForAccessibility="no"
             android:layout_margin="16dp"/>
 
         <!-- 버스번호 + 특수문자 + 탑승일자 -->

@@ -27,7 +27,8 @@
             android:textColor="@color/white"
             android:textSize="16dp"
             android:layout_marginTop="4dp"
-            tools:text="해당 기능이 어떻게 동작하는지 알려줍니다." />
+            tools:text="해당 기능이 어떻게 동작하는지 알려줍니다."
+            android:lineSpacingExtra="5dp"/>
 
     </LinearLayout>
 </layout>

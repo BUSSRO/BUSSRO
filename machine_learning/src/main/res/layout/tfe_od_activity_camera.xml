@@ -52,6 +52,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@drawable/voice_changer"
+        android:importantForAccessibility="no"
         app:layout_constraintTop_toTopOf="@+id/iv_camera_background"
         app:layout_constraintBottom_toTopOf="@id/txt_camera_info"/>
 

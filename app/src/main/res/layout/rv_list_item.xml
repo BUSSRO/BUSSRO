@@ -33,6 +33,7 @@
             app:layout_constraintBottom_toBottomOf="@id/txt_list_item_stSrch"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/txt_list_item_stSrch"
+            android:contentDescription="검색어 삭제"
             app:tint="@color/light_gray"
             android:padding="3dp" />
 
