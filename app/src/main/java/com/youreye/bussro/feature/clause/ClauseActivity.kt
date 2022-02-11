@@ -14,6 +14,8 @@ import androidx.databinding.DataBindingUtil
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityClauseBinding
 import com.youreye.bussro.feature.main.MainActivity
+import com.youreye.bussro.feature.settings.SettingsActivity
+import com.youreye.bussro.feature.settings.WebViewActivity
 import com.youreye.bussro.util.BussroExceptionHandler
 import com.youreye.bussro.util.SharedPrefManager
 
@@ -58,6 +60,20 @@ class ClauseActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "필수 약관에 동의해주세요.", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        // 서비스 이용약관 보기
+        binding.txtClauseFirstDetail.setOnClickListener {
+            val intent = Intent(this, WebViewActivity::class.java)
+                .putExtra("addr", SERVICE_PAGE)
+            startActivity(intent)
+        }
+
+        // 개인정보 처리방침 보기
+        binding.txtClauseSecondDetail.setOnClickListener {
+            val intent = Intent(this, WebViewActivity::class.java)
+                .putExtra("addr", PERSONAL_PAGE)
+            startActivity(intent)
         }
     }
 
@@ -107,5 +123,10 @@ class ClauseActivity : AppCompatActivity() {
         if (isFinishing) {
             overridePendingTransition(R.anim.fade_in, R.anim.exit_to_right)
         }
+    }
+
+    companion object {
+        private const val SERVICE_PAGE = "https://stitch-mandarin-baa.notion.site/451df07f8ec143bf9554ac130f5f6e13"
+        private const val PERSONAL_PAGE = "https://stitch-mandarin-baa.notion.site/bb0dd13476d64c01b820c673bac42602"
     }
 }
