@@ -76,7 +76,7 @@
             app:layout_constraintBottom_toBottomOf="@id/iv_setting_noti_icon"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_margin="16dp"
-            android:contentDescription="@string/iv_setting_noti_detail_cd"/>
+            android:importantForAccessibility="no"/>
 
         <!-- 문의사항 -->
         <ImageView
@@ -112,7 +112,7 @@
             app:layout_constraintBottom_toBottomOf="@id/iv_setting_inquiry_icon"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_margin="16dp"
-            android:contentDescription="@string/iv_setting_inquiry_detail_cd"/>
+            android:importantForAccessibility="no"/>
 
         <!-- 약관 및 동의 -->
         <ImageView
@@ -149,7 +149,7 @@
             app:layout_constraintBottom_toBottomOf="@id/iv_setting_cl_icon"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_margin="16dp"
-            android:contentDescription="@string/iv_setting_cl_detail_desc"/>
+            android:importantForAccessibility="no"/>
 
         <!-- 오픈소스 및 라이센스 -->
         <ImageView
@@ -186,7 +186,7 @@
             app:layout_constraintBottom_toBottomOf="@id/iv_setting_os_icon"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_margin="16dp"
-            android:contentDescription="@string/iv_setting_os_detail_cd"/>
+            android:importantForAccessibility="no"/>
 
         <!-- 버전 정보 -->
         <TextView

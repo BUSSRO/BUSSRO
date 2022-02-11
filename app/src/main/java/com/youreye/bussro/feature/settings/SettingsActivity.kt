@@ -64,7 +64,7 @@ class SettingsActivity : AppCompatActivity(){
 
         binding.ivSettingClDetail.setOnClickListener {
             val intent = Intent(this, WebViewActivity::class.java)
-                .putExtra("addr", PERSONAL_PAGE)
+                .putExtra("addr", CLAUSE_PAGE)
             startActivity(intent)
         }
 
@@ -92,7 +92,7 @@ class SettingsActivity : AppCompatActivity(){
 
     companion object {
         private const val NOTIFICATION_PAGE = "https://stitch-mandarin-baa.notion.site/70c0a410a7c6473b839962d06b107e59"
-        private const val PERSONAL_PAGE = "https://stitch-mandarin-baa.notion.site/bb0dd13476d64c01b820c673bac42602"
+        private const val CLAUSE_PAGE= "https://stitch-mandarin-baa.notion.site/dafe04a6643d47f6a06127d87d323f28"
         private const val LICENSE_PAGE = "https://stitch-mandarin-baa.notion.site/daee86be24c14b3d8f50c66aafc753a1"
     }
 }

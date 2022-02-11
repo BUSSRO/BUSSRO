@@ -75,6 +75,13 @@ class ClauseActivity : AppCompatActivity() {
                 .putExtra("addr", PERSONAL_PAGE)
             startActivity(intent)
         }
+
+        // 앱 사용 기록 추적 보기
+        binding.txtClauseThirdDetail.setOnClickListener {
+            val intent = Intent(this, WebViewActivity::class.java)
+                .putExtra("addr", TRACE_PAGE)
+            startActivity(intent)
+        }
     }
 
     /* 텍스트 색상 변경 */
@@ -128,5 +135,6 @@ class ClauseActivity : AppCompatActivity() {
     companion object {
         private const val SERVICE_PAGE = "https://stitch-mandarin-baa.notion.site/451df07f8ec143bf9554ac130f5f6e13"
         private const val PERSONAL_PAGE = "https://stitch-mandarin-baa.notion.site/bb0dd13476d64c01b820c673bac42602"
+        private const val TRACE_PAGE = "https://stitch-mandarin-baa.notion.site/a72e7c3c2007411f9330e10bbd73ba54"
     }
 }

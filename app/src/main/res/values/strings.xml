@@ -69,8 +69,8 @@
     <string name="iv_setting_noti_detail_cd">공지사항으로 이동하기</string>
     <string name="txt_setting_inquiry_desc">문의하기</string>
     <string name="iv_setting_inquiry_detail_cd">문의사항으로 이동하기</string>
-    <string name="txt_setting_cl_desc">개인정보처리방침</string>
-    <string name="iv_setting_cl_detail_desc">개인정보처리방침으로 이동하기</string>
+    <string name="txt_setting_cl_desc">약관동의확인</string>
+    <string name="iv_setting_cl_detail_desc">약관동의확인으로 이동하기</string>
     <string name="txt_setting_os_desc">오픈소스 및 라이센스</string>
     <string name="iv_setting_os_detail_cd">오픈소스 및 라이센스로 이동하기</string>
     <string name="txt_setting_version">버전정보 1.0.0</string>

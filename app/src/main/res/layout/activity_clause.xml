@@ -132,6 +132,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cb_clause_second" />
 
+        <TextView
+            android:id="@+id/txt_clause_third_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/cb_clause_third"
+            app:layout_constraintBottom_toBottomOf="@id/cb_clause_third"
+            app:layout_constraintEnd_toEndOf="@id/cb_clause_third"
+            android:text="보기"
+            android:textSize="18dp"
+            android:textColor="@color/white"
+            android:padding="16dp"/>
+
         <!-- 설명란 -->
         <CheckBox
             android:id="@+id/cb_clause_desc_1"
