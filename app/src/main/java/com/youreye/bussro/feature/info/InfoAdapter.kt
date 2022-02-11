@@ -69,7 +69,7 @@ class InfoAdapter(
                 binding.ivInfoItemExpand.visibility = View.GONE
             }
 
-            val rvAdapter = InfoExpandedAdapter(expandedCategory)
+            val rvAdapter = InfoExpandedAdapter(expandedCategory, position.toString())
             binding.rvInfoBottom.apply {
                 adapter = rvAdapter
                 layoutManager = GridLayoutManager(this.context, 2)
