@@ -132,78 +132,10 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
         tracker = new MultiBoxTracker(this);
 
-        final int[] cropSize = {TF_OD_API_INPUT_SIZE};
-
-//        try {
-//            if (fromWhere.equals("BoardingDialog")) {
-//                // 카메라 기능
-//                detector =
-//                        TFLiteObjectDetectionAPIModel.create(
-//                                getApplicationContext(),
-//                                TF_OD_API_MODEL_FILE_BUS + ".tflite",
-////                                            model.getFile().getPath(),
-//                                TF_OD_API_LABELS_FILE_BUS,
-//                                TF_OD_API_INPUT_SIZE,
-//                                TF_OD_API_IS_QUANTIZED);
-//            } else {
-//                // 하차벨 기능
-//                detector =
-//                        TFLiteObjectDetectionAPIModel.create(
-//                                getApplicationContext(),
-//                                TF_OD_API_MODEL_FILE_BELL + ".tflite",
-////                                            model.getFile().getPath(),
-//                                TF_OD_API_LABELS_FILE_BELL,
-//                                TF_OD_API_INPUT_SIZE,
-//                                TF_OD_API_IS_QUANTIZED);
-//            }
-//
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            LOGGER.e(e, "Exception initializing Detector!");
-//            Toast toast =
-//                    Toast.makeText(
-//                            getApplicationContext(), "Detector could not be initialized", Toast.LENGTH_SHORT);
-//            toast.show();
-////                            Log.d("fileCheck", model.getFile().getpath)
-//            finish();
-//        }
-//        cropSize[0] = TF_OD_API_INPUT_SIZE;
-//        recognizer = TextRecognition.getClient(new KoreanTextRecognizerOptions.Builder().build());
-//        previewWidth = size.getWidth();
-//        previewHeight = size.getHeight();
-//
-//        sensorOrientation = rotation - getScreenOrientation();
-//        LOGGER.i("Camera orientation relative to screen canvas: %d", sensorOrientation);
-//
-//        LOGGER.i("Initializing at size %dx%d", previewWidth, previewHeight);
-//        rgbFrameBitmap = Bitmap.createBitmap(previewWidth, previewHeight, Config.ARGB_8888);
-//        croppedBitmap = Bitmap.createBitmap(cropSize[0], cropSize[0], Config.ARGB_8888);
-//
-//        frameToCropTransform =
-//                ImageUtils.getTransformationMatrix(
-//                        previewWidth, previewHeight,
-//                        cropSize[0], cropSize[0],
-//                        sensorOrientation, MAINTAIN_ASPECT);
-//
-//        cropToFrameTransform = new Matrix();
-//        frameToCropTransform.invert(cropToFrameTransform);
-//
-//        trackingOverlay = (OverlayView) findViewById(R.id.tracking_overlay);
-//        trackingOverlay.addCallback(
-//                new DrawCallback() {
-//                    @Override
-//                    public void drawCallback(final Canvas canvas) {
-//                        tracker.draw(canvas);
-//                        if (isDebug()) {
-//                            tracker.drawDebug(canvas);
-//                        }
-//                    }
-//                });
-//
-//        tracker.setFrameConfiguration(previewWidth, previewHeight, sensorOrientation);
+        int cropSize = TF_OD_API_INPUT_SIZE;
         final String selectedModel;
         final String selectedLabel;
+
         if (fromWhere.equals("BoardingDialog")) {
             selectedModel = TF_OD_API_MODEL_FILE_BUS;
             selectedLabel = TF_OD_API_LABELS_FILE_BUS;
@@ -245,42 +177,42 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 //                            Log.d("fileCheck", model.getFile().getpath)
                             finish();
                         }
-                        cropSize[0] = TF_OD_API_INPUT_SIZE;
-                        recognizer = TextRecognition.getClient(new KoreanTextRecognizerOptions.Builder().build());
-                        previewWidth = size.getWidth();
-                        previewHeight = size.getHeight();
-
-                        sensorOrientation = rotation - getScreenOrientation();
-                        LOGGER.i("Camera orientation relative to screen canvas: %d", sensorOrientation);
-
-                        LOGGER.i("Initializing at size %dx%d", previewWidth, previewHeight);
-                        rgbFrameBitmap = Bitmap.createBitmap(previewWidth, previewHeight, Config.ARGB_8888);
-                        croppedBitmap = Bitmap.createBitmap(cropSize[0], cropSize[0], Config.ARGB_8888);
-
-                        frameToCropTransform =
-                                ImageUtils.getTransformationMatrix(
-                                        previewWidth, previewHeight,
-                                        cropSize[0], cropSize[0],
-                                        sensorOrientation, MAINTAIN_ASPECT);
-
-                        cropToFrameTransform = new Matrix();
-                        frameToCropTransform.invert(cropToFrameTransform);
-
-                        trackingOverlay = (OverlayView) findViewById(R.id.tracking_overlay);
-                        trackingOverlay.addCallback(
-                                new DrawCallback() {
-                                    @Override
-                                    public void drawCallback(final Canvas canvas) {
-                                        tracker.draw(canvas);
-                                        if (isDebug()) {
-                                            tracker.drawDebug(canvas);
-                                        }
-                                    }
-                                });
-
-                        tracker.setFrameConfiguration(previewWidth, previewHeight, sensorOrientation);
                     }
                 });
+        cropSize = TF_OD_API_INPUT_SIZE;
+        recognizer = TextRecognition.getClient(new KoreanTextRecognizerOptions.Builder().build());
+        previewWidth = size.getWidth();
+        previewHeight = size.getHeight();
+
+        sensorOrientation = rotation - getScreenOrientation();
+        LOGGER.i("Camera orientation relative to screen canvas: %d", sensorOrientation);
+
+        LOGGER.i("Initializing at size %dx%d", previewWidth, previewHeight);
+        rgbFrameBitmap = Bitmap.createBitmap(previewWidth, previewHeight, Config.ARGB_8888);
+        croppedBitmap = Bitmap.createBitmap(cropSize, cropSize, Config.ARGB_8888);
+
+        frameToCropTransform =
+                ImageUtils.getTransformationMatrix(
+                        previewWidth, previewHeight,
+                        cropSize, cropSize,
+                        sensorOrientation, MAINTAIN_ASPECT);
+
+        cropToFrameTransform = new Matrix();
+        frameToCropTransform.invert(cropToFrameTransform);
+
+        trackingOverlay = (OverlayView) findViewById(R.id.tracking_overlay);
+        trackingOverlay.addCallback(
+                new DrawCallback() {
+                    @Override
+                    public void drawCallback(final Canvas canvas) {
+                        tracker.draw(canvas);
+                        if (isDebug()) {
+                            tracker.drawDebug(canvas);
+                        }
+                    }
+                });
+
+        tracker.setFrameConfiguration(previewWidth, previewHeight, sensorOrientation);
     }
 
     @Override
@@ -319,6 +251,12 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                     public void run() {
                         LOGGER.i("Running detection on image " + currTimestamp);
                         final long startTime = SystemClock.uptimeMillis();
+
+                        if (detector == null) {
+                            computingDetection = false;
+                            return;
+                        }
+
                         final List<Detector.Recognition> results = detector.recognizeImage(croppedBitmap);
                         lastProcessingTimeMs = SystemClock.uptimeMillis() - startTime;
 
