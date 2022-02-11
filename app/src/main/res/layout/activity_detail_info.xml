@@ -45,38 +45,22 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_detail_info_back"
-            app:layout_constraintBottom_toTopOf="@+id/ll_detail_info"
+            app:layout_constraintBottom_toTopOf="@+id/txt_detail_info"
             tools:listitem="@layout/rv_detail_info_item" />
 
         <!-- 문의하러가기 -->
-        <LinearLayout
-            android:id="@+id/ll_detail_info"
+        <TextView
+            android:id="@+id/txt_detail_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/help_2"
+            android:textColor="@color/yellow"
+            android:textSize="16dp"
+            app:layout_constraintTop_toBottomOf="@id/rv_detail_info"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="8dp">
-
-            <TextView
-                android:id="@+id/txt_detail_info_error_desc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="설명이 부족하거나 사용이 어려우신가요?"
-                android:textColor="@color/white"
-                android:textSize="16dp" />
-
-            <TextView
-                android:id="@+id/txt_detail_info_error_suggestions"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="6dp"
-                android:text="@string/help_2"
-                android:textColor="@color/white"
-                android:textSize="16dp" />
-
-        </LinearLayout>
+            android:padding="16dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -38,7 +38,7 @@ class DetailInfoActivity : AppCompatActivity() {
         }
 
         /* 문의하러가기 */
-        binding.txtDetailInfoErrorSuggestions.setOnClickListener {
+        binding.txtDetailInfo.setOnClickListener {
             SuggestionsDialog().show(supportFragmentManager, "SuggestionsDialog")
         }
     }

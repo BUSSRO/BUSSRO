@@ -104,6 +104,6 @@
         <item>즐겨찾기 화면</item>
     </string-array>
 
-    <string name="help_2"><u><b>문의하러가기</b></u></string>
+    <string name="help_2"><u>설명이 부족하거나 사용이 어려우시면 클릭해주세요.</u></string>
 
 </resources>
