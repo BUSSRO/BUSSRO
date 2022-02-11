@@ -2,16 +2,17 @@ package com.youreye.bussro.feature.info
 
 import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.RvSimpleItemBinding
+import com.youreye.bussro.feature.detailinfo.DetailInfoActivity
 
 class InfoExpandedAdapter(
-    private val category: Array<String>
+    private val category: Array<String>,
+    private val prePosition: String
 ) : RecyclerView.Adapter<InfoExpandedAdapter.InfoExpandedViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InfoExpandedViewHolder {
@@ -36,14 +37,11 @@ class InfoExpandedAdapter(
             /* 텍스트 초기화 */
             binding.txtSimpleItem.text = data
 
-            /* background 초기화 */
-//            val layout = if (position % 2 == 0) R.drawable.rv_left_item_border else R.drawable.rv_right_item_border
-//            binding.llSimple.setBackgroundResource(layout)
-
             /* click event */
             binding.root.setOnClickListener {
                 val intent = Intent(it.context, DetailInfoActivity::class.java)
                     .putExtra("category", data)
+                    .putExtra("categoryId", prePosition + position.toString())
                 it.context.startActivity(intent)
             }
         }
