@@ -56,6 +56,7 @@ class HistoryActivity : AppCompatActivity() {
         /* 뒤로가기 */
         binding.ibHistoryBack.setOnClickListener {
             finish()
+            overridePendingTransition(R.anim.fade_in, R.anim.exit_to_right)
         }
 
         initViewPagerWithTabLayout()
