@@ -21,6 +21,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
+import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.normal.TedPermission
 import com.youreye.bussro.R
 import com.youreye.bussro.databinding.FragmentVoiceDialogBinding
 import com.youreye.bussro.util.logd
@@ -30,6 +32,7 @@ class VoiceDialog : DialogFragment() {
     private lateinit var binding: FragmentVoiceDialogBinding
     private lateinit var listener: RecognitionListener
     private lateinit var recognizer: SpeechRecognizer
+    private lateinit var sttIntent: Intent
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,38 +52,65 @@ class VoiceDialog : DialogFragment() {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         // 권한 체크
-        if (Build.VERSION.SDK_INT >= 23) {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf<String>(Manifest.permission.INTERNET, Manifest.permission.RECORD_AUDIO),
-                1
-            )
+//        if (Build.VERSION.SDK_INT >= 23) {
+//            ActivityCompat.requestPermissions(
+//                requireActivity(),
+//                arrayOf<String>(Manifest.permission.INTERNET, Manifest.permission.RECORD_AUDIO),
+//                1
+//            )
+//        }
+
+        requestPermission()
+
+        binding.lottieVoice.setOnClickListener {
+            // TODO: 듣고 있으면 stop, 안듣고 있으면 listen
+            recognizer.cancel()
+            recognizer.startListening(sttIntent)
         }
 
         // gif 넣기
 //        Glide.with(view).load(R.raw.voice2).into(binding.ivVoice)
 
-        // SpeechToText 객체
-        val sttIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-            .putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, requireActivity().packageName)
-            .putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR")
-
-        initRecognitionListener()
-
-        recognizer = SpeechRecognizer.createSpeechRecognizer(requireContext())
-        recognizer.setRecognitionListener(listener)
-        recognizer.startListening(sttIntent)
-
-//        Glide.with(view).load(R.raw.g1).into(binding.ivVoice)
-
         /* 이미지 클릭 리스너 */
 //        binding.ivVoice.setOnClickListener {
 //            recognizer.startListening(sttIntent)
 //        }
+    }
 
-        binding.lottieVoice.setOnClickListener {
-            recognizer.startListening(sttIntent)
+    /* 음성 인식 권한 요구 */
+    private fun requestPermission() {
+        val permissionListener = object: PermissionListener {
+            override fun onPermissionGranted() {
+                // 권한이 허용된 경우
+                // SpeechToText 객체
+                sttIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+                    .putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, requireActivity().packageName)
+                    .putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR")
+
+                initRecognitionListener()
+
+                recognizer = SpeechRecognizer.createSpeechRecognizer(requireContext())
+                recognizer.setRecognitionListener(listener)
+
+                // 음성 인식 시작
+                recognizer.startListening(sttIntent)
+            }
+
+            override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
+                Toast.makeText(requireContext(), "권한이 거부되었습니다.", Toast.LENGTH_SHORT).show()
+                this@VoiceDialog.dismiss()
+            }
         }
+
+        // 권한 요구하기
+        TedPermission.create()
+            .setPermissionListener(permissionListener)
+            .setDeniedMessage("설정 > 권한 에서 권한을 변경할 수 있습니다.")
+            .setPermissions(
+                Manifest.permission.RECORD_AUDIO,
+                Manifest.permission.INTERNET
+            )
+            .check()
     }
 
     private fun initRecognitionListener() {
@@ -141,11 +171,14 @@ class VoiceDialog : DialogFragment() {
 
                 // 검색어 확인
                 if (text.length > 1) {
-                    playStt(true, "$text 정류장을 검색할게요.")
+                    // 검색 시작
+                    viewModel.searchedStationByVoice.postValue(text)
 
-                    Handler().postDelayed({
-                        viewModel.searchedStationByVoice.postValue(text)
-                    }, 1500)
+//                    playStt(true, "$text 정류장을 검색할게요.")
+//
+//                    Handler().postDelayed({
+//                        viewModel.searchedStationByVoice.postValue(text)
+//                    }, 1500)
                 } else {
                     playStt(false, "두 글자 이상 말해주세요.\n이미지를 클릭한 후 다시 말해주세요.")
                 }
