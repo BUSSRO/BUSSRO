@@ -3,13 +3,11 @@ package com.youreye.bussro.feature.busstop
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
 import android.speech.tts.TextToSpeech
@@ -19,19 +17,18 @@ import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide.with
-import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.*
-import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.tasks.CancellationToken
+import com.google.android.gms.tasks.CancellationTokenSource
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
 import com.youreye.bussro.R
@@ -41,7 +38,7 @@ import com.youreye.bussro.util.BussroExceptionHandler
 import com.youreye.bussro.util.logd
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
-import javax.inject.Inject
+import java.util.function.Consumer
 
 /**
  * [BusStopActivity]
@@ -50,7 +47,7 @@ import javax.inject.Inject
  */
 
 @AndroidEntryPoint
-class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
+class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener, LocationListener {
     private val viewModel: BusStopViewModel by viewModels()
     private lateinit var binding: ActivityBusStopBinding
     private lateinit var tts: TextToSpeech
@@ -60,9 +57,9 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
     private var requestingLocationUpdates = false
-    private val locationManager by lazy {
-        getSystemService(LOCATION_SERVICE) as LocationManager
-    }
+//    private val locationManager by lazy {
+//        getSystemService(LOCATION_SERVICE) as LocationManager
+//    }
 
     /* SearchActivity 에서의 검색값 받기 */
     private val startSearchActivityForResult =
@@ -73,7 +70,7 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
                 station?.apply {
                     logd("검색어 : $station")
-                    viewModel.requestSearchedBusStop(this, getCurrentLocation())
+                    viewModel.requestSearchedBusStop(this, fusedLocationClient)
                 }
             }
         }
@@ -90,8 +87,8 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
         requestLocationPermission()
         initVar()
-        initClickListener()
         initObserver()
+        initClickListener()
     }
 
     override fun onResume() {
@@ -120,7 +117,7 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         // locationCallback 객체 초기화
-        locationCallback = object: LocationCallback() {
+        locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 for (location in locationResult.locations) {
                     if (location == null) {
@@ -139,11 +136,12 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             layoutManager = LinearLayoutManager(this@BusStopActivity)
         }
 
-        binding.rvNearbyBusStop.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+        binding.rvNearbyBusStop.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
-                val lastVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+                val lastVisibleItemPosition =
+                    (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
                 val itemTotalCount = recyclerView.adapter?.itemCount!! - 1
 
                 // 스크롤이 끝에 도달했는지 확인
@@ -172,25 +170,36 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
         /* 새로고침 */
         binding.ivBusStopRefresh.setOnClickListener {
-            viewModel.requestBusStop(getCurrentLocation())
+            viewModel.requestBusStop(fusedLocationClient)
         }
-    }
-
-    /* 사용자 현재 위치 가져오기 (nullable) */
-    @SuppressLint("MissingPermission")
-    private fun getCurrentLocation(): Location? {
-        val locationProvider = LocationManager.GPS_PROVIDER
-        return locationManager.getLastKnownLocation(locationProvider)
     }
 
     /* Location 권한 요청 */
     private fun requestLocationPermission() {
-        val permissionListener = object: PermissionListener {
+        val permissionListener = object : PermissionListener {
             override fun onPermissionGranted() {
                 Log.d("TEST", "onPermissionGranted: 위치 권한이 허용되었습니다.")
 
-                // 사용자 주변 정류장 목록 요청
-                viewModel.requestBusStop(getCurrentLocation())
+                // 퍼미션 체크
+                if (ActivityCompat.checkSelfPermission(
+                        this@BusStopActivity,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                        this@BusStopActivity,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    return
+                }
+
+                // 현재 위치 가져오기
+                fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, CancellationTokenSource().token)
+                    .addOnSuccessListener {
+                        if (it != null) {
+                            // 사용자 주변 정류장 목록 요청
+                            viewModel.requestBusStop(fusedLocationClient)
+                        }
+                    }
 
                 // 지속적으로 위치 업데이트 요청
                 requestingLocationUpdates = true
@@ -342,5 +351,9 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         if (isFinishing) {
             overridePendingTransition(R.anim.fade_in, R.anim.exit_to_right)
         }
+    }
+
+    override fun onLocationChanged(location: Location) {
+        Log.d("TEST", "onLocationChanged: $location")
     }
 }

@@ -46,7 +46,7 @@ class BusStopViewModel @Inject constructor(
 
     /* 사용자 주변 버스 정류장 요청 메서드 */
     @SuppressLint("MissingPermission")
-    fun requestBusStop(location: Location?) {
+    fun requestBusStop(fusedLocationClient: FusedLocationProviderClient) {
         loadingLiveData.value = true
 
         // 네트워크 확인
@@ -58,31 +58,37 @@ class BusStopViewModel @Inject constructor(
         // 검색어 초기화
         searchTerm = ""
 
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location ->
+                if (location != null) {
+                    // 위치가 있다면 (위도 : location.latitude, 경도 : location.longitude)
+                    viewModelScope.launch {
+                        // 사용자의 위치가 서울특별시인지 확인
+                        val city = geocoder.getFromLocation(
+                            location.latitude,
+                            location.longitude,
+                            1
+                        )
 
-        if (location != null) {
-            // 위치가 있다면 (위도 : location.latitude, 경도 : location.longitude)
-            viewModelScope.launch {
-                // 사용자의 위치가 서울특별시인지 확인
-                val city = geocoder.getFromLocation(
-                    location.latitude,
-                    location.longitude,
-                    1
-                )
-
-                if (!city.isNullOrEmpty() && city[0].adminArea == "서울특별시") {
-                    // API 호출
-                    requestBusStopData(
-                        location.longitude.toString(),
-                        location.latitude.toString()
-                    )
+                        if (!city.isNullOrEmpty() && city[0].adminArea == "서울특별시") {
+                            // API 호출
+                            requestBusStopData(
+                                location.longitude.toString(),
+                                location.latitude.toString()
+                            )
+                        } else {
+                            loadFail("no_result")
+                        }
+                    }
                 } else {
-                    loadFail("no_result")
+                    // 위치 정보 받아올 수 없음
+                    loadFail("location")
                 }
             }
-        } else {
-            // 위치 정보 받아올 수 없음
-            loadFail("location")
-        }
+            .addOnFailureListener {
+                // 위치 정보 받아올 수 없음
+                loadFail("location")
+            }
     }
 
     /* 좌표기반 근접 정류소 조회 API 호출 */
@@ -125,7 +131,7 @@ class BusStopViewModel @Inject constructor(
 
     /* 사용자 검색 버스 정류장 요청 메서드 */
     @SuppressLint("MissingPermission")
-    fun requestSearchedBusStop(stSrch: String, location: Location?) {
+    fun requestSearchedBusStop(stSrch: String, fusedLocationClient: FusedLocationProviderClient) {
         loadingLiveData.value = true
 
         // 네트워크 확인
@@ -137,13 +143,20 @@ class BusStopViewModel @Inject constructor(
         // 검색어 저장
         searchTerm = stSrch
 
-        if (location != null) {
-            // 위치가 있다면 (위도 : location.latitude, 경도 : location.longitude)
-            requestSearchedBusStopData(stSrch, location)
-        } else {
-            // 위치 정보 받아올 수 없음
-            loadFail("location")
-        }
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location ->
+                if (location != null) {
+                    // 위치가 있다면 (위도 : location.latitude, 경도 : location.longitude)
+                    requestSearchedBusStopData(stSrch, location)
+                } else {
+                    // 위치 정보 받아올 수 없음
+                    loadFail("location")
+                }
+            }
+            .addOnFailureListener {
+                // 위치 정보 받아올 수 없음
+                loadFail("location")
+            }
     }
 
     /* 검색어가 포함된 정류소 명칭을 조회 API 호출 */
