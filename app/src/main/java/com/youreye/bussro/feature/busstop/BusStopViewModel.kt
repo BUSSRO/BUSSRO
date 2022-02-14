@@ -237,7 +237,7 @@ class BusStopViewModel @Inject constructor(
 
 
     /* data == null 인 경우 처리 */
-    private fun loadFail(reason: String) {
+    fun loadFail(reason: String) {
         busStopsLiveData.postValue(listOf())
         loadingLiveData.postValue(false)
         failReason.postValue(reason)

@@ -193,12 +193,23 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener, Locati
                 }
 
                 // 현재 위치 가져오기
+                viewModel.loadingLiveData.value = true
+
                 fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, CancellationTokenSource().token)
                     .addOnSuccessListener {
+                        viewModel.loadingLiveData.value = false
+
                         if (it != null) {
                             // 사용자 주변 정류장 목록 요청
                             viewModel.requestBusStop(fusedLocationClient)
                         }
+                    }
+                    .addOnFailureListener {
+                        Log.d("TEST", "onPermissionGranted_error: $it")
+
+                        // 위치 불러올 수 없음
+                        viewModel.loadFail("location")
+                        viewModel.loadingLiveData.value = false
                     }
 
                 // 지속적으로 위치 업데이트 요청
