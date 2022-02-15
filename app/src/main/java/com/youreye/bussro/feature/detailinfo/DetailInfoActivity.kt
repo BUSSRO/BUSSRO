@@ -16,6 +16,7 @@ import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityDetailInfoBinding
 import com.youreye.bussro.feature.dialog.SuggestionsDialog
 import com.youreye.bussro.model.DetailInfoData
+import com.youreye.bussro.util.SharedPrefManager
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -24,6 +25,9 @@ class DetailInfoActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private lateinit var rvAdapter: DetailInfoAdapter
     private lateinit var id: String
     private lateinit var tts: TextToSpeech
+    private val admitTTS by lazy {
+        SharedPrefManager.getTTS(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,12 +107,14 @@ class DetailInfoActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                     // null 처리
                     if (document.data == null) {
                         // 음성안내
-                        tts.speak(
-                            "불러오기 실패",
-                            TextToSpeech.QUEUE_FLUSH,
-                            null,
-                            TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
-                        )
+                        if (admitTTS) {
+                            tts.speak(
+                                "불러오기 실패",
+                                TextToSpeech.QUEUE_FLUSH,
+                                null,
+                                TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
+                            )
+                        }
                         return@addOnCompleteListener
                     }
 
@@ -126,12 +132,14 @@ class DetailInfoActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                     rvAdapter.updateData(data)
 
                     // 음성안내
-                    tts.speak(
-                        "불러오기 완료",
-                        TextToSpeech.QUEUE_FLUSH,
-                        null,
-                        TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
-                    )
+                    if (admitTTS) {
+                        tts.speak(
+                            "불러오기 완료",
+                            TextToSpeech.QUEUE_FLUSH,
+                            null,
+                            TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
+                        )
+                    }
                 }
             }
             .addOnFailureListener {
@@ -141,12 +149,14 @@ class DetailInfoActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 // 로딩 끝
                 binding.progressDetailInfo.visibility = View.GONE
                 // 음성안내
-                tts.speak(
-                    "불러오기 실패",
-                    TextToSpeech.QUEUE_FLUSH,
-                    null,
-                    TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
-                )
+                if (admitTTS) {
+                    tts.speak(
+                        "불러오기 실패",
+                        TextToSpeech.QUEUE_FLUSH,
+                        null,
+                        TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
+                    )
+                }
             }
     }
 

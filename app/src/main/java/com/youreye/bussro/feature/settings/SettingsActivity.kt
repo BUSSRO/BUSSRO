@@ -3,6 +3,7 @@ package com.youreye.bussro.feature.settings
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.youreye.bussro.BuildConfig
@@ -10,6 +11,7 @@ import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivitySettingsBinding
 import com.youreye.bussro.feature.dialog.SuggestionsDialog
 import com.youreye.bussro.util.BussroExceptionHandler
+import com.youreye.bussro.util.SharedPrefManager
 
 /**
  * [SettingsActivity]
@@ -77,6 +79,15 @@ class SettingsActivity : AppCompatActivity(){
             val intent = Intent(this, WebViewActivity::class.java)
                 .putExtra("addr", LICENSE_PAGE)
             startActivity(intent)
+        }
+
+        /* 음성안내 */
+        binding.switchSetting.isChecked = SharedPrefManager.getTTS(this)
+
+        binding.switchSetting.setOnCheckedChangeListener { buttonView, isChecked ->
+            // 설정 저장
+            SharedPrefManager.setTTS(this, isChecked)
+            Log.d("TEST", "음성안내 사용자 설정 : $isChecked")
         }
 
         /* 버전정보 */

@@ -14,6 +14,7 @@ import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityBusListBinding
 import com.youreye.bussro.feature.dialog.BoardingDialog
 import com.youreye.bussro.util.BussroExceptionHandler
+import com.youreye.bussro.util.SharedPrefManager
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -28,6 +29,9 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private lateinit var viewModel: BusListViewModel
     private lateinit var binding: ActivityBusListBinding
     private lateinit var tts: TextToSpeech
+    private val admitTTS by lazy {
+        SharedPrefManager.getTTS(this)
+    }
     var rtNm: String = ""  // 사용자가 선택한 버스번호
     private lateinit var rvAdapter: BusListAdapter
 
@@ -87,20 +91,22 @@ class BusListActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         viewModel.busListLiveData.observe(this) { busStopList ->
             rvAdapter.updateData(busStopList)
 
-            if (busStopList.isNotEmpty()) {
-                tts.speak(
-                    "불러오기 완료",
-                    TextToSpeech.QUEUE_FLUSH,
-                    null,
-                    TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
-                )
-            } else {
-                tts.speak(
-                    "불러오기 실패",
-                    TextToSpeech.QUEUE_FLUSH,
-                    null,
-                    TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
-                )
+            if (admitTTS) {
+                if (busStopList.isNotEmpty()) {
+                    tts.speak(
+                        "불러오기 완료",
+                        TextToSpeech.QUEUE_FLUSH,
+                        null,
+                        TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
+                    )
+                } else {
+                    tts.speak(
+                        "불러오기 실패",
+                        TextToSpeech.QUEUE_FLUSH,
+                        null,
+                        TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
+                    )
+                }
             }
 
             /* PlaceHolder 숨기기 */
