@@ -2,7 +2,10 @@ package com.youreye.bussro.feature.detailinfo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
 import android.util.Log
+import android.view.View
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.CollectionReference
@@ -16,10 +19,11 @@ import com.youreye.bussro.model.DetailInfoData
 import java.util.*
 import kotlin.collections.HashMap
 
-class DetailInfoActivity : AppCompatActivity() {
+class DetailInfoActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private lateinit var binding: ActivityDetailInfoBinding
     private lateinit var rvAdapter: DetailInfoAdapter
     private lateinit var id: String
+    private lateinit var tts: TextToSpeech
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,20 +63,52 @@ class DetailInfoActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@DetailInfoActivity)
         }
 
+        /* TTS 객체 초기화 */
+        tts = TextToSpeech(this, this)
+
         getManualFromFireStore()
+    }
+
+    override fun onInit(status: Int) {
+        if (status == TextToSpeech.SUCCESS) {
+            // 언어 설정
+            val locale = Locale("ko", "KR")
+            val result = tts.setLanguage(locale)
+
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Toast.makeText(this, "지원하지 않는 언어입니다.", Toast.LENGTH_SHORT).show()
+            } else {
+                // TTS 사용 가능
+            }
+        } else {
+            Toast.makeText(this, "TTS를 사용할 수 없습니다.", Toast.LENGTH_SHORT).show()
+        }
     }
 
     /* 매뉴얼 가져오기 */
     private fun getManualFromFireStore() {
+        // 로딩 시작
+        binding.progressDetailInfo.visibility = View.VISIBLE
+
         val db = FirebaseFirestore.getInstance()
 
         db.document("manuals/manual").get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+                    // 로딩 끝
+                    binding.progressDetailInfo.visibility = View.GONE
+
                     val document: DocumentSnapshot = task.result
 
                     // null 처리
                     if (document.data == null) {
+                        // 음성안내
+                        tts.speak(
+                            "불러오기 실패",
+                            TextToSpeech.QUEUE_FLUSH,
+                            null,
+                            TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
+                        )
                         return@addOnCompleteListener
                     }
 
@@ -85,12 +121,43 @@ class DetailInfoActivity : AppCompatActivity() {
                         val desc = hashMap.get("desc")!!
 
                         data.add(DetailInfoData(title, desc))
-//                        Log.d("TEST", "매뉴얼 $title, $desc")
                     }
 
                     rvAdapter.updateData(data)
+
+                    // 음성안내
+                    tts.speak(
+                        "불러오기 완료",
+                        TextToSpeech.QUEUE_FLUSH,
+                        null,
+                        TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
+                    )
                 }
             }
+            .addOnFailureListener {
+                // 앱 사용설명서 불러오기 실패
+                Log.d("TEST", "getManualFromFireStore_error: $it")
+
+                // 로딩 끝
+                binding.progressDetailInfo.visibility = View.GONE
+                // 음성안내
+                tts.speak(
+                    "불러오기 실패",
+                    TextToSpeech.QUEUE_FLUSH,
+                    null,
+                    TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
+                )
+            }
+    }
+
+    override fun onStop() {
+        tts.stop()
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        tts.shutdown()
+        super.onDestroy()
     }
 
     override fun onBackPressed() {
