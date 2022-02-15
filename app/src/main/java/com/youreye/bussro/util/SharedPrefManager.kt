@@ -7,6 +7,9 @@ object SharedPrefManager {
     private const val FIRST = "first"
     private const val FIRST_KEY = "first_key"
 
+    private const val TTS = "tts"
+    private const val TTS_KEY = "tts_key"
+
     private const val SEARCH_HISTORY = "search_history"
     private const val SEARCH_HISTORY_KEY = "search_history_key"
 
@@ -17,9 +20,21 @@ object SharedPrefManager {
     }
 
     /* 앱 접속이력 가져오기 */
-    fun isFirst(context: Context) :Boolean {
+    fun isFirst(context: Context): Boolean {
         val sharedPreferences = context.getSharedPreferences(FIRST, Context.MODE_PRIVATE)
         return sharedPreferences.getBoolean(FIRST_KEY, true)
+    }
+
+    /* TTS 설정 저장 */
+    fun setTTS(context: Context, flag: Boolean) {
+        val sharedPreferences = context.getSharedPreferences(TTS, Context.MODE_PRIVATE)
+        sharedPreferences.edit().putBoolean(TTS_KEY, flag).apply()
+    }
+
+    /* TTS 설정 가져오기 */
+    fun getTTS(context: Context): Boolean {
+        val sharedPreferences = context.getSharedPreferences(TTS, Context.MODE_PRIVATE)
+        return sharedPreferences.getBoolean(TTS_KEY, true)
     }
 
     /* 검색어 저장 */

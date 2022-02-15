@@ -48,6 +48,18 @@
             app:layout_constraintBottom_toTopOf="@+id/txt_detail_info"
             tools:listitem="@layout/rv_detail_info_item" />
 
+        <!-- 로딩바 -->
+        <ProgressBar
+            android:id="@+id/progress_detail_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:contentDescription="로딩중"/>
+
         <!-- 문의하러가기 -->
         <TextView
             android:id="@+id/txt_detail_info"

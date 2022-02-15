@@ -35,6 +35,7 @@ import com.youreye.bussro.R
 import com.youreye.bussro.databinding.ActivityBusStopBinding
 import com.youreye.bussro.feature.search.SearchActivity
 import com.youreye.bussro.util.BussroExceptionHandler
+import com.youreye.bussro.util.SharedPrefManager
 import com.youreye.bussro.util.logd
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -51,15 +52,15 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener, Locati
     private val viewModel: BusStopViewModel by viewModels()
     private lateinit var binding: ActivityBusStopBinding
     private lateinit var tts: TextToSpeech
+    private val admitTTS by lazy {
+        SharedPrefManager.getTTS(this)
+    }
     private lateinit var rvAdapter: BusStopAdapter
 
     /* 위치 변수 */
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
     private var requestingLocationUpdates = false
-//    private val locationManager by lazy {
-//        getSystemService(LOCATION_SERVICE) as LocationManager
-//    }
 
     /* SearchActivity 에서의 검색값 받기 */
     private val startSearchActivityForResult =
@@ -244,26 +245,28 @@ class BusStopActivity : AppCompatActivity(), TextToSpeech.OnInitListener, Locati
         viewModel.busStopsLiveData.observe(this) { busStopList ->
             rvAdapter.updateData(busStopList)
 
-            if (busStopList.isNotEmpty()) {
-                val text =
-                    if (viewModel.searchTerm.isNotEmpty()) "${viewModel.searchTerm} 검색 완료" else "불러오기 완료"
+            if (admitTTS) {
+                if (busStopList.isNotEmpty()) {
+                    val text =
+                        if (viewModel.searchTerm.isNotEmpty()) "${viewModel.searchTerm} 검색 완료" else "불러오기 완료"
 
-                tts.speak(
-                    text,
-                    TextToSpeech.QUEUE_FLUSH,
-                    null,
-                    TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
-                )
-            } else {
-                val text =
-                    if (viewModel.searchTerm.isNotEmpty()) "${viewModel.searchTerm} 검색 실패" else "불러오기 실패"
+                    tts.speak(
+                        text,
+                        TextToSpeech.QUEUE_FLUSH,
+                        null,
+                        TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
+                    )
+                } else {
+                    val text =
+                        if (viewModel.searchTerm.isNotEmpty()) "${viewModel.searchTerm} 검색 실패" else "불러오기 실패"
 
-                tts.speak(
-                    text,
-                    TextToSpeech.QUEUE_FLUSH,
-                    null,
-                    TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
-                )
+                    tts.speak(
+                        text,
+                        TextToSpeech.QUEUE_FLUSH,
+                        null,
+                        TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
+                    )
+                }
             }
 
             /* 안내문구 갱신 */

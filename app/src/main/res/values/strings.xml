@@ -73,6 +73,7 @@
     <string name="iv_setting_cl_detail_desc">약관동의확인으로 이동하기</string>
     <string name="txt_setting_os_desc">오픈소스 및 라이센스</string>
     <string name="iv_setting_os_detail_cd">오픈소스 및 라이센스로 이동하기</string>
+    <string name="txt_setting_tts">음성안내</string>
     <string name="txt_setting_version">버전정보 1.0.0</string>
     <string name="email">otu1650@gmail.com</string>
 
@@ -103,6 +104,8 @@
         <item>버스탑승기록 화면</item>
     </string-array>
 
+    <!-- activity_detail_info -->
     <string name="help_2"><u>설명이 부족하거나 사용이 어려우시면 클릭해주세요.</u></string>
+
 
 </resources>
