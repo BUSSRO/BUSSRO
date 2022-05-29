@@ -122,6 +122,10 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     private Paint textPaint;
     private Paint rectPaint;
 
+    // txt_camera_info text change flag
+    private String boardingFlag = "";
+    private String getOffFlag = "";
+
     @Override
     public void onPreviewSizeChosen(final Size size, final int rotation) {
         final float textSizePx =
@@ -279,18 +283,34 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                         final List<Detector.Recognition> mappedRecognitions =
                                 new ArrayList<Detector.Recognition>();
 
+                        // 2022-05-29 텍스트 변경 필요시 TextView 값을 변경하도록 수정
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 if (results.size() == 0) {
                                     if (fromWhere.equals("BoardingDialog")) {
-                                        view.setText(rtNm + "번 버스가 없습니다.");
+                                        String txt = rtNm + "번 버스가 없습니다.";
+
+                                        if (!txt.equals(boardingFlag)) {
+                                            view.setText(txt);
+                                            boardingFlag = txt;
+                                        }
                                     } else {
-                                        view.setText("하차벨이 없습니다.");
+                                        String txt = rtNm + "하차벨이 없습니다.";
+
+                                        if (!txt.equals(boardingFlag)) {
+                                            view.setText(txt);
+                                            boardingFlag = txt;
+                                        }
                                     }
                                 } else {
                                     if (fromWhere.equals("MainActivity")) {
-                                        view.setText("하차벨이 있습니다.");
+                                        String txt = "하차벨이 있습니다.";
+
+                                        if (!txt.equals(boardingFlag)) {
+                                            view.setText(txt);
+                                            boardingFlag = txt;
+                                        }
                                     }
                                 }
                             }
@@ -405,28 +425,46 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                                     boolean centerPositionLR = leftTopToRightBottom - cy >= 0;
                                     boolean centerPositionRL = rightTopToLeftBottom - cy >= 0;
 
+                                    // 2022-05-29 텍스트 변경 필요시 TextView 값을 변경하도록 수정
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
                                             if (centerPositionLR && centerPositionRL) {
                                                 // 위
-                                                view.setText("위쪽에 " + view.getText());
+                                                String txt = "위쪽에 " + view.getText();
+
+                                                if (!txt.equals(getOffFlag)) {
+                                                    view.setText(txt);
+                                                    getOffFlag = txt;
+                                                }
                                             } else if (!centerPositionLR && centerPositionRL) {
                                                 // 왼
-                                                view.setText("왼쪽에 " + view.getText());
+                                                String txt = "왼쪽에 " + view.getText();
+
+                                                if (!txt.equals(getOffFlag)) {
+                                                    view.setText(txt);
+                                                    getOffFlag = txt;
+                                                }
 
                                             } else if (!centerPositionLR && !centerPositionRL) {
                                                 // 아
-                                                view.setText("아래쪽에 " + view.getText());
+                                                String txt = "아래쪽에 " + view.getText();
 
+                                                if (!txt.equals(getOffFlag)) {
+                                                    view.setText(txt);
+                                                    getOffFlag = txt;
+                                                }
                                             } else if (centerPositionLR && !centerPositionRL) {
                                                 // 오
-                                                view.setText("오른쪽에 " + view.getText());
+                                                String txt = "오른쪽에 " + view.getText();
+
+                                                if (!txt.equals(getOffFlag)) {
+                                                    view.setText(txt);
+                                                    getOffFlag = txt;
+                                                }
                                             }
                                         }
                                     });
-
-
                                 }
 
                                 canvas.drawRect(location, paint);
